@@ -1,0 +1,40 @@
+# 换行符规范
+#
+# 为什么需要这个文件：
+# 本仓库在 Windows 上开发，`core.autocrlf = true`。在没有 .gitattributes 的情况下，
+# 检出会把文本文件写成 CRLF，其中包括 shell 脚本。后果是
+#     bash scripts/inspect_env.sh
+# 以 `$'\r': command not found` 或 bad interpreter 失败。
+#
+# 这个坑会在**首次 clone 到远程昇腾主机**时炸——而环境搭建恰恰是本项目
+# 最不能出岔子的一步（规范末节要求所有硬件相关操作都在那台机器上执行）。
+# 在本地不会暴露，因为本地的工作副本是 LF。
+#
+# 规则：仓库内一律存 LF，检出时不转换。Windows 上的编辑器自行处理显示。
+# 这不影响 Python / PyYAML 读取（它们对 CRLF 宽容），但会让 bash 脚本直接坏掉，
+# 所以必须统一。
+
+* text=auto eol=lf
+
+# 显式钉死（不依赖 auto 的启发式判断）：可执行脚本与结构化文本必须为 LF
+*.sh    text eol=lf
+*.bash  text eol=lf
+*.py    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+*.jsonl text eol=lf
+*.csv   text eol=lf
+*.txt   text eol=lf
+*.toml  text eol=lf
+*.cfg   text eol=lf
+
+# 二进制类型：明确声明，避免 git 试图转换或做行尾处理
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.pdf   binary
+*.npy   binary
+*.pt    binary
+*.bin   binary

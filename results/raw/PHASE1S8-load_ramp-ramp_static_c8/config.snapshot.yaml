@@ -1,0 +1,58 @@
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 100.0
+  notes: PHASE1-⑥ static_scan max_num_seqs=8 slo_tpot_ms=100.0 gate=120.0/0.08
+workload:
+  name: load_ramp
+  concurrency: 8
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 8
+  reserve_decode_slots: 0
+chunk:
+  policy: fixed_chunk
+  enabled: true
+  chunk_size: 1024
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+controller:
+  enabled: false
+  target_tpot_ms: 120.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.08
+  cooldown_cycles: 3
+  chunk_size_init: 1024
+  chunk_size_min: 512
+  chunk_size_max: 2048
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+runtime:
+  model: Qwen/Qwen2.5-7B-Instruct
+  model_revision: main
+  precision: fp16
+  quantization: none
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto
+  execution_environment: remote_mthreads
+  hardware_platform: mthreads

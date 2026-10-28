@@ -1,0 +1,445 @@
+{
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "device": "musa:0",
+  "gen_len": 16,
+  "thresholds": {
+    "fp32_max_abs_diff": 0.001,
+    "fp32_mean_abs_diff": 0.0001,
+    "token_ids": "exact"
+  },
+  "hostname": "autodl-container-3dc442bf15-b061c1a5",
+  "started_at": "2026-09-23T00:00:29+0800",
+  "checks": {
+    "V1_single_request": {
+      "reference_tokens": [
+        2168,
+        52526,
+        271,
+        2132,
+        4977,
+        1075,
+        498,
+        3003,
+        3897,
+        264,
+        6514,
+        315,
+        1467,
+        323,
+        11293,
+        429
+      ],
+      "driver_tokens": [
+        2168,
+        52526,
+        271,
+        2132,
+        4977,
+        1075,
+        498,
+        3003,
+        3897,
+        264,
+        6514,
+        315,
+        1467,
+        323,
+        11293,
+        429
+      ],
+      "token_ids_exact_match": true,
+      "driver_first_forward_shapes": {
+        "input_ids": {
+          "tensor": [
+            1,
+            1
+          ],
+          "dtype": "torch.int64"
+        },
+        "attention_mask": {
+          "tensor": [
+            1,
+            39
+          ],
+          "dtype": "torch.int64"
+        },
+        "position_ids": {
+          "tensor": [
+            1,
+            1
+          ],
+          "dtype": "torch.int64"
+        },
+        "past_key_values": {
+          "type": "DynamicCache",
+          "seq_length": 39
+        },
+        "use_cache": true
+      }
+    },
+    "V1_threshold_calibration": {
+      "repeat_max_abs_diff": 0.0,
+      "one_token_changed_max_abs_diff": 21.715787887573242,
+      "threshold": 0.001,
+      "sensitive": true
+    },
+    "V1_fp32_logits": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "argmax_ref": 2168,
+      "argmax_drv": 2168,
+      "driver_logits_shape": [
+        1,
+        24,
+        152064
+      ],
+      "reference_logits_shape": [
+        1,
+        24,
+        152064
+      ],
+      "limitation": "参考与驱动共用同一模型实例，故 max_abs_diff==0 是预期值；该判据不能证伪'驱动被旁路'，旁路由 V2/V3/V4 的 token id 逐位比对证伪。"
+    },
+    "V2_multistep_decode": {
+      "reference_tokens": [
+        198,
+        43288,
+        51575,
+        108704,
+        104544,
+        100902,
+        67071,
+        101970,
+        102064,
+        33108,
+        48391,
+        105063,
+        107339,
+        3837,
+        90919,
+        102298
+      ],
+      "driver_tokens": [
+        198,
+        43288,
+        51575,
+        108704,
+        104544,
+        100902,
+        67071,
+        101970,
+        102064,
+        33108,
+        48391,
+        105063,
+        107339,
+        3837,
+        90919,
+        102298
+      ],
+      "token_ids_exact_match": true
+    },
+    "V3_variable_length_batch": {
+      "prompt_lengths": [
+        16,
+        24,
+        33,
+        48
+      ],
+      "per_row_match": {
+        "v3_0": false,
+        "v3_1": true,
+        "v3_2": true,
+        "v3_3": true
+      },
+      "logits_equivalence_per_row": {
+        "v3_0": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 198,
+          "argmax_drv": 198,
+          "ref_top1_top2_gap": 1.2578125,
+          "token_ids_exact_match": false,
+          "within_fp16_tol": true,
+          "first_divergence": {
+            "index": 4,
+            "ref_token": 15,
+            "driver_token": 16,
+            "top1": 16,
+            "top2": 15,
+            "top1_top2_gap": 0.0,
+            "is_near_tie": true
+          }
+        },
+        "v3_1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 198,
+          "argmax_drv": 198,
+          "ref_top1_top2_gap": 2.33203125,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_2": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 271,
+          "argmax_drv": 271,
+          "ref_top1_top2_gap": 0.0703125,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_3": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 18137,
+          "argmax_drv": 18137,
+          "ref_top1_top2_gap": 0.15234375,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        }
+      },
+      "padding_check_per_row": {
+        "v3_0": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_2": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_3": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        }
+      },
+      "fp16_logit_tol": 0.25,
+      "reference_tokens": {
+        "v3_0": [
+          198,
+          750,
+          1273,
+          62,
+          15,
+          15,
+          16,
+          3932,
+          262,
+          2060,
+          220,
+          16,
+          621,
+          220,
+          16,
+          1406
+        ],
+        "v3_1": [
+          198,
+          2132,
+          5868,
+          1075,
+          498,
+          3003,
+          3897,
+          264,
+          6514,
+          315,
+          4244,
+          323,
+          31747,
+          429,
+          1513,
+          944
+        ],
+        "v3_2": [
+          271,
+          2132,
+          4977,
+          1075,
+          279,
+          1467,
+          498,
+          3897,
+          374,
+          264,
+          6514,
+          315,
+          2155,
+          4244,
+          323,
+          31747
+        ],
+        "v3_3": [
+          18137,
+          246,
+          110,
+          99280,
+          99371,
+          271,
+          99487,
+          108704,
+          104544,
+          100902,
+          67071,
+          101213,
+          16530,
+          105470,
+          105291,
+          33108
+        ]
+      },
+      "driver_tokens": {
+        "v3_0": [
+          198,
+          750,
+          1273,
+          62,
+          16,
+          15,
+          15,
+          15,
+          15,
+          3932,
+          262,
+          2060,
+          220,
+          16,
+          621,
+          220
+        ],
+        "v3_1": [
+          198,
+          2132,
+          5868,
+          1075,
+          498,
+          3003,
+          3897,
+          264,
+          6514,
+          315,
+          4244,
+          323,
+          31747,
+          429,
+          1513,
+          944
+        ],
+        "v3_2": [
+          271,
+          2132,
+          4977,
+          1075,
+          279,
+          1467,
+          498,
+          3897,
+          374,
+          264,
+          6514,
+          315,
+          2155,
+          4244,
+          323,
+          31747
+        ],
+        "v3_3": [
+          18137,
+          246,
+          110,
+          99280,
+          99371,
+          271,
+          99487,
+          108704,
+          104544,
+          100902,
+          67071,
+          101213,
+          16530,
+          105470,
+          105291,
+          33108
+        ]
+      },
+      "token_ids_exact_match": false,
+      "logits_equivalent": true,
+      "padding_preserves_rows": true
+    },
+    "V4_chunked_prefill": {
+      "chunk_sizes": [
+        16,
+        16,
+        8
+      ],
+      "whole_vs_chunked_logits": {
+        "max_abs_diff": 0.03125,
+        "mean_abs_diff": 0.005193853285163641
+      },
+      "reference_vs_whole_logits": {
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0
+      },
+      "fp16_logit_tol": 0.25,
+      "within_fp16_tol": true,
+      "whole_first_token": 13,
+      "chunked_first_token": 13,
+      "argmax_whole": 13,
+      "argmax_chunked": 13,
+      "ref_top1_top2_gap": 0.96484375,
+      "reference_tokens": [
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16
+      ],
+      "driver_tokens_chunked": [
+        13
+      ],
+      "token_ids_exact_match": false,
+      "chunked_vs_whole_tokens_match": true
+    },
+    "V4_alt_splits_equivalent": {
+      "[20, 20]": true,
+      "[39, 1]": true,
+      "[1]x40": true
+    },
+    "resource_lifecycle": {
+      "drv2_live_at_end": 0,
+      "drv3_live_at_end": 0,
+      "v4_drivers_live_at_end": {
+        "v4_whole": 0,
+        "v4_[16, 16, 8]": 0,
+        "v4_[20, 20]": 0,
+        "v4_[39, 1]": 0,
+        "v4_[1]x40": 0
+      }
+    }
+  },
+  "failures": [],
+  "notes": [
+    "V3 行 v3_0: 分布等价（max|Δ|=0.0000≈0），token 序列在第 4 步分岔；该步是近平局（top1=16 top2=15 gap=0.0000），fp16 舍入即可翻转 argmax，**不是实现错误**"
+  ],
+  "finished_at": "2026-09-23T00:01:03+0800",
+  "passed": true
+}

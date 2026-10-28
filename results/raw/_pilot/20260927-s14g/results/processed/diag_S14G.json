@@ -1,0 +1,59 @@
+{
+ "tag": "S14G",
+ "arms": {
+  "cost_min512": {
+   "n": 3,
+   "d1_rate_median": 0.0,
+   "d2_blocked_share_median": 0.2671232876712329,
+   "d2_queue_step_sum_median": 624,
+   "d3_goodput_median": 0.0,
+   "d3_satisfaction_median": 0.0,
+   "ttft_queue_ms_median": 8240.8343,
+   "d1_examples": [],
+   "d1_n_median": 2,
+   "d0": {
+    "n_decisions": 111,
+    "n_candidates": 444,
+    "n_feasible": 24,
+    "feasible_rate": 0.05405405405405406,
+    "top_reject_reasons": [
+     {
+      "n": 354,
+      "example": "预测 752.4 + host 14.2 = 766.5ms 超每步预算 120.0ms"
+     },
+     {
+      "n": 66,
+      "example": "模型范围外（不可外推）"
+     }
+    ]
+   }
+  },
+  "cost_pilot": {
+   "n": 3,
+   "d1_rate_median": 0.0,
+   "d2_blocked_share_median": 0.23353293413173654,
+   "d2_queue_step_sum_median": 624,
+   "d3_goodput_median": 0.0,
+   "d3_satisfaction_median": 0.0,
+   "ttft_queue_ms_median": 10738.8024,
+   "d1_examples": [],
+   "d1_n_median": 2,
+   "d0": {
+    "n_decisions": 126,
+    "n_candidates": 1008,
+    "n_feasible": 48,
+    "feasible_rate": 0.047619047619047616,
+    "top_reject_reasons": [
+     {
+      "n": 540,
+      "example": "预测 752.4 + host 14.2 = 766.5ms 超每步预算 120.0ms"
+     },
+     {
+      "n": 420,
+      "example": "模型范围外（不可外推）"
+     }
+    ]
+   }
+  }
+ }
+}

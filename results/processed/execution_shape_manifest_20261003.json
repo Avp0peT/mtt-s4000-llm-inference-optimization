@@ -1,0 +1,2621 @@
+{
+  "schema": "execution_shape_manifest_v1",
+  "origin": "actual_candidate_execution_groups",
+  "evidence_class": "TEST_DATA",
+  "reachable_workload_coverage": "NOT_VERIFIED: independent legal fixtures, not a production replay",
+  "unique_execution_shapes": 6,
+  "input_bug_corrections": [
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "batch_start_prefill",
+      "candidate_index": 0,
+      "chunk": 512,
+      "max_tokens": 2048,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 2,
+      "actual_items": 1,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "batch_start_prefill",
+      "candidate_index": 1,
+      "chunk": 512,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 8,
+      "actual_items": 1,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "batch_start_prefill",
+      "candidate_index": 3,
+      "chunk": 2048,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 8,
+      "actual_items": 2,
+      "execution_groups": [
+        {
+          "n_new_tokens": 1536,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 1536,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 0,
+      "chunk": 512,
+      "max_tokens": 2048,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 5,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 1,
+      "chunk": 512,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 5,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 2,
+      "chunk": 2048,
+      "max_tokens": 2048,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 7,
+      "execution_groups": [
+        {
+          "n_new_tokens": 768,
+          "batch": 2,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 508,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 508,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_single",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 3,
+      "chunk": 2048,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 7,
+      "execution_groups": [
+        {
+          "n_new_tokens": 768,
+          "batch": 2,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "batch_start_prefill",
+      "candidate_index": 0,
+      "chunk": 512,
+      "max_tokens": 2048,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 2,
+      "actual_items": 1,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "batch_start_prefill",
+      "candidate_index": 1,
+      "chunk": 512,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 8,
+      "actual_items": 1,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "batch_start_prefill",
+      "candidate_index": 3,
+      "chunk": 2048,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 8,
+      "actual_items": 2,
+      "execution_groups": [
+        {
+          "n_new_tokens": 1536,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 1536,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 0,
+      "chunk": 512,
+      "max_tokens": 2048,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 5,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 1,
+      "chunk": 512,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 5,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 2,
+      "chunk": 2048,
+      "max_tokens": 2048,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 7,
+      "execution_groups": [
+        {
+          "n_new_tokens": 768,
+          "batch": 2,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 508,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 508,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "cost_dual",
+      "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+      "state": "contended_prefill",
+      "candidate_index": 3,
+      "chunk": 2048,
+      "max_tokens": 32768,
+      "state_source": "independent_fixture",
+      "reachable_from_production": null,
+      "category": "input_bug",
+      "legacy_batch": 6,
+      "actual_items": 7,
+      "execution_groups": [
+        {
+          "n_new_tokens": 768,
+          "batch": 2,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "point_id": "shape-41ffc6d467303954",
+      "evidence_class": "NOT_MEASURED",
+      "origin_evidence_class": "TEST_DATA",
+      "config_path": "configs/mthreads/prereg_batch/cost_single.yaml",
+      "execution_signature": {
+        "contract": "execution-shape-v1",
+        "grouping": "descending_n_new_tokens",
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "fuse_qkv": false,
+        "do_sample": false,
+        "fuse_gate_up": false,
+        "persistent_kv_slots": false,
+        "capture_logits_digest": false,
+        "retire_empty_cache": true,
+        "persistent_kv_capacity": null,
+        "linear_fuse_shapes": null,
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "execution_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r00",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r01",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r02",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r03",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r04",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r05",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r06",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r07",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r00",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r01",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r02",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r03",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r04",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r05",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r06",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r07",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 8,
+            "past_max": 1539
+          }
+        ],
+        "n_forwards": 1,
+        "batch": 8
+      },
+      "execution_shape_key": "[[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "prime_requests": {
+        "r00": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r01": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r02": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r03": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r04": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r05": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r06": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r07": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        }
+      },
+      "repeats": 3,
+      "validation_repeats": 3,
+      "warmup_s": 30,
+      "execution_groups": [
+        {
+          "n_new_tokens": 1,
+          "batch": 8,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ],
+      "n_forwards": 1,
+      "execution_semantics": {
+        "S01": {
+          "logits_last_only": true,
+          "sample_needed_only": true
+        },
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "model_file_sha256": "5a493c9756d55a779915748a063ad2289704de8eebd40c9986a430a81adb57a4",
+        "grouping": "production execution-shape-v1; groups submitted in order"
+      },
+      "sources": [
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "steady_decode",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "steady_decode",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "steady_decode",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "steady_decode",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "steady_decode",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "steady_decode",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "steady_decode",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "steady_decode",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "mixed_admit",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        }
+      ],
+      "legacy_scalar_diagnostics": [
+        {
+          "input": {
+            "batch": 8,
+            "prefill_tok": 0,
+            "kv_len": 1539
+          },
+          "key_hit": true,
+          "in_range": true,
+          "category": "anchor_revalidation",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        }
+      ],
+      "production_coverage": [
+        {
+          "status": "execution_contract_unvalidated",
+          "reason": "旧标定与当前执行语义未对齐，需锚点复核/整步标定"
+        }
+      ],
+      "measurement_status": "HARDWARE_REQUIRED",
+      "measurement_unit": "one complete ordered step including all groups",
+      "timing": {
+        "forward": "synchronized device forward sum observed within the actual step",
+        "host": "driver logical forward elapsed_ms - fwd_ms; pack/readback retained as diagnostics",
+        "step": "record end-to-end step; never multiply scalar forward by group count"
+      },
+      "warmup": "at least 30 seconds outside measurement, retain stability diagnostic",
+      "training": {
+        "independent_processes": 3,
+        "phase": "calibration",
+        "records_per_shape_per_process": 30
+      },
+      "independent_validation": {
+        "independent_processes": 3,
+        "phase": "held_out_validation",
+        "records_per_shape_per_process": 30,
+        "rule": "freeze estimator after training; validation records never enter fit/table"
+      },
+      "old_anchor_rule": "same identity and execution semantics required before pooling; otherwise keep old data separate",
+      "requires_new_calibration": true,
+      "sampling_purpose": "new_execution_semantics"
+    },
+    {
+      "point_id": "shape-519918568aa12eb3",
+      "evidence_class": "NOT_MEASURED",
+      "origin_evidence_class": "TEST_DATA",
+      "config_path": "configs/mthreads/prereg_batch/cost_single.yaml",
+      "execution_signature": {
+        "contract": "execution-shape-v1",
+        "grouping": "descending_n_new_tokens",
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "fuse_qkv": false,
+        "do_sample": false,
+        "fuse_gate_up": false,
+        "persistent_kv_slots": false,
+        "capture_logits_digest": false,
+        "retire_empty_cache": true,
+        "persistent_kv_capacity": null,
+        "linear_fuse_shapes": null,
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "execution_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r00",
+            "n_new_tokens": 1536,
+            "kv_len": 0,
+            "role": "prefill",
+            "need_token": true
+          },
+          {
+            "req_id": "r01",
+            "n_new_tokens": 512,
+            "kv_len": 0,
+            "role": "prefill",
+            "need_token": false
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 1536,
+            "items": [
+              {
+                "req_id": "r00",
+                "n_new_tokens": 1536,
+                "kv_len": 0,
+                "role": "prefill",
+                "need_token": true
+              }
+            ],
+            "batch": 1,
+            "past_max": 0
+          },
+          {
+            "n_new_tokens": 512,
+            "items": [
+              {
+                "req_id": "r01",
+                "n_new_tokens": 512,
+                "kv_len": 0,
+                "role": "prefill",
+                "need_token": false
+              }
+            ],
+            "batch": 1,
+            "past_max": 0
+          }
+        ],
+        "n_forwards": 2,
+        "batch": 2
+      },
+      "execution_shape_key": "[[1536,0,\"prefill\",true],[512,0,\"prefill\",false]]",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "prime_requests": {
+        "r00": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r01": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        }
+      },
+      "repeats": 3,
+      "validation_repeats": 3,
+      "warmup_s": 30,
+      "execution_groups": [
+        {
+          "n_new_tokens": 1536,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 1536,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ],
+      "n_forwards": 2,
+      "execution_semantics": {
+        "S01": {
+          "logits_last_only": true,
+          "sample_needed_only": true
+        },
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "model_file_sha256": "5a493c9756d55a779915748a063ad2289704de8eebd40c9986a430a81adb57a4",
+        "grouping": "production execution-shape-v1; groups submitted in order"
+      },
+      "sources": [
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        }
+      ],
+      "legacy_scalar_diagnostics": [
+        {
+          "input": {
+            "batch": 2,
+            "prefill_tok": 2048,
+            "kv_len": 0
+          },
+          "key_hit": false,
+          "in_range": false,
+          "category": "range_miss",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        },
+        {
+          "input": {
+            "batch": 8,
+            "prefill_tok": 2048,
+            "kv_len": 0
+          },
+          "key_hit": false,
+          "in_range": false,
+          "category": "range_miss",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        }
+      ],
+      "production_coverage": [
+        {
+          "status": "execution_contract_unvalidated",
+          "reason": "旧标定与当前执行语义未对齐，需锚点复核/整步标定"
+        }
+      ],
+      "measurement_status": "HARDWARE_REQUIRED",
+      "measurement_unit": "one complete ordered step including all groups",
+      "timing": {
+        "forward": "synchronized device forward sum observed within the actual step",
+        "host": "driver logical forward elapsed_ms - fwd_ms; pack/readback retained as diagnostics",
+        "step": "record end-to-end step; never multiply scalar forward by group count"
+      },
+      "warmup": "at least 30 seconds outside measurement, retain stability diagnostic",
+      "training": {
+        "independent_processes": 3,
+        "phase": "calibration",
+        "records_per_shape_per_process": 30
+      },
+      "independent_validation": {
+        "independent_processes": 3,
+        "phase": "held_out_validation",
+        "records_per_shape_per_process": 30,
+        "rule": "freeze estimator after training; validation records never enter fit/table"
+      },
+      "old_anchor_rule": "same identity and execution semantics required before pooling; otherwise keep old data separate",
+      "requires_new_calibration": true,
+      "sampling_purpose": "new_execution_semantics"
+    },
+    {
+      "point_id": "shape-d2773390924e6756",
+      "evidence_class": "NOT_MEASURED",
+      "origin_evidence_class": "TEST_DATA",
+      "config_path": "configs/mthreads/prereg_batch/cost_single.yaml",
+      "execution_signature": {
+        "contract": "execution-shape-v1",
+        "grouping": "descending_n_new_tokens",
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "fuse_qkv": false,
+        "do_sample": false,
+        "fuse_gate_up": false,
+        "persistent_kv_slots": false,
+        "capture_logits_digest": false,
+        "retire_empty_cache": true,
+        "persistent_kv_capacity": null,
+        "linear_fuse_shapes": null,
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "execution_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r04",
+            "n_new_tokens": 768,
+            "kv_len": 768,
+            "role": "prefill",
+            "need_token": true
+          },
+          {
+            "req_id": "r05",
+            "n_new_tokens": 768,
+            "kv_len": 768,
+            "role": "prefill",
+            "need_token": true
+          },
+          {
+            "req_id": "r06",
+            "n_new_tokens": 512,
+            "kv_len": 0,
+            "role": "prefill",
+            "need_token": false
+          },
+          {
+            "req_id": "r00",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r01",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r02",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r03",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 768,
+            "items": [
+              {
+                "req_id": "r04",
+                "n_new_tokens": 768,
+                "kv_len": 768,
+                "role": "prefill",
+                "need_token": true
+              },
+              {
+                "req_id": "r05",
+                "n_new_tokens": 768,
+                "kv_len": 768,
+                "role": "prefill",
+                "need_token": true
+              }
+            ],
+            "batch": 2,
+            "past_max": 768
+          },
+          {
+            "n_new_tokens": 512,
+            "items": [
+              {
+                "req_id": "r06",
+                "n_new_tokens": 512,
+                "kv_len": 0,
+                "role": "prefill",
+                "need_token": false
+              }
+            ],
+            "batch": 1,
+            "past_max": 0
+          },
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r00",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r01",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r02",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r03",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 4,
+            "past_max": 1539
+          }
+        ],
+        "n_forwards": 3,
+        "batch": 7
+      },
+      "execution_shape_key": "[[768,768,\"prefill\",true],[768,768,\"prefill\",true],[512,0,\"prefill\",false],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "prime_requests": {
+        "r00": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r01": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r02": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r03": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r04": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r05": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r06": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        }
+      },
+      "repeats": 3,
+      "validation_repeats": 3,
+      "warmup_s": 30,
+      "execution_groups": [
+        {
+          "n_new_tokens": 768,
+          "batch": 2,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ],
+      "n_forwards": 3,
+      "execution_semantics": {
+        "S01": {
+          "logits_last_only": true,
+          "sample_needed_only": true
+        },
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "model_file_sha256": "5a493c9756d55a779915748a063ad2289704de8eebd40c9986a430a81adb57a4",
+        "grouping": "production execution-shape-v1; groups submitted in order"
+      },
+      "sources": [
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 3,
+          "chunk": 2048,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        }
+      ],
+      "legacy_scalar_diagnostics": [
+        {
+          "input": {
+            "batch": 6,
+            "prefill_tok": 2048,
+            "kv_len": 1539
+          },
+          "key_hit": false,
+          "in_range": false,
+          "category": "range_miss",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        }
+      ],
+      "production_coverage": [
+        {
+          "status": "execution_contract_unvalidated",
+          "reason": "旧标定与当前执行语义未对齐，需锚点复核/整步标定"
+        }
+      ],
+      "measurement_status": "HARDWARE_REQUIRED",
+      "measurement_unit": "one complete ordered step including all groups",
+      "timing": {
+        "forward": "synchronized device forward sum observed within the actual step",
+        "host": "driver logical forward elapsed_ms - fwd_ms; pack/readback retained as diagnostics",
+        "step": "record end-to-end step; never multiply scalar forward by group count"
+      },
+      "warmup": "at least 30 seconds outside measurement, retain stability diagnostic",
+      "training": {
+        "independent_processes": 3,
+        "phase": "calibration",
+        "records_per_shape_per_process": 30
+      },
+      "independent_validation": {
+        "independent_processes": 3,
+        "phase": "held_out_validation",
+        "records_per_shape_per_process": 30,
+        "rule": "freeze estimator after training; validation records never enter fit/table"
+      },
+      "old_anchor_rule": "same identity and execution semantics required before pooling; otherwise keep old data separate",
+      "requires_new_calibration": true,
+      "sampling_purpose": "new_execution_semantics"
+    },
+    {
+      "point_id": "shape-d7a25583895849b2",
+      "evidence_class": "NOT_MEASURED",
+      "origin_evidence_class": "TEST_DATA",
+      "config_path": "configs/mthreads/prereg_batch/cost_single.yaml",
+      "execution_signature": {
+        "contract": "execution-shape-v1",
+        "grouping": "descending_n_new_tokens",
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "fuse_qkv": false,
+        "do_sample": false,
+        "fuse_gate_up": false,
+        "persistent_kv_slots": false,
+        "capture_logits_digest": false,
+        "retire_empty_cache": true,
+        "persistent_kv_capacity": null,
+        "linear_fuse_shapes": null,
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "execution_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r04",
+            "n_new_tokens": 768,
+            "kv_len": 768,
+            "role": "prefill",
+            "need_token": true
+          },
+          {
+            "req_id": "r05",
+            "n_new_tokens": 768,
+            "kv_len": 768,
+            "role": "prefill",
+            "need_token": true
+          },
+          {
+            "req_id": "r06",
+            "n_new_tokens": 508,
+            "kv_len": 0,
+            "role": "prefill",
+            "need_token": false
+          },
+          {
+            "req_id": "r00",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r01",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r02",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r03",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 768,
+            "items": [
+              {
+                "req_id": "r04",
+                "n_new_tokens": 768,
+                "kv_len": 768,
+                "role": "prefill",
+                "need_token": true
+              },
+              {
+                "req_id": "r05",
+                "n_new_tokens": 768,
+                "kv_len": 768,
+                "role": "prefill",
+                "need_token": true
+              }
+            ],
+            "batch": 2,
+            "past_max": 768
+          },
+          {
+            "n_new_tokens": 508,
+            "items": [
+              {
+                "req_id": "r06",
+                "n_new_tokens": 508,
+                "kv_len": 0,
+                "role": "prefill",
+                "need_token": false
+              }
+            ],
+            "batch": 1,
+            "past_max": 0
+          },
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r00",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r01",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r02",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r03",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 4,
+            "past_max": 1539
+          }
+        ],
+        "n_forwards": 3,
+        "batch": 7
+      },
+      "execution_shape_key": "[[768,768,\"prefill\",true],[768,768,\"prefill\",true],[508,0,\"prefill\",false],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "prime_requests": {
+        "r00": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r01": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r02": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r03": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r04": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r05": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r06": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        }
+      },
+      "repeats": 3,
+      "validation_repeats": 3,
+      "warmup_s": 30,
+      "execution_groups": [
+        {
+          "n_new_tokens": 768,
+          "batch": 2,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 768,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": true
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 508,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 508,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ],
+      "n_forwards": 3,
+      "execution_semantics": {
+        "S01": {
+          "logits_last_only": true,
+          "sample_needed_only": true
+        },
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "model_file_sha256": "5a493c9756d55a779915748a063ad2289704de8eebd40c9986a430a81adb57a4",
+        "grouping": "production execution-shape-v1; groups submitted in order"
+      },
+      "sources": [
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 2,
+          "chunk": 2048,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        }
+      ],
+      "legacy_scalar_diagnostics": [
+        {
+          "input": {
+            "batch": 6,
+            "prefill_tok": 2044,
+            "kv_len": 1539
+          },
+          "key_hit": false,
+          "in_range": false,
+          "category": "range_miss",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        }
+      ],
+      "production_coverage": [
+        {
+          "status": "execution_contract_unvalidated",
+          "reason": "旧标定与当前执行语义未对齐，需锚点复核/整步标定"
+        }
+      ],
+      "measurement_status": "HARDWARE_REQUIRED",
+      "measurement_unit": "one complete ordered step including all groups",
+      "timing": {
+        "forward": "synchronized device forward sum observed within the actual step",
+        "host": "driver logical forward elapsed_ms - fwd_ms; pack/readback retained as diagnostics",
+        "step": "record end-to-end step; never multiply scalar forward by group count"
+      },
+      "warmup": "at least 30 seconds outside measurement, retain stability diagnostic",
+      "training": {
+        "independent_processes": 3,
+        "phase": "calibration",
+        "records_per_shape_per_process": 30
+      },
+      "independent_validation": {
+        "independent_processes": 3,
+        "phase": "held_out_validation",
+        "records_per_shape_per_process": 30,
+        "rule": "freeze estimator after training; validation records never enter fit/table"
+      },
+      "old_anchor_rule": "same identity and execution semantics required before pooling; otherwise keep old data separate",
+      "requires_new_calibration": true,
+      "sampling_purpose": "new_execution_semantics"
+    },
+    {
+      "point_id": "shape-dcffd4bd305ca261",
+      "evidence_class": "NOT_MEASURED",
+      "origin_evidence_class": "TEST_DATA",
+      "config_path": "configs/mthreads/prereg_batch/cost_single.yaml",
+      "execution_signature": {
+        "contract": "execution-shape-v1",
+        "grouping": "descending_n_new_tokens",
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "fuse_qkv": false,
+        "do_sample": false,
+        "fuse_gate_up": false,
+        "persistent_kv_slots": false,
+        "capture_logits_digest": false,
+        "retire_empty_cache": true,
+        "persistent_kv_capacity": null,
+        "linear_fuse_shapes": null,
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "execution_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r00",
+            "n_new_tokens": 512,
+            "kv_len": 0,
+            "role": "prefill",
+            "need_token": false
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 512,
+            "items": [
+              {
+                "req_id": "r00",
+                "n_new_tokens": 512,
+                "kv_len": 0,
+                "role": "prefill",
+                "need_token": false
+              }
+            ],
+            "batch": 1,
+            "past_max": 0
+          }
+        ],
+        "n_forwards": 1,
+        "batch": 1
+      },
+      "execution_shape_key": "[[512,0,\"prefill\",false]]",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "prime_requests": {
+        "r00": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        }
+      },
+      "repeats": 3,
+      "validation_repeats": 3,
+      "warmup_s": 30,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 0,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 0,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        }
+      ],
+      "n_forwards": 1,
+      "execution_semantics": {
+        "S01": {
+          "logits_last_only": true,
+          "sample_needed_only": true
+        },
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "model_file_sha256": "5a493c9756d55a779915748a063ad2289704de8eebd40c9986a430a81adb57a4",
+        "grouping": "production execution-shape-v1; groups submitted in order"
+      },
+      "sources": [
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "batch_start_prefill",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        }
+      ],
+      "legacy_scalar_diagnostics": [
+        {
+          "input": {
+            "batch": 2,
+            "prefill_tok": 512,
+            "kv_len": 0
+          },
+          "key_hit": false,
+          "in_range": false,
+          "category": "range_miss",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        },
+        {
+          "input": {
+            "batch": 8,
+            "prefill_tok": 512,
+            "kv_len": 0
+          },
+          "key_hit": false,
+          "in_range": false,
+          "category": "range_miss",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        }
+      ],
+      "production_coverage": [
+        {
+          "status": "execution_contract_unvalidated",
+          "reason": "旧标定与当前执行语义未对齐，需锚点复核/整步标定"
+        }
+      ],
+      "measurement_status": "HARDWARE_REQUIRED",
+      "measurement_unit": "one complete ordered step including all groups",
+      "timing": {
+        "forward": "synchronized device forward sum observed within the actual step",
+        "host": "driver logical forward elapsed_ms - fwd_ms; pack/readback retained as diagnostics",
+        "step": "record end-to-end step; never multiply scalar forward by group count"
+      },
+      "warmup": "at least 30 seconds outside measurement, retain stability diagnostic",
+      "training": {
+        "independent_processes": 3,
+        "phase": "calibration",
+        "records_per_shape_per_process": 30
+      },
+      "independent_validation": {
+        "independent_processes": 3,
+        "phase": "held_out_validation",
+        "records_per_shape_per_process": 30,
+        "rule": "freeze estimator after training; validation records never enter fit/table"
+      },
+      "old_anchor_rule": "same identity and execution semantics required before pooling; otherwise keep old data separate",
+      "requires_new_calibration": true,
+      "sampling_purpose": "new_execution_semantics"
+    },
+    {
+      "point_id": "shape-f8dd5ba6b696c22d",
+      "evidence_class": "NOT_MEASURED",
+      "origin_evidence_class": "TEST_DATA",
+      "config_path": "configs/mthreads/prereg_batch/cost_single.yaml",
+      "execution_signature": {
+        "contract": "execution-shape-v1",
+        "grouping": "descending_n_new_tokens",
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "fuse_qkv": false,
+        "do_sample": false,
+        "fuse_gate_up": false,
+        "persistent_kv_slots": false,
+        "capture_logits_digest": false,
+        "retire_empty_cache": true,
+        "persistent_kv_capacity": null,
+        "linear_fuse_shapes": null,
+        "temperature": 1.0,
+        "top_p": 1.0
+      },
+      "execution_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r04",
+            "n_new_tokens": 512,
+            "kv_len": 768,
+            "role": "prefill",
+            "need_token": false
+          },
+          {
+            "req_id": "r00",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r01",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r02",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          },
+          {
+            "req_id": "r03",
+            "n_new_tokens": 1,
+            "kv_len": 1539,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 512,
+            "items": [
+              {
+                "req_id": "r04",
+                "n_new_tokens": 512,
+                "kv_len": 768,
+                "role": "prefill",
+                "need_token": false
+              }
+            ],
+            "batch": 1,
+            "past_max": 768
+          },
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r00",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r01",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r02",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              },
+              {
+                "req_id": "r03",
+                "n_new_tokens": 1,
+                "kv_len": 1539,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 4,
+            "past_max": 1539
+          }
+        ],
+        "n_forwards": 2,
+        "batch": 5
+      },
+      "execution_shape_key": "[[512,768,\"prefill\",false],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "prime_requests": {
+        "r00": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r01": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r02": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r03": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        },
+        "r04": {
+          "prompt_len": 1536,
+          "gen_len": 32
+        }
+      },
+      "repeats": 3,
+      "validation_repeats": 3,
+      "warmup_s": 30,
+      "execution_groups": [
+        {
+          "n_new_tokens": 512,
+          "batch": 1,
+          "past_max": 768,
+          "items": [
+            {
+              "n_new_tokens": 512,
+              "kv_len": 768,
+              "role": "prefill",
+              "need_token": false
+            }
+          ]
+        },
+        {
+          "n_new_tokens": 1,
+          "batch": 4,
+          "past_max": 1539,
+          "items": [
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            },
+            {
+              "n_new_tokens": 1,
+              "kv_len": 1539,
+              "role": "decode",
+              "need_token": true
+            }
+          ]
+        }
+      ],
+      "n_forwards": 2,
+      "execution_semantics": {
+        "S01": {
+          "logits_last_only": true,
+          "sample_needed_only": true
+        },
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "model_file_sha256": "5a493c9756d55a779915748a063ad2289704de8eebd40c9986a430a81adb57a4",
+        "grouping": "production execution-shape-v1; groups submitted in order"
+      },
+      "sources": [
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_single",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_single.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 0,
+          "chunk": 512,
+          "max_tokens": 2048,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        },
+        {
+          "arm": "cost_dual",
+          "config": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\mthreads\\prereg_batch\\cost_dual.yaml",
+          "state": "contended_prefill",
+          "candidate_index": 1,
+          "chunk": 512,
+          "max_tokens": 32768,
+          "state_source": "independent_fixture",
+          "reachable_from_production": null
+        }
+      ],
+      "legacy_scalar_diagnostics": [
+        {
+          "input": {
+            "batch": 6,
+            "prefill_tok": 512,
+            "kv_len": 1539
+          },
+          "key_hit": true,
+          "in_range": true,
+          "category": "anchor_revalidation",
+          "scope": "superseded scalar input only; not actual-shape coverage"
+        }
+      ],
+      "production_coverage": [
+        {
+          "status": "execution_contract_unvalidated",
+          "reason": "旧标定与当前执行语义未对齐，需锚点复核/整步标定"
+        }
+      ],
+      "measurement_status": "HARDWARE_REQUIRED",
+      "measurement_unit": "one complete ordered step including all groups",
+      "timing": {
+        "forward": "synchronized device forward sum observed within the actual step",
+        "host": "driver logical forward elapsed_ms - fwd_ms; pack/readback retained as diagnostics",
+        "step": "record end-to-end step; never multiply scalar forward by group count"
+      },
+      "warmup": "at least 30 seconds outside measurement, retain stability diagnostic",
+      "training": {
+        "independent_processes": 3,
+        "phase": "calibration",
+        "records_per_shape_per_process": 30
+      },
+      "independent_validation": {
+        "independent_processes": 3,
+        "phase": "held_out_validation",
+        "records_per_shape_per_process": 30,
+        "rule": "freeze estimator after training; validation records never enter fit/table"
+      },
+      "old_anchor_rule": "same identity and execution semantics required before pooling; otherwise keep old data separate",
+      "requires_new_calibration": true,
+      "sampling_purpose": "new_execution_semantics"
+    }
+  ],
+  "calibrated_grid_from_raw": {
+    "available": true,
+    "source_files": [
+      "costcalib_v7_s1.json",
+      "costcalib_v7_s2.json"
+    ],
+    "n_points": 222,
+    "kv_len_0_batches": [
+      1
+    ],
+    "batch_ge2_kv_min": 512,
+    "kv_grid": [
+      0,
+      512,
+      768,
+      1024,
+      1536,
+      2048
+    ],
+    "batch_grid": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "pf_grid": [
+      0,
+      128,
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "the_hole": "kv_len=0 只覆盖 batch=[1]；batch≥2 的 kv 维从 512 起 ⇒ (batch≥2, kv=0) **无任何点**"
+  },
+  "categories": {
+    "input_bug": "legacy admitted-count differs from actual executing items",
+    "key_miss": "legacy scalar key absent inside its calibrated range; diagnostic only",
+    "range_miss": "legacy scalar input outside its calibrated range; diagnostic only",
+    "anchor_revalidation": "legacy scalar key exists but semantic/identity revalidation is required",
+    "semantic_mismatch": "legacy real_mixed probe/S01/KV treatment cannot establish actual-step coverage"
+  },
+  "required_before_sampling": [
+    "Use production driver with exact per-request vectors and S01 flags from this manifest",
+    "Old fwd_costcalib_probe is not a compatible consumer: it forces KV>=1, one prefill row and no S01",
+    "Verify source/environment/model identity and short numerical acceptance first",
+    "Measure whole ordered steps; do not assume costs of separate groups are additive",
+    "This fixture-derived list is diagnostic; replay/trace is required to claim workload coverage"
+  ],
+  "consequence_for_expansion": "First verify semantics and necessary coverage; no fixed nine-point grid and no automatic performance-matrix expansion",
+  "duration_estimate": null,
+  "duration_note": "No hardware timing for this protocol; do not borrow another workload's seconds/run"
+}

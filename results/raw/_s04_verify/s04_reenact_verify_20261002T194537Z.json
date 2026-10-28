@@ -1,0 +1,416 @@
+{
+  "mode": "run",
+  "config": "configs/mthreads/exec_opt/s01_both.yaml",
+  "arm_runtime_delta": {
+    "persistent_kv_capacity": [
+      "None",
+      "256"
+    ],
+    "persistent_kv_slots": [
+      "False",
+      "True"
+    ]
+  },
+  "single_variable_ok": true,
+  "capacity": 256,
+  "warmup_s": 0.0,
+  "scenario": {
+    "plen": 9,
+    "plen_long": 17,
+    "gen": 24,
+    "n_steady": 3,
+    "n_reenter": 4
+  },
+  "out": "/root/s04_reenact_verify_20261002T194537Z.json",
+  "source_identity": {
+    "tree_digest": "bff7f7080b67914ea05911f9825ee2e181232928d665ede07dc866bf5654fc9f",
+    "tree_digest_basis": "computed_on_host",
+    "stamp": {
+      "git_commit": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4",
+      "git_dirty": true,
+      "validated": true,
+      "reason": "部署戳已校验（摘要相符）",
+      "deployed_at": "2026-10-03T03:45:07+0800",
+      "deployed_by": "LAPTOP-1LQ6BQ1P/13944",
+      "tree_digest": "bff7f7080b67914ea05911f9825ee2e181232928d665ede07dc866bf5654fc9f"
+    }
+  },
+  "effective_configs": {
+    "baseline": {
+      "config_path": "configs/mthreads/exec_opt/s01_both.yaml",
+      "config_stem": "s01_both",
+      "run": {
+        "repeats": 3,
+        "warmup_s": 30,
+        "warmup_count": 3,
+        "control_interval_steps": 8,
+        "slo": {
+          "ttft_ms": 2000,
+          "tpot_ms": 100,
+          "e2e_ms": null
+        },
+        "notes": "MTT S4000 平台基线（研究主体）"
+      },
+      "workload": "short_chat",
+      "workload_overrides": {},
+      "scheduler": {
+        "policy": "continuous_batching",
+        "max_num_seqs": 32,
+        "reserve_decode_slots": 0
+      },
+      "chunk": {
+        "policy": "fixed_chunk",
+        "enabled": false,
+        "chunk_size": 8192,
+        "max_num_batched_tokens": 8192,
+        "decode_reserve_ratio": 0.0,
+        "min_decode_seqs": 1
+      },
+      "cache": {
+        "enabled": false,
+        "block_size": 16,
+        "max_blocks": 8192,
+        "capacity_tokens": 131072,
+        "eviction": "lru",
+        "min_reuse_blocks": 1
+      },
+      "controller": {
+        "enabled": false,
+        "kind": "threshold",
+        "shadow": false,
+        "signal_mode": "legacy",
+        "signal_criterion": "tpot_p90",
+        "cost_model_path": null,
+        "cost_model_fingerprint_source": "declared",
+        "host_overhead_ms": null,
+        "host_overhead_fit": null,
+        "apply_safety_margin": true,
+        "slo_weave_c_max": 4096,
+        "slo_weave_tpot_target_ms": null,
+        "target_tpot_ms": 50.0,
+        "target_ttft_ms": 2000.0,
+        "hysteresis": 0.1,
+        "gate_mode": "absolute",
+        "workload_scale_alpha": 0.1,
+        "workload_scale_seed_ms": null,
+        "slo_hard_guard": false,
+        "cooldown_cycles": 3,
+        "chunk_size": [
+          512,
+          16384,
+          512
+        ],
+        "candidate_chunks": null,
+        "max_batched_tokens": [
+          2048,
+          32768,
+          1024
+        ],
+        "cache_hit_rate_high": null,
+        "min_available_memory_mb": null,
+        "critical_available_memory_mb": null
+      },
+      "device_model": {
+        "step_overhead_ms": 2.0,
+        "prefill_tok_per_ms": 6.0,
+        "decode_base_ms": 1.0,
+        "decode_per_seq_ms": 0.06,
+        "max_steps": 200000,
+        "_note": "一阶模型，仅供 --dry-run 打通链路，不可用于性能结论"
+      },
+      "runtime": {
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "quantization": "none",
+        "graph_mode": "eager",
+        "tensor_parallel_size": 1,
+        "kv_cache_dtype": "auto",
+        "execution_environment": "remote_mthreads",
+        "hardware_platform": "mthreads",
+        "persistent_kv_slots": false,
+        "persistent_kv_capacity": null,
+        "capture_logits_digest": true
+      }
+    },
+    "pkv": {
+      "config_path": "configs/mthreads/exec_opt/s01_both.yaml",
+      "config_stem": "s01_both",
+      "run": {
+        "repeats": 3,
+        "warmup_s": 30,
+        "warmup_count": 3,
+        "control_interval_steps": 8,
+        "slo": {
+          "ttft_ms": 2000,
+          "tpot_ms": 100,
+          "e2e_ms": null
+        },
+        "notes": "MTT S4000 平台基线（研究主体）"
+      },
+      "workload": "short_chat",
+      "workload_overrides": {},
+      "scheduler": {
+        "policy": "continuous_batching",
+        "max_num_seqs": 32,
+        "reserve_decode_slots": 0
+      },
+      "chunk": {
+        "policy": "fixed_chunk",
+        "enabled": false,
+        "chunk_size": 8192,
+        "max_num_batched_tokens": 8192,
+        "decode_reserve_ratio": 0.0,
+        "min_decode_seqs": 1
+      },
+      "cache": {
+        "enabled": false,
+        "block_size": 16,
+        "max_blocks": 8192,
+        "capacity_tokens": 131072,
+        "eviction": "lru",
+        "min_reuse_blocks": 1
+      },
+      "controller": {
+        "enabled": false,
+        "kind": "threshold",
+        "shadow": false,
+        "signal_mode": "legacy",
+        "signal_criterion": "tpot_p90",
+        "cost_model_path": null,
+        "cost_model_fingerprint_source": "declared",
+        "host_overhead_ms": null,
+        "host_overhead_fit": null,
+        "apply_safety_margin": true,
+        "slo_weave_c_max": 4096,
+        "slo_weave_tpot_target_ms": null,
+        "target_tpot_ms": 50.0,
+        "target_ttft_ms": 2000.0,
+        "hysteresis": 0.1,
+        "gate_mode": "absolute",
+        "workload_scale_alpha": 0.1,
+        "workload_scale_seed_ms": null,
+        "slo_hard_guard": false,
+        "cooldown_cycles": 3,
+        "chunk_size": [
+          512,
+          16384,
+          512
+        ],
+        "candidate_chunks": null,
+        "max_batched_tokens": [
+          2048,
+          32768,
+          1024
+        ],
+        "cache_hit_rate_high": null,
+        "min_available_memory_mb": null,
+        "critical_available_memory_mb": null
+      },
+      "device_model": {
+        "step_overhead_ms": 2.0,
+        "prefill_tok_per_ms": 6.0,
+        "decode_base_ms": 1.0,
+        "decode_per_seq_ms": 0.06,
+        "max_steps": 200000,
+        "_note": "一阶模型，仅供 --dry-run 打通链路，不可用于性能结论"
+      },
+      "runtime": {
+        "logits_last_only": true,
+        "sample_needed_only": true,
+        "model": "Qwen/Qwen2.5-7B-Instruct",
+        "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "quantization": "none",
+        "graph_mode": "eager",
+        "tensor_parallel_size": 1,
+        "kv_cache_dtype": "auto",
+        "execution_environment": "remote_mthreads",
+        "hardware_platform": "mthreads",
+        "persistent_kv_slots": true,
+        "persistent_kv_capacity": 256,
+        "capture_logits_digest": true
+      }
+    }
+  },
+  "verdict": "PASS",
+  "telemetry": {
+    "requested": true,
+    "effective": true,
+    "n_fastpath_steps": 7,
+    "n_fallback_steps": 5,
+    "fallback_reasons": {
+      "new_sequence": 3,
+      "unequal_kv_len": 2
+    },
+    "n_resyncs": 2,
+    "capacity": 256,
+    "n_kv_heads": 4,
+    "head_dim": 128,
+    "dtype": "float16",
+    "bytes_allocated": 29360128,
+    "bytes_peak": 29360128,
+    "n_allocations": 2
+  },
+  "measured_window": {
+    "n_forwards_measured": 12,
+    "n_logical_steps_measured": 12,
+    "pack_ms_measured": 79.558,
+    "fwd_ms_measured": 784.812,
+    "tokens_out_measured": 23,
+    "pkv_fastpath_measured": 7,
+    "pkv_fallback_measured": 5,
+    "pkv_resyncs_measured": 2,
+    "basis": "no_warmup",
+    "pkv_coverage_of_forward_groups": 0.583333,
+    "pkv_coverage_of_logical_steps": 0.583333
+  },
+  "warmup_deduction_verified": false,
+  "environment": {
+    "python": "3.10.8",
+    "executable": "/root/musa-envs/qwen310/bin/python",
+    "platform": "Linux-5.15.0-105-generic-x86_64-with-glibc2.35",
+    "hostname": "autodl-container-05264bbf0d-3b9c3488",
+    "env_passthrough": {
+      "MODEL_NAME": "Qwen/Qwen2.5-7B-Instruct",
+      "MODEL_REVISION": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "HF_HOME": "/root/autodl-tmp/hf",
+      "HF_ENDPOINT": "https://hf-mirror.com",
+      "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+    },
+    "torch": "2.2.0",
+    "torch_musa": "1.3.0+81caf0a",
+    "driver": {
+      "kind": "transformers",
+      "hardware_backed": true,
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "model_revision_resolved": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "device": "musa:0",
+      "precision": "fp16",
+      "sampling": "greedy",
+      "max_seq_len": 32768,
+      "effective": {
+        "quantization": "none",
+        "graph_mode": "eager",
+        "tensor_parallel_size": 1
+      },
+      "execution_optimizations": {
+        "logits_last_only": {
+          "requested": true,
+          "effective": true,
+          "unsupported_reason": "",
+          "n_calls_last_only": 12,
+          "n_calls_all_positions": 0
+        },
+        "sample_needed_only": {
+          "requested": true,
+          "effective": true,
+          "n_sampled_rows": 23,
+          "n_sampling_rows_skipped": 0
+        },
+        "retire_empty_cache": {
+          "requested_at_retire": true,
+          "n_empty_cache_calls": 1,
+          "n_suppressed": 0
+        },
+        "linear_fusion": null,
+        "persistent_kv_slots": {
+          "requested": true,
+          "effective": true,
+          "n_fastpath_steps": 7,
+          "n_fallback_steps": 5,
+          "fallback_reasons": {
+            "new_sequence": 3,
+            "unequal_kv_len": 2
+          },
+          "n_resyncs": 2,
+          "capacity": 256,
+          "n_kv_heads": 4,
+          "head_dim": 128,
+          "dtype": "float16",
+          "bytes_allocated": 29360128,
+          "bytes_peak": 29360128,
+          "n_allocations": 2
+        },
+        "capture_logits_digest": {
+          "requested": true,
+          "effective": true,
+          "n_logits_digests": 23
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "快路径被走过",
+      "pass": true,
+      "detail": "n_fastpath_steps=7"
+    },
+    {
+      "name": "混长回退发生",
+      "pass": true,
+      "detail": "n_fallback_steps=5 reasons={'new_sequence': 3, 'unequal_kv_len': 2}"
+    },
+    {
+      "name": "★ 重入发生（本项关键）",
+      "pass": true,
+      "detail": "n_resyncs=2"
+    },
+    {
+      "name": "token 逐一相同",
+      "pass": true,
+      "detail": "两臂 token 全序列相同（23 个）"
+    },
+    {
+      "name": "logits 摘要逐点相同",
+      "pass": true,
+      "detail": "23 个采集点全部相同"
+    },
+    {
+      "name": "★ 重入时刻逐层 KV 逐位相同",
+      "pass": true,
+      "detail": "全部层相同"
+    },
+    {
+      "name": "结束时刻逐层 KV 逐位相同",
+      "pass": true,
+      "detail": "全部层相同"
+    },
+    {
+      "name": "tokens_out 对账（两臂 + 实观察）",
+      "pass": true,
+      "detail": "baseline=23 pkv=23 实观察=23"
+    },
+    {
+      "name": "measured_window 可读且与 total 分开",
+      "pass": true,
+      "detail": "keys=['basis', 'fwd_ms_measured', 'n_forwards_measured', 'n_logical_steps_measured', 'pack_ms_measured', 'pkv_coverage_of_forward_groups']"
+    },
+    {
+      "name": "预热口径自洽（无预热 ⇒ basis=no_warmup）",
+      "pass": true,
+      "detail": "未预热（--warmup-s=0）⇒ `basis` 应为 `no_warmup`，实测 basis=no_warmup。**预热扣除未被验证**，不得据此声称已扣除预热。"
+    }
+  ],
+  "preregistered_criteria": [
+    "n_fastpath_steps > 0",
+    "n_fallback_steps > 0 且 unequal_kv_len 在 reasons 里",
+    "n_resyncs > 0",
+    "token 全序列相同",
+    "logits 摘要逐点相同（sha256 逐位）",
+    "重入时刻逐层 KV 逐位相同",
+    "结束时刻逐层 KV 逐位相同",
+    "tokens_out 两臂相等且等于实观察 token 数",
+    "measured_window 可读且与 total 分开",
+    "预热口径自洽（无预热 ⇒ basis=no_warmup）"
+  ],
+  "does_not_assert": [
+    "性能（pack_ms 降幅）—— 属性能复核，判据与预算另行冻结",
+    "过载 / SLO —— 本脚本不涉及",
+    "非重入的尾部回退路径 —— 由单测覆盖",
+    "预热扣除 —— 本次**未预热**，故**未验证**（见 warmup_deduction_verified）"
+  ]
+}

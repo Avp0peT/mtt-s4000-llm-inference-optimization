@@ -1,0 +1,766 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "device": "musa:0",
+  "gen_len": 16,
+  "thresholds": {
+    "fp32_max_abs_diff": 0.001,
+    "fp32_mean_abs_diff": 0.0001,
+    "fp16_logit_tol": 0.25,
+    "near_tie_gap": 0.05,
+    "token_ids": "exact"
+  },
+  "hostname": "autodl-container-3dc442bf15-b061c1a5",
+  "started_at": "2026-09-24T05:04:31+0800",
+  "checks": {
+    "V1_single_request": {
+      "reference_tokens": [
+        1636,
+        368,
+        729,
+        304,
+        12914,
+        271,
+        785,
+        1565,
+        6742,
+        1636,
+        54258,
+        729,
+        304,
+        12914,
+        374,
+        1483
+      ],
+      "driver_tokens": [
+        1636,
+        368,
+        729,
+        304,
+        12914,
+        271,
+        785,
+        1565,
+        6742,
+        1636,
+        54258,
+        729,
+        304,
+        12914,
+        374,
+        1483
+      ],
+      "token_ids_exact_match": true,
+      "driver_first_forward_shapes": {
+        "input_ids": {
+          "tensor": [
+            1,
+            1
+          ],
+          "dtype": "torch.int64"
+        },
+        "attention_mask": {
+          "tensor": [
+            1,
+            39
+          ],
+          "dtype": "torch.int64"
+        },
+        "position_ids": {
+          "tensor": [
+            1,
+            1
+          ],
+          "dtype": "torch.int64"
+        },
+        "past_key_values": {
+          "type": "DynamicCache",
+          "seq_length": 39
+        },
+        "use_cache": true
+      }
+    },
+    "V1_threshold_calibration": {
+      "repeat_max_abs_diff": 0.0,
+      "one_token_changed_max_abs_diff": 9.053424835205078,
+      "threshold": 0.001,
+      "sensitive": true
+    },
+    "V1_fp32_logits": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "argmax_ref": 1636,
+      "argmax_drv": 1636,
+      "driver_logits_shape": [
+        1,
+        24,
+        151936
+      ],
+      "reference_logits_shape": [
+        1,
+        24,
+        151936
+      ],
+      "limitation": "参考与驱动共用同一模型实例，故 max_abs_diff==0 是预期值；该判据不能证伪'驱动被旁路'，旁路由 V2/V3/V4 的 token id 逐位比对证伪。"
+    },
+    "V2_multistep_decode": {
+      "reference_tokens": [
+        387,
+        264,
+        501,
+        4462,
+        315,
+        279,
+        2083,
+        11,
+        323,
+        566,
+        3278,
+        1184,
+        311,
+        3960,
+        1246,
+        311
+      ],
+      "driver_tokens": [
+        387,
+        264,
+        501,
+        4462,
+        315,
+        279,
+        2083,
+        11,
+        323,
+        566,
+        3278,
+        1184,
+        311,
+        3960,
+        1246,
+        311
+      ],
+      "token_ids_exact_match": true
+    },
+    "V3_variable_length_batch": {
+      "prompt_lengths": [
+        16,
+        24,
+        33,
+        48
+      ],
+      "per_row_match": {
+        "v3_0": true,
+        "v3_1": true,
+        "v3_2": true,
+        "v3_3": true
+      },
+      "logits_equivalence_per_row": {
+        "v3_0": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 198,
+          "argmax_drv": 198,
+          "ref_top1_top2_gap": 3.265625,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 271,
+          "argmax_drv": 271,
+          "ref_top1_top2_gap": 0.33984375,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_2": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 271,
+          "argmax_drv": 271,
+          "ref_top1_top2_gap": 0.765625,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_3": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 2022,
+          "argmax_drv": 2022,
+          "ref_top1_top2_gap": 0.671875,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        }
+      },
+      "grouped_prefill_per_row": {
+        "v3_0": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_2": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_3": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        }
+      },
+      "grouped_prefill_forward_call_rows": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "grouped_prefill_forward_call_n_new": [
+        48,
+        33,
+        24,
+        16
+      ],
+      "fp16_logit_tol": 0.25,
+      "reference_tokens": {
+        "v3_0": [
+          198,
+          750,
+          220,
+          101453,
+          101453,
+          9909,
+          101453,
+          101453,
+          7552,
+          510,
+          262,
+          470,
+          330,
+          101453,
+          101453,
+          101453
+        ],
+        "v3_1": [
+          271,
+          5501,
+          14683,
+          279,
+          2661,
+          1467,
+          1119,
+          15154,
+          382,
+          785,
+          1467,
+          374,
+          304,
+          6364,
+          13,
+          358
+        ],
+        "v3_2": [
+          271,
+          71703,
+          25,
+          220,
+          16,
+          13,
+          220,
+          16,
+          24,
+          24,
+          15,
+          7948,
+          3837,
+          100625,
+          9370,
+          26940
+        ],
+        "v3_3": [
+          2022,
+          315,
+          279,
+          220,
+          16,
+          24,
+          339,
+          9294,
+          11,
+          279,
+          220,
+          17,
+          15,
+          339,
+          9294,
+          11
+        ]
+      },
+      "driver_tokens": {
+        "v3_0": [
+          198,
+          750,
+          220,
+          101453,
+          101453,
+          9909,
+          101453,
+          101453,
+          7552,
+          510,
+          262,
+          470,
+          330,
+          101453,
+          101453,
+          101453
+        ],
+        "v3_1": [
+          271,
+          5501,
+          14683,
+          279,
+          2661,
+          1467,
+          1119,
+          15154,
+          382,
+          785,
+          1467,
+          374,
+          304,
+          6364,
+          13,
+          358
+        ],
+        "v3_2": [
+          271,
+          71703,
+          25,
+          220,
+          16,
+          13,
+          220,
+          16,
+          24,
+          24,
+          15,
+          7948,
+          3837,
+          100625,
+          9370,
+          26940
+        ],
+        "v3_3": [
+          2022,
+          315,
+          279,
+          220,
+          16,
+          24,
+          339,
+          9294,
+          11,
+          279,
+          220,
+          17,
+          15,
+          339,
+          9294,
+          11
+        ]
+      },
+      "token_ids_exact_match": true,
+      "logits_equivalent": true,
+      "grouped_prefill_preserves_rows": true,
+      "mixed_history_batched_decode": {
+        "rows": {
+          "v3_0": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.017822265625,
+              "mean_abs_diff": 0.0031682555563747883
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.015625,
+              "mean_abs_diff": 0.0027371440082788467
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.02099609375,
+              "mean_abs_diff": 0.0037659790832549334
+            }
+          ],
+          "v3_1": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.0302734375,
+              "mean_abs_diff": 0.004906980320811272
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.02734375,
+              "mean_abs_diff": 0.00417832937091589
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.021484375,
+              "mean_abs_diff": 0.004728645086288452
+            }
+          ],
+          "v3_2": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.020263671875,
+              "mean_abs_diff": 0.0050335843116045
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.01953125,
+              "mean_abs_diff": 0.003792328992858529
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.017578125,
+              "mean_abs_diff": 0.0028834990225732327
+            }
+          ],
+          "v3_3": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.021484375,
+              "mean_abs_diff": 0.004065380431711674
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.03125,
+              "mean_abs_diff": 0.006548126693814993
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.0146484375,
+              "mean_abs_diff": 0.0022251184564083815
+            }
+          ]
+        },
+        "errors": [],
+        "batch_calls": [
+          10,
+          11,
+          12
+        ],
+        "histories": {
+          "v3_0": {
+            "prompt_len": 16,
+            "extra_steps": 0,
+            "kv_len_at_first_batch_step": 16
+          },
+          "v3_1": {
+            "prompt_len": 24,
+            "extra_steps": 1,
+            "kv_len_at_first_batch_step": 25
+          },
+          "v3_2": {
+            "prompt_len": 33,
+            "extra_steps": 2,
+            "kv_len_at_first_batch_step": 35
+          },
+          "v3_3": {
+            "prompt_len": 48,
+            "extra_steps": 3,
+            "kv_len_at_first_batch_step": 51
+          }
+        },
+        "rows_per_call": [
+          4,
+          4,
+          4
+        ]
+      },
+      "mixed_history_max_abs_diff": 0.03125,
+      "mixed_history_within_fp16_tol": true
+    },
+    "V4_chunked_prefill": {
+      "chunk_sizes": [
+        16,
+        16,
+        8
+      ],
+      "scored": "prefill 末位分布（首 token）——**仅覆盖 prefill**，多步 decode 见 V4b",
+      "whole_vs_chunked_logits": {
+        "max_abs_diff": 0.0234375,
+        "mean_abs_diff": 0.003969702869653702
+      },
+      "reference_vs_whole_logits": {
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0
+      },
+      "fp16_logit_tol": 0.25,
+      "within_fp16_tol": true,
+      "whole_first_token": 198,
+      "chunked_first_token": 198,
+      "reference_first_token": 198,
+      "argmax_whole": 198,
+      "argmax_chunked": 198,
+      "ref_top1_top2_gap": 1.59375,
+      "chunked_vs_whole_tokens_match": true
+    },
+    "V4b_chunked_multi_step_decode": {
+      "scored": "分块 prefill → 多步 KV decode，每步用参考 token 作为输入（相同历史），逐步比末位分布",
+      "gen_len": 16,
+      "n_steps_chunked": 16,
+      "n_steps_whole": 16,
+      "chunked_vs_reference_logits": {
+        "n_steps": 16,
+        "per_step": [
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.003969702869653702
+          },
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.0046309358440339565
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.006822190713137388
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.006806401535868645
+          },
+          {
+            "max_abs_diff": 0.0712890625,
+            "mean_abs_diff": 0.012243635021150112
+          },
+          {
+            "max_abs_diff": 0.039306640625,
+            "mean_abs_diff": 0.005313395988196135
+          },
+          {
+            "max_abs_diff": 0.0327455997467041,
+            "mean_abs_diff": 0.004850258585065603
+          },
+          {
+            "max_abs_diff": 0.10546875,
+            "mean_abs_diff": 0.021546028554439545
+          },
+          {
+            "max_abs_diff": 0.078125,
+            "mean_abs_diff": 0.009883861057460308
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.006125969346612692
+          },
+          {
+            "max_abs_diff": 0.046875,
+            "mean_abs_diff": 0.004846928175538778
+          },
+          {
+            "max_abs_diff": 0.05078125,
+            "mean_abs_diff": 0.007786677684634924
+          },
+          {
+            "max_abs_diff": 0.125,
+            "mean_abs_diff": 0.018914666026830673
+          },
+          {
+            "max_abs_diff": 0.044921875,
+            "mean_abs_diff": 0.0065627750009298325
+          },
+          {
+            "max_abs_diff": 0.087890625,
+            "mean_abs_diff": 0.014328818768262863
+          },
+          {
+            "max_abs_diff": 0.0625,
+            "mean_abs_diff": 0.01128366682678461
+          }
+        ],
+        "max_abs_diff": 0.125,
+        "worst_step": 12
+      },
+      "chunked_vs_whole_logits": {
+        "n_steps": 16,
+        "per_step": [
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.003969702869653702
+          },
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.0046309358440339565
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.006822190713137388
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.006806401535868645
+          },
+          {
+            "max_abs_diff": 0.0712890625,
+            "mean_abs_diff": 0.012243635021150112
+          },
+          {
+            "max_abs_diff": 0.039306640625,
+            "mean_abs_diff": 0.005313395988196135
+          },
+          {
+            "max_abs_diff": 0.0327455997467041,
+            "mean_abs_diff": 0.004850258585065603
+          },
+          {
+            "max_abs_diff": 0.10546875,
+            "mean_abs_diff": 0.021546028554439545
+          },
+          {
+            "max_abs_diff": 0.078125,
+            "mean_abs_diff": 0.009883861057460308
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.006125969346612692
+          },
+          {
+            "max_abs_diff": 0.046875,
+            "mean_abs_diff": 0.004846928175538778
+          },
+          {
+            "max_abs_diff": 0.05078125,
+            "mean_abs_diff": 0.007786677684634924
+          },
+          {
+            "max_abs_diff": 0.125,
+            "mean_abs_diff": 0.018914666026830673
+          },
+          {
+            "max_abs_diff": 0.044921875,
+            "mean_abs_diff": 0.0065627750009298325
+          },
+          {
+            "max_abs_diff": 0.087890625,
+            "mean_abs_diff": 0.014328818768262863
+          },
+          {
+            "max_abs_diff": 0.0625,
+            "mean_abs_diff": 0.01128366682678461
+          }
+        ],
+        "max_abs_diff": 0.125,
+        "worst_step": 12
+      },
+      "fp16_logit_tol": 0.25,
+      "n_tokens_chunked": 16,
+      "n_tokens_whole": 16,
+      "n_tokens_reference": 16,
+      "reference_tokens": [
+        198,
+        102349,
+        1447,
+        71703,
+        25,
+        362,
+        271,
+        33975,
+        25,
+        220,
+        87752,
+        105196,
+        101888,
+        99655,
+        103960,
+        9370
+      ],
+      "driver_tokens_chunked": [
+        198,
+        102349,
+        1447,
+        71703,
+        25,
+        362,
+        271,
+        33975,
+        25,
+        220,
+        87752,
+        105196,
+        101888,
+        99655,
+        103960,
+        9370
+      ],
+      "driver_tokens_whole": [
+        198,
+        102349,
+        1447,
+        71703,
+        25,
+        362,
+        271,
+        33975,
+        25,
+        220,
+        87752,
+        105196,
+        101888,
+        99655,
+        103960,
+        9370
+      ],
+      "length_match": true,
+      "first_divergence_step": null,
+      "whole_vs_chunked_tokens_match": true,
+      "divergence_steps": [],
+      "n_divergence_steps": 0,
+      "divergence_verdicts": [],
+      "any_blocking_divergence": false
+    },
+    "V4_alt_splits_equivalent": {
+      "[20, 20]": true,
+      "[39, 1]": true,
+      "[1]x40": true
+    },
+    "resource_lifecycle": {
+      "drv2_live_at_end": 0,
+      "drv3_live_at_end": 0,
+      "v4_drivers_live_at_end": {
+        "v4_whole": 0,
+        "v4_[16, 16, 8]": 0,
+        "v4_[20, 20]": 0,
+        "v4_[39, 1]": 0,
+        "v4_[1]x40": 0
+      },
+      "v4_drivers_live_before_retire": {
+        "v4_whole": 1,
+        "v4_[16, 16, 8]": 1,
+        "v4_[20, 20]": 1,
+        "v4_[39, 1]": 1,
+        "v4_[1]x40": 1
+      }
+    }
+  },
+  "failures": [],
+  "notes": [
+    "V3 分组 prefill：4 次 forward 每次只有 1 行（各行 n_new 互不相同 ⇒ 驱动按 n_new 拆组，`pad` 恒为 0）——**该段不产生补位/合批**；变长合批 decode 与补位由「mixed_history_batched_decode」一段覆盖"
+  ],
+  "needs_review": [],
+  "finished_at": "2026-09-24T05:04:50+0800",
+  "source_provenance": {
+    "git_commit": "73dc2d736d429e7f6315a488af93292820b9f7b3",
+    "git_dirty": false,
+    "validated": true,
+    "reason": "部署戳已校验（摘要相符）",
+    "deployed_at": "2026-09-24T05:04:13+0800",
+    "deployed_by": "LAPTOP-1LQ6BQ1P/13944"
+  },
+  "passed": true
+}

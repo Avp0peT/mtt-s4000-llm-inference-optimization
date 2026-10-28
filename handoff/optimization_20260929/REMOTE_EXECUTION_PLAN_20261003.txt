@@ -1,0 +1,124 @@
+后续真机计划：执行形状修正后的验收、定点标定与三项诊断 pilot
+日期：2026-10-03
+本文件是待执行计划；本轮没有连接远端、没有使用 GPU、没有修改原始结果。
+
+1. 先确认环境与执行身份
+
+历史项目根目录 /root/ascend_probe_d1、历史激活脚本
+/root/musa-envs/qwen310/activate_musa.sh 仅作定位线索，本轮没有核验它们仍有效。
+由执行端从受保护连接配置确认当前实例、项目目录和实际 sys.executable；
+不要猜端口、不要使用裸 python，也不要把历史路径说成已核验路径。
+检查没有运行中的实验后部署本轮源码；使用最终部署的采集脚本重新采环境，
+核验源码摘要、设备与容器、模型 resolved revision、两臂配置及 MUSA 环境。
+本地代码发生变化后必须使用新部署身份；旧模型和旧 raw 不覆盖、不回填。
+
+2. 固定排程的短真机数值验收
+
+沿用 verify_s01_numeric_acceptance.py 的固定排程和唯一输出约定，
+显式 --driver auto --require-real-hw；对照应跳过 0 行，处理应跳过 2 行。
+先由该脚本 --help 和当前配置核对其参数；验收脚本、日志与 JSON 都带新 run-id。
+本机微型模型通过仅为 LOCAL_CPU_MICRO，不能代替真机验收。
+该步骤不重跑已完成的 S01RECHECK 性能矩阵。
+
+3. 必要的执行形状标定与独立验证
+
+采样清单只能由本轮修正后的实际执行形状产物导出，不沿用手写“9 点”。
+记录逐请求 n_new_tokens / kv_len / prefill-decode / need_token 和实际执行组顺序。
+旧 fwd_costcalib_probe.py 的 real_mixed=[pf,1,...]、kv 最小为 1、直接模型前向，
+不能等同于当前 S01 生产驱动的任意 whole-step 形状。
+新入口 scripts/execution_shape_probe.py 已完成离线验证，默认仅 dry-plan。
+清单 results/processed/execution_shape_manifest_20261003.json 当前有 6 个整步形状，
+来自合法独立合成状态；不代表全部真实负载已被覆盖。旧网格不用于这次采样。
+每个采样点必须绑定当前配置、模型 revision、S01 状态、源码和环境身份。
+预热在计时外；每次独立重复重建一致状态。训练点与独立验证点分开登记。
+保存新版本产物，不合并覆盖旧模型，不假设逐组耗时可线性相加。
+训练与验证各 3 个独立进程，每个进程覆盖全清单，各形状 30 条记录，至少预热 30 秒。
+训练表先冻结，再以绑定其 SHA 的新进程验证，不用验证数据调整预测表或门槛。
+总计 1080 个测量逻辑步骤；36 个形状/进程的预热下限合计 18 分钟，
+另有模型装载、反复 prime KV 等开销，总机时未知。先完成一个训练进程核实节拍，
+若剩余额度不够则保留已完成产物停止，不减少预热/记录/独立进程要求来凑“完成”。
+
+命令模板（仅在已核验的远端 Bash 中执行；本文件不替你执行）：
+  PY = 实际核验过的 MUSA Python 绝对路径；REPO = 实际项目根目录。
+  两个变量由执行智能体据当前环境填入，不得照抄历史路径。
+  cd -- "$REPO"
+  TAG=$("$PY" -c 'import datetime,uuid; print("EXECSHAPE_"+datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")+"_"+uuid.uuid4().hex[:8])')
+  DATA="results/raw/_execution_shape/$TAG"
+  DERIVED="results/processed/$TAG"
+  MANIFEST="results/processed/execution_shape_manifest_20261003.json"
+  PYTHON="$PY" bash scripts/inspect_env.sh "$DATA/env"
+  "$PY" scripts/verify_s01_numeric_acceptance.py --config-a configs/mthreads/exec_opt/s01_reference.yaml --config-b configs/mthreads/exec_opt/s01_both.yaml --driver auto --require-real-hw --env-fingerprint "$DATA/env/env.json" --json "$DERIVED/numeric.json"
+  "$PY" scripts/execution_shape_probe.py --manifest "$MANIFEST" --dry-plan
+  "$PY" scripts/execution_shape_probe.py --manifest "$MANIFEST" --execute --split training --env-file "$DATA/env/env.json" --out "$DATA/train1.json"
+
+train1 完整成功且估算机时足够后，再以同样命令分别写 train2.json、train3.json。
+每条命令必须是新的独立 Python 进程，保持同一部署、清单、配置与环境文件；
+不得在链运行中同步源码/生成新配置。每一步记录日志与退出码；非零立即停依赖步骤。
+
+  "$PY" scripts/export_execution_shape_model.py --freeze "$DATA/train1.json" "$DATA/train2.json" "$DATA/train3.json" --out "$DERIVED/frozen.json"
+  "$PY" scripts/execution_shape_probe.py --manifest "$MANIFEST" --execute --split validation --frozen-estimator "$DERIVED/frozen.json" --env-file "$DATA/env/env.json" --out "$DATA/validation1.json"
+
+同样以另外两个新进程写 validation2.json、validation3.json，之后：
+  MODEL="configs/cost_calib/model_execution_$TAG.json"
+  "$PY" scripts/export_execution_shape_model.py --validate "$DERIVED/frozen.json" --validation "$DATA/validation1.json" "$DATA/validation2.json" "$DATA/validation3.json" --out "$MODEL" --report "$DERIVED/validation_report.json"
+
+只有退出码 0 且确实输出合格新模型才继续。旧模型、已有输出一律不覆盖。
+冻结文件引用的三份训练文件必须保持可访问，导出器会重读校验。
+真实模型/产物取回后可在本地完成派生配置和后续分析；不需要额外 GPU：
+  "$PY" scripts/prepare_execution_pilot.py --model "$MODEL" --cfg-dir "configs/mthreads/pilot_$TAG" --tag "$TAG"
+如在本地调用，解释器改为本地可用 Python；$MODEL/$TAG 的相对路径含义保持一致。
+先离线重放/检查新模型的精确键及真实候选覆盖，再进入 pilot：
+  "$PY" scripts/dryplan_decision_chain.py --cfg-dir "configs/mthreads/pilot_$TAG" --json "$DERIVED/replay.json"
+
+取回并保证本地与远端的新模型/配置 SHA 一致，检查已有部署戳仍通过校验。
+当前 SOURCE_DIGEST_SCOPE 为 src/ascend_opt、benchmark、scripts，不包含 configs；
+模型与配置须独立核对，不能靠源码戳代替。若期间改过源码，用既有
+remote_run.py stamp <已核验远端根> --allow-dirty 重新打戳和双向验证。
+src+benchmark 执行摘要仍必须与标定一致；若执行代码改变需重验，不能只重打戳放行。
+
+4. 三项诊断 pilot 的确切清单
+
+P1 = static_small，经 --baseline <新派生目录>/static_small.yaml
+     映射为矩阵格 baseline。
+P2 = cost_single。
+P3 = cost_dual。
+--arms 仅包含 cost_single cost_dual；--repeats 1；--order block。
+计划是 baseline#r0、cost_single#r0、cost_dual#r0，恰好三项，不增加第四个基线。
+
+离线生成计划的入口：
+    python scripts/pilot_execution_plan.py
+它生成真实 UTC 时间加随机后缀的标签，并调用实际矩阵 --dry-plan 交叉核对。
+未提供远端目录/Python 时只输出 PLAN_ONLY，不生成貌似可运行的裸 python 命令。
+
+执行端确认远端目录/Python 后，把两个真实绝对路径显式传给：
+    scripts/pilot_execution_plan.py --cfg-dir <新派生目录> --remote-root ... --remote-python ... --json ...
+这里的省略号是参数说明，不是允许粘贴执行的路径。执行智能体必须填入已核验值。
+使用已核验的本地 Python 调用该生成器；JSON 写到新的 processed 计划文件，
+保存它的 tag 和 remote_command。remote_command 内 Python 和工作目录均显式给定。
+生成器不会验证远端，身份状态仍为 PROVIDED_NOT_VERIFIED；只有执行端前置验收
+通过才能执行保存的命令。不要再次调用生成器换一个 tag 后读取前一份计划。
+
+执行前核对远端没有该 tag 的 raw 目录、进度文件、汇总文件和 stop 文件。
+如已存在，保留旧产物，生成新标签；不得覆盖旧输出或绕过身份守卫。
+本次计划的进度/汇总/stop 文件均带相同 tag，不共享固定 pilot_progress.json。
+
+5. 预算与停止条件
+
+生成器默认传 --budget-minutes 45，可显式修改为已授权预算。
+这只是矩阵的整轮边界预算，不是硬超时；当前一轮有三项。
+它不会在 P1/P2 结束时强制截断剩余同轮项目，也不会中断已经运行的任务。
+因此不能承诺 45 分钟内结束，更不能用它替代外部的费用或实例管理。
+当前总用时待估：部署/验收/补标定另计，pilot 时长取同 cell 的实际节拍，
+不能照搬 short_chat 的历史每项时长。不能接受整轮可能超预算时不要启动。
+
+前置身份或数值失败：停止依赖实验，保留失败证据。
+缺形状或语义不等价：停止收益矩阵，回到明示缺口；不能以 model=None 当“方法无效”。
+pilot 只检查机制、覆盖与节拍，不用于宣布性能优势，也不自动启动 25 项矩阵。
+特别核对 prediction_execution_match：仅目标下一步、实际同形同组且硬件计时有效
+才进入模型误差统计；未匹配者单独计数。不能把只命中 6 个合成形状写成全负载覆盖。
+结果回拉后核对三项完成度、数据标签、身份、文件完整性与实际动作。
+机制未被行使时区分输入错误、缺覆盖和预算不可行；动作相同、达标率 0 或 1
+本身都不是自动丢弃结果的理由。扩大正式比较前冻结新协议与预算。
+
+交付：每步实际命令/退出码/标签/身份/新产物路径、训练与验证分离记录、
+三项 pilot 完成度和是否行使机制的证据；未执行始终标为待真机。

@@ -1,0 +1,933 @@
+{
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "device": "musa:0",
+  "gen_len": 16,
+  "thresholds": {
+    "fp32_max_abs_diff": 0.001,
+    "fp32_mean_abs_diff": 0.0001,
+    "fp16_logit_tol": 0.25,
+    "near_tie_gap": 0.05,
+    "token_ids": "exact"
+  },
+  "hostname": "autodl-container-3dc442bf15-b061c1a5",
+  "started_at": "2026-09-24T04:34:22+0800",
+  "checks": {
+    "V1_single_request": {
+      "reference_tokens": [
+        2168,
+        52526,
+        271,
+        2132,
+        4977,
+        1075,
+        498,
+        3003,
+        3897,
+        264,
+        6514,
+        315,
+        1467,
+        323,
+        11293,
+        429
+      ],
+      "driver_tokens": [
+        2168,
+        52526,
+        271,
+        2132,
+        4977,
+        1075,
+        498,
+        3003,
+        3897,
+        264,
+        6514,
+        315,
+        1467,
+        323,
+        11293,
+        429
+      ],
+      "token_ids_exact_match": true,
+      "driver_first_forward_shapes": {
+        "input_ids": {
+          "tensor": [
+            1,
+            1
+          ],
+          "dtype": "torch.int64"
+        },
+        "attention_mask": {
+          "tensor": [
+            1,
+            39
+          ],
+          "dtype": "torch.int64"
+        },
+        "position_ids": {
+          "tensor": [
+            1,
+            1
+          ],
+          "dtype": "torch.int64"
+        },
+        "past_key_values": {
+          "type": "DynamicCache",
+          "seq_length": 39
+        },
+        "use_cache": true
+      }
+    },
+    "V1_threshold_calibration": {
+      "repeat_max_abs_diff": 0.0,
+      "one_token_changed_max_abs_diff": 21.715787887573242,
+      "threshold": 0.001,
+      "sensitive": true
+    },
+    "V1_fp32_logits": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "argmax_ref": 2168,
+      "argmax_drv": 2168,
+      "driver_logits_shape": [
+        1,
+        24,
+        152064
+      ],
+      "reference_logits_shape": [
+        1,
+        24,
+        152064
+      ],
+      "limitation": "参考与驱动共用同一模型实例，故 max_abs_diff==0 是预期值；该判据不能证伪'驱动被旁路'，旁路由 V2/V3/V4 的 token id 逐位比对证伪。"
+    },
+    "V2_multistep_decode": {
+      "reference_tokens": [
+        198,
+        43288,
+        51575,
+        108704,
+        104544,
+        100902,
+        67071,
+        101970,
+        102064,
+        33108,
+        48391,
+        105063,
+        107339,
+        3837,
+        90919,
+        102298
+      ],
+      "driver_tokens": [
+        198,
+        43288,
+        51575,
+        108704,
+        104544,
+        100902,
+        67071,
+        101970,
+        102064,
+        33108,
+        48391,
+        105063,
+        107339,
+        3837,
+        90919,
+        102298
+      ],
+      "token_ids_exact_match": true
+    },
+    "V3_variable_length_batch": {
+      "prompt_lengths": [
+        16,
+        24,
+        33,
+        48
+      ],
+      "per_row_match": {
+        "v3_0": false,
+        "v3_1": true,
+        "v3_2": true,
+        "v3_3": true
+      },
+      "logits_equivalence_per_row": {
+        "v3_0": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 198,
+          "argmax_drv": 198,
+          "ref_top1_top2_gap": 1.2578125,
+          "token_ids_exact_match": false,
+          "within_fp16_tol": true,
+          "first_divergence": {
+            "index": 4,
+            "top1": 16,
+            "top2": 15,
+            "top1_top2_gap": 0.0,
+            "is_near_tie": true
+          },
+          "divergence_steps": [
+            4,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "divergence_verdicts": [
+            {
+              "step": 4,
+              "verdict": "near_tie",
+              "message": "V3 行 v3_0（第 4 步）: 分布等价，token 序列在第 4 步分岔；该步是近平局（top1=16 top2=15 gap=0.0000 < 0.05），fp16 舍入即可翻转 argmax，**不是实现错误**",
+              "detail": {
+                "index": 4,
+                "top1": 16,
+                "top2": 15,
+                "top1_top2_gap": 0.0,
+                "is_near_tie": true
+              }
+            },
+            {
+              "step": 6,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 6 步）: 分布等价但 token 在第 6 步分岔，该步 gap=0.2422 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 6,
+                "top1": 16,
+                "top2": 17,
+                "top1_top2_gap": 0.2421875,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 7,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 7 步）: 分布等价但 token 在第 7 步分岔，该步 gap=1.3438 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 7,
+                "top1": 3932,
+                "top2": 15,
+                "top1_top2_gap": 1.34375,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 8,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 8 步）: 分布等价但 token 在第 8 步分岔，该步 gap=6.1797 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 8,
+                "top1": 262,
+                "top2": 220,
+                "top1_top2_gap": 6.1796875,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 9,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 9 步）: 分布等价但 token 在第 9 步分岔，该步 gap=1.2422 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 9,
+                "top1": 2060,
+                "top2": 671,
+                "top1_top2_gap": 1.2421875,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 10,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 10 步）: 分布等价但 token 在第 10 步分岔，该步 gap=0.3125 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 10,
+                "top1": 220,
+                "top2": 364,
+                "top1_top2_gap": 0.3125,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 11,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 11 步）: 分布等价但 token 在第 11 步分岔，该步 gap=2.2031 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 11,
+                "top1": 16,
+                "top2": 17,
+                "top1_top2_gap": 2.203125,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 12,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 12 步）: 分布等价但 token 在第 12 步分岔，该步 gap=1.4688 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 12,
+                "top1": 621,
+                "top2": 488,
+                "top1_top2_gap": 1.46875,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 13,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 13 步）: 分布等价但 token 在第 13 步分岔，该步 gap=6.5078 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 13,
+                "top1": 220,
+                "top2": 2422,
+                "top1_top2_gap": 6.5078125,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 14,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 14 步）: 分布等价但 token 在第 14 步分岔，该步 gap=2.6875 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 14,
+                "top1": 16,
+                "top2": 17,
+                "top1_top2_gap": 2.6875,
+                "is_near_tie": false
+              }
+            },
+            {
+              "step": 15,
+              "verdict": "not_near_tie",
+              "message": "V3 行 v3_0（第 15 步）: 分布等价但 token 在第 15 步分岔，该步 gap=1.4688 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+              "detail": {
+                "index": 15,
+                "top1": 1406,
+                "top2": 271,
+                "top1_top2_gap": 1.46875,
+                "is_near_tie": false
+              }
+            }
+          ],
+          "any_blocking_divergence": true
+        },
+        "v3_1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 198,
+          "argmax_drv": 198,
+          "ref_top1_top2_gap": 2.33203125,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_2": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 271,
+          "argmax_drv": 271,
+          "ref_top1_top2_gap": 0.0703125,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        },
+        "v3_3": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "argmax_ref": 18137,
+          "argmax_drv": 18137,
+          "ref_top1_top2_gap": 0.15234375,
+          "token_ids_exact_match": true,
+          "within_fp16_tol": true
+        }
+      },
+      "grouped_prefill_per_row": {
+        "v3_0": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_2": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        },
+        "v3_3": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "within_fp16_tol": true
+        }
+      },
+      "grouped_prefill_forward_call_rows": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "grouped_prefill_forward_call_n_new": [
+        48,
+        33,
+        24,
+        16
+      ],
+      "fp16_logit_tol": 0.25,
+      "reference_tokens": {
+        "v3_0": [
+          198,
+          750,
+          1273,
+          62,
+          15,
+          15,
+          16,
+          3932,
+          262,
+          2060,
+          220,
+          16,
+          621,
+          220,
+          16,
+          1406
+        ],
+        "v3_1": [
+          198,
+          2132,
+          5868,
+          1075,
+          498,
+          3003,
+          3897,
+          264,
+          6514,
+          315,
+          4244,
+          323,
+          31747,
+          429,
+          1513,
+          944
+        ],
+        "v3_2": [
+          271,
+          2132,
+          4977,
+          1075,
+          279,
+          1467,
+          498,
+          3897,
+          374,
+          264,
+          6514,
+          315,
+          2155,
+          4244,
+          323,
+          31747
+        ],
+        "v3_3": [
+          18137,
+          246,
+          110,
+          99280,
+          99371,
+          271,
+          99487,
+          108704,
+          104544,
+          100902,
+          67071,
+          101213,
+          16530,
+          105470,
+          105291,
+          33108
+        ]
+      },
+      "driver_tokens": {
+        "v3_0": [
+          198,
+          750,
+          1273,
+          62,
+          16,
+          15,
+          15,
+          15,
+          15,
+          3932,
+          262,
+          2060,
+          220,
+          16,
+          621,
+          220
+        ],
+        "v3_1": [
+          198,
+          2132,
+          5868,
+          1075,
+          498,
+          3003,
+          3897,
+          264,
+          6514,
+          315,
+          4244,
+          323,
+          31747,
+          429,
+          1513,
+          944
+        ],
+        "v3_2": [
+          271,
+          2132,
+          4977,
+          1075,
+          279,
+          1467,
+          498,
+          3897,
+          374,
+          264,
+          6514,
+          315,
+          2155,
+          4244,
+          323,
+          31747
+        ],
+        "v3_3": [
+          18137,
+          246,
+          110,
+          99280,
+          99371,
+          271,
+          99487,
+          108704,
+          104544,
+          100902,
+          67071,
+          101213,
+          16530,
+          105470,
+          105291,
+          33108
+        ]
+      },
+      "token_ids_exact_match": false,
+      "logits_equivalent": true,
+      "grouped_prefill_preserves_rows": true,
+      "mixed_history_batched_decode": {
+        "rows": {
+          "v3_0": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.0390625,
+              "mean_abs_diff": 0.005817393306642771
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.02783203125,
+              "mean_abs_diff": 0.004326746799051762
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.025390625,
+              "mean_abs_diff": 0.004329542629420757
+            }
+          ],
+          "v3_1": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.019775390625,
+              "mean_abs_diff": 0.003346767509356141
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.01995849609375,
+              "mean_abs_diff": 0.003178318263962865
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.03125,
+              "mean_abs_diff": 0.005234065465629101
+            }
+          ],
+          "v3_2": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.011962890625,
+              "mean_abs_diff": 0.001920742797665298
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.01416015625,
+              "mean_abs_diff": 0.002734279492869973
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.015625,
+              "mean_abs_diff": 0.0028356059920042753
+            }
+          ],
+          "v3_3": [
+            {
+              "step": 0,
+              "max_abs_diff": 0.015625,
+              "mean_abs_diff": 0.004050912335515022
+            },
+            {
+              "step": 1,
+              "max_abs_diff": 0.0263671875,
+              "mean_abs_diff": 0.003864101367071271
+            },
+            {
+              "step": 2,
+              "max_abs_diff": 0.02734375,
+              "mean_abs_diff": 0.004513871856033802
+            }
+          ]
+        },
+        "errors": [],
+        "batch_calls": [
+          10,
+          11,
+          12
+        ],
+        "histories": {
+          "v3_0": {
+            "prompt_len": 16,
+            "extra_steps": 0,
+            "kv_len_at_first_batch_step": 16
+          },
+          "v3_1": {
+            "prompt_len": 24,
+            "extra_steps": 1,
+            "kv_len_at_first_batch_step": 25
+          },
+          "v3_2": {
+            "prompt_len": 33,
+            "extra_steps": 2,
+            "kv_len_at_first_batch_step": 35
+          },
+          "v3_3": {
+            "prompt_len": 48,
+            "extra_steps": 3,
+            "kv_len_at_first_batch_step": 51
+          }
+        },
+        "rows_per_call": [
+          4,
+          4,
+          4
+        ]
+      },
+      "mixed_history_max_abs_diff": 0.0390625,
+      "mixed_history_within_fp16_tol": true
+    },
+    "V4_chunked_prefill": {
+      "chunk_sizes": [
+        16,
+        16,
+        8
+      ],
+      "scored": "prefill 末位分布（首 token）——**仅覆盖 prefill**，多步 decode 见 V4b",
+      "whole_vs_chunked_logits": {
+        "max_abs_diff": 0.03125,
+        "mean_abs_diff": 0.005193853285163641
+      },
+      "reference_vs_whole_logits": {
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0
+      },
+      "fp16_logit_tol": 0.25,
+      "within_fp16_tol": true,
+      "whole_first_token": 13,
+      "chunked_first_token": 13,
+      "reference_first_token": 13,
+      "argmax_whole": 13,
+      "argmax_chunked": 13,
+      "ref_top1_top2_gap": 0.96484375,
+      "chunked_vs_whole_tokens_match": true
+    },
+    "V4b_chunked_multi_step_decode": {
+      "scored": "分块 prefill → 多步 KV decode，每步用参考 token 作为输入（相同历史），逐步比末位分布",
+      "gen_len": 16,
+      "n_steps_chunked": 16,
+      "n_steps_whole": 16,
+      "chunked_vs_reference_logits": {
+        "n_steps": 16,
+        "per_step": [
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.005193853285163641
+          },
+          {
+            "max_abs_diff": 0.0244140625,
+            "mean_abs_diff": 0.004028277471661568
+          },
+          {
+            "max_abs_diff": 0.0225982666015625,
+            "mean_abs_diff": 0.003214110853150487
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.003843100043013692
+          },
+          {
+            "max_abs_diff": 0.025390625,
+            "mean_abs_diff": 0.003759928047657013
+          },
+          {
+            "max_abs_diff": 0.0244140625,
+            "mean_abs_diff": 0.0032952860929071903
+          },
+          {
+            "max_abs_diff": 0.0244140625,
+            "mean_abs_diff": 0.003572234883904457
+          },
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.003289272077381611
+          },
+          {
+            "max_abs_diff": 0.02734375,
+            "mean_abs_diff": 0.0041219997219741344
+          },
+          {
+            "max_abs_diff": 0.033203125,
+            "mean_abs_diff": 0.004566676449030638
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.006533842999488115
+          },
+          {
+            "max_abs_diff": 0.02734375,
+            "mean_abs_diff": 0.004545006901025772
+          },
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.004461009055376053
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.005794636905193329
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.0050634657964110374
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.003943159710615873
+          }
+        ],
+        "max_abs_diff": 0.0390625,
+        "worst_step": 14
+      },
+      "chunked_vs_whole_logits": {
+        "n_steps": 16,
+        "per_step": [
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.005193853285163641
+          },
+          {
+            "max_abs_diff": 0.0244140625,
+            "mean_abs_diff": 0.004028277471661568
+          },
+          {
+            "max_abs_diff": 0.0225982666015625,
+            "mean_abs_diff": 0.003214110853150487
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.003843100043013692
+          },
+          {
+            "max_abs_diff": 0.025390625,
+            "mean_abs_diff": 0.003759928047657013
+          },
+          {
+            "max_abs_diff": 0.0244140625,
+            "mean_abs_diff": 0.0032952860929071903
+          },
+          {
+            "max_abs_diff": 0.0244140625,
+            "mean_abs_diff": 0.003572234883904457
+          },
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.003289272077381611
+          },
+          {
+            "max_abs_diff": 0.02734375,
+            "mean_abs_diff": 0.0041219997219741344
+          },
+          {
+            "max_abs_diff": 0.033203125,
+            "mean_abs_diff": 0.004566676449030638
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.006533842999488115
+          },
+          {
+            "max_abs_diff": 0.02734375,
+            "mean_abs_diff": 0.004545006901025772
+          },
+          {
+            "max_abs_diff": 0.0234375,
+            "mean_abs_diff": 0.004461009055376053
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.005794636905193329
+          },
+          {
+            "max_abs_diff": 0.0390625,
+            "mean_abs_diff": 0.0050634657964110374
+          },
+          {
+            "max_abs_diff": 0.03125,
+            "mean_abs_diff": 0.003943159710615873
+          }
+        ],
+        "max_abs_diff": 0.0390625,
+        "worst_step": 14
+      },
+      "fp16_logit_tol": 0.25,
+      "n_tokens_chunked": 16,
+      "n_tokens_whole": 16,
+      "n_tokens_reference": 16,
+      "reference_tokens": [
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16
+      ],
+      "driver_tokens_chunked": [
+        13,
+        16,
+        13,
+        17,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16
+      ],
+      "driver_tokens_whole": [
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16,
+        13,
+        16
+      ],
+      "length_match": true,
+      "first_divergence_step": 3,
+      "whole_vs_chunked_tokens_match": false,
+      "divergence_steps": [
+        3
+      ],
+      "n_divergence_steps": 1,
+      "divergence_verdicts": [
+        {
+          "step": 3,
+          "verdict": "near_tie",
+          "message": "V4b 多步 decode（第 3 步）: 分布等价，token 序列在第 3 步分岔；该步是近平局（top1=17 top2=16 gap=0.0000 < 0.05），fp16 舍入即可翻转 argmax，**不是实现错误**"
+        }
+      ],
+      "any_blocking_divergence": false
+    },
+    "V4_alt_splits_equivalent": {
+      "[20, 20]": true,
+      "[39, 1]": true,
+      "[1]x40": true
+    },
+    "resource_lifecycle": {
+      "drv2_live_at_end": 0,
+      "drv3_live_at_end": 0,
+      "v4_drivers_live_at_end": {
+        "v4_whole": 1,
+        "v4_[16, 16, 8]": 1,
+        "v4_[20, 20]": 1,
+        "v4_[39, 1]": 1,
+        "v4_[1]x40": 1
+      }
+    }
+  },
+  "failures": [
+    "v4_whole 收尾仍有 1 个常驻 KV 槽（应为 0）",
+    "v4_[16, 16, 8] 收尾仍有 1 个常驻 KV 槽（应为 0）",
+    "v4_[20, 20] 收尾仍有 1 个常驻 KV 槽（应为 0）",
+    "v4_[39, 1] 收尾仍有 1 个常驻 KV 槽（应为 0）",
+    "v4_[1]x40 收尾仍有 1 个常驻 KV 槽（应为 0）"
+  ],
+  "notes": [
+    "V3 分组 prefill：4 次 forward 每次只有 1 行（各行 n_new 互不相同 ⇒ 驱动按 n_new 拆组，`pad` 恒为 0）——**该段不产生补位/合批**；变长合批 decode 与补位由「mixed_history_batched_decode」一段覆盖",
+    "（max|Δ|=0.0000≈0）V3 行 v3_0（第 4 步）: 分布等价，token 序列在第 4 步分岔；该步是近平局（top1=16 top2=15 gap=0.0000 < 0.05），fp16 舍入即可翻转 argmax，**不是实现错误**",
+    "V4b 多步 decode（第 3 步）: 分布等价，token 序列在第 3 步分岔；该步是近平局（top1=17 top2=16 gap=0.0000 < 0.05），fp16 舍入即可翻转 argmax，**不是实现错误**；分块 decode 实现本身正确（分布等价）"
+  ],
+  "needs_review": [
+    "V3 行 v3_0（第 6 步）: 分布等价但 token 在第 6 步分岔，该步 gap=0.2422 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 7 步）: 分布等价但 token 在第 7 步分岔，该步 gap=1.3438 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 8 步）: 分布等价但 token 在第 8 步分岔，该步 gap=6.1797 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 9 步）: 分布等价但 token 在第 9 步分岔，该步 gap=1.2422 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 10 步）: 分布等价但 token 在第 10 步分岔，该步 gap=0.3125 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 11 步）: 分布等价但 token 在第 11 步分岔，该步 gap=2.2031 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 12 步）: 分布等价但 token 在第 12 步分岔，该步 gap=1.4688 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 13 步）: 分布等价但 token 在第 13 步分岔，该步 gap=6.5078 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 14 步）: 分布等价但 token 在第 14 步分岔，该步 gap=2.6875 >= 0.05（不够小）——与「分布等价」矛盾，需复核",
+    "V3 行 v3_0（第 15 步）: 分布等价但 token 在第 15 步分岔，该步 gap=1.4688 >= 0.05（不够小）——与「分布等价」矛盾，需复核"
+  ],
+  "finished_at": "2026-09-24T04:35:00+0800",
+  "passed": false
+}

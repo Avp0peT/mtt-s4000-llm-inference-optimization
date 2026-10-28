@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ascend-opt"
+version = "0.1.0"
+description = "面向 MTT S4000 / MUSA 的 LLM 推理策略、执行优化与可复核基准；保留 Ascend 次平台支持"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Proprietary" }
+dependencies = [
+    # 配置用 YAML 表达，便于写注释（JSON 写不了注释，配置的意图会丢失）
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+# 绘图只在导出结果时需要，不进核心依赖，避免无图形环境（服务器）装不上
+plot = ["matplotlib>=3.5"]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+# 测试文件各自插入 src/ 与 benchmark/ 到 sys.path，
+# 这里只指定发现路径，保证 `pytest` 与 `python -m unittest discover -s tests` 行为一致
+testpaths = ["tests"]
+python_files = ["test_*.py"]

@@ -1,0 +1,409 @@
+{
+  "created_date": "2026-09-29",
+  "current_session": "S04",
+  "last_verified_action": {
+    "action": "按用户独立复核后的 5 条指示，执行一轮正确性与证据链修复（未启动任何远程实验）：① 修 S04 fast→fallback→fast 重入读过期缓冲（数值错）；② 修快路径漏计 tokens_out；③ fast/fallback/原因分桶拆 warmup 与正式窗口 + 显式两个分母（前向组/逻辑步）；④ stamp 非零或无正标记即禁止 launch + 续跑身份核验；⑤ 从原始遥测重建 EXECOPT4 分析并撤回错误归因",
+    "date": "2026-10-01",
+    "evidence": [
+      "OPTIMIZATION_TEST_SESSION.md §5.9.9（含置顶更正表）",
+      "EXPERIMENTS.md §3.6 E20（改写为尾段 +72% 的真实负效应）+ §4.4 A3–A6",
+      "RESEARCH_LOG.md 2026-10-01（续四）",
+      "scripts/analyze_exec_opt_batch.py --tag EXECOPT4（覆盖率 6.74% / 尾段 / 长停顿的可复现入口）",
+      "results/raw/EXECOPT4-short_chat-*（12 目录，原样保留，未补标签）"
+    ],
+    "head_at_start": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4（未提交新 commit）",
+    "local_test_result": "受影响集 101 passed / 4 subtests（test_optim_s04_persistent_kv 19 + test_exec_opt_plan 67 + test_analyze_exec_opt_batch 15）；★ 改动后全量回归 = 1535 passed / 1 skipped / 760 subtests / 9m34s（--ignore=tests/test_validate_fp16_path.py）；反例/破坏验证 6 组（含「退回原判据 ⇒ 逐层 KV 差 2.102e-01 被抓住」）",
+    "remote_sync": "2026-10-02 已重推并终验：src/ascend_opt 19/19、benchmark 11/11、scripts 77/77、configs 144/144 逐文件 sha 一致；stamp=投放并校验通过 / rc=0 / tree_digest=2b79ff65f275 / dirty=True（A6 口径限制）。⚠️ 期间发现并修掉 push_files.sh 的 --include 错序静默降级（守卫 + 4 例回归，已推送）。",
+    "session": "S04 更正轮（正确性与证据链修复）",
+    "single_writer": "本会话（benchmark/real_backend.py + scripts/ 编排与分析 + tests/）",
+    "worktree_clean": false,
+    "worktree_note": "改动：benchmark/real_backend.py（_pkv_synced_len 重同步 + tokens_out + n_logical_steps + measured_window 分桶/双分母 + n_resyncs）、scripts/exec_opt_batch.py（stamp_complaint 守卫）、scripts/run_exec_opt_matrix.py（identity_complaint + 续跑接上）、scripts/analyze_exec_opt_batch.py（覆盖率/尾段/长停顿三节）、三个 tests 文件。全部保留，未回滚。"
+  },
+  "last_verified_action_2026_10_02": {
+    "corrections_2026_10_03": [
+      "⚠️ 更正 verified[5]「item4 脚本 AST/import OK」：**AST/import OK 不等于能跑**。2026-10-03 实测第一次真调用即 AttributeError: dict object has no attribute runtime（build_driver 收到 yaml.safe_load 的 dict，而真驱动读 cfg.runtime）。⇒ 当时那条「脚本已就绪」**是错的**，已撤回。",
+      "⚠️ 更正 verified[13]「第 4/5 项前置再核…前置全部就绪」：**过度声明**。当时核的是「文件在不在、sha 一不一致、配置单变量性」——那些**确实**成立；但「脚本能跑」这一条从未被验证过（AST/import 不足以证明），却被写成了「就绪」。",
+      "⚠️ 更正 still_open[0]「脚本 + 7 条冻结判据 + 环境全部就绪」：同上，改为「脚本存在但**跑不起来**，2026-10-03 已修；改为真机验证前必须先在**离线集成**上跑通 --plan-only 与判据正反例」。",
+      "⚠️ 更正「第 1 项 ✅ 通过」：当时的判据有**两处口径缺口**——① 旁路插件只记 setup/call、**漏了 teardown**；② 非零退出码可仅凭「计数齐全」被豁免。两者叠加会把一个**真实的夹具收尾缺陷**读成通过（2026-10-03 实测复现）。⇒ 当时的「通过」**不足以采信**，已重做。",
+      "⚠️ 未在上轮声明、但本轮发现：固定轮数模式 --repeats 因主循环里一处 break **只跑 1 轮**，且 rc=0（balanced 在任何整数轮上都为真）。⇒ 上轮「2 臂 × 5 轮」若按该模式跑，会静默只跑 1 轮。"
+    ],
+    "date": "2026-10-02",
+    "key_corrections": [
+      "我一度把缓存 revision 抄成 ...d103... 与配置 ...d043... 不符并据此判 REV_MISSING；从 yaml 精确读出后确认两者都是 d103063 ⇒ 是我的转录错误，不是环境问题",
+      "上一轮的 _regr4.txt 内容为『没有找到 S14S-* 产物』：成因是我给的重跑命令漏掉了 scripts/run_tests.py 路径参数 ⇒ 它退回了默认 S14 扫描。这不构成任何 test_batch_lock flake 证据",
+      "本机没有部署戳（戳只投到远端、不入库）⇒ run_exec_opt_matrix.resolve_source_digest(_ROOT) 在本机恒为 None ⇒ 本机对既有产物一律拒绝。这是设计边界，不是缺陷，但必须在报告里写明",
+      "★ _regr7 的 4 个新 ✗（test_optim_s01/s02/s03/s04）是我自己选错解释器，不是代码回归：这四个模块 @unittest.skipIf(T.torch is None) 门控，我用 venv（无 torch）跑 ⇒ 合法全跳过。形态是四组计数 12/7/16/19 逐个不变、只把「通过」翻成「跳过」⇒ 系统性信号，先找共同因。已入 PLAYBOOK §2 第 21 条",
+      "本机两解释器分工：versions/3.13.12/python.exe（torch 2.10.0、无 pytest/paramiko）跑回归；envs/default/Scripts/python.exe（无 torch、有 pytest/paramiko）跑远程工具。汇报「回归通过/失败」必须同时报解释器，否则只看 EXIT=1 会把「自己选错」读成「代码坏了」",
+      "第 1 项的通过依赖旁路 JSON（不是 stdout 解析）——因为 stdout 的两类证据（汇总行、进度点）已被实测证明会被同一故障摧毁。「判据所依赖的证据，不能与该故障同源」"
+    ],
+    "round": "第三轮 + 第五轮：退出码判据换证据源；第 3 项重推闭环；本轮 6 项判定",
+    "still_open": [
+      "item4 真机强制重入数值验证：脚本 + 7 条冻结判据 + 环境全部就绪，但需用户批准占用机时；未执行",
+      "item5 short_chat 性能复核：前置依赖 item4，未启动；dry-plan 须确认 2 臂×5 轮=10 项",
+      "S04 数值正确性仍未证（第 4 项即为此）；长停顿成因未定位；B1 仍不可冻结",
+      "OPT-04 明确禁止开始"
+    ],
+    "verified": [
+      "远端源码树已重推：逐文件 sha256 比对得精确差集 = 5 个（1 新增 scripts/verify_s04_reenact_numerics.py + 4 内容不同：push_files.sh / run_exec_opt_matrix.py / run_tests.py / provenance.py）；push 5/5 OK（判据 = 远端 sha == 本机 sha）",
+      "重打戳成功：tree_digest = af3ec669d0678b4ed34ad5cf97b61c205812dbedf998bb7d9df50000fbd13af9 = 本机 compute_tree_digest，与旧戳 2b79ff65ff... 相比已对齐",
+      "★ read_source_stamp 修复在真机得到证实：远端 detect_source_identity('/root/ascend_probe_d1') = ('16e82d2ea117...', 'stamp', True, 'af3ec669d067...') —— source='stamp' 且第 4 位真的带上摘要（修复前恒为 None）",
+      "真实 EXECOPT4 产物仍被续跑判据拒绝（符合预期且是设计目标）：git_source='stamp_stale'、git_commit='NOT_MEASURED'、tree_digest=None ⇒ 两种情形（source_digest=None / 活摘要）都返回 源码身份不可信",
+      "item2 离线证明的破坏性对照已完成：把 push_files.sh 的 dry-run 早退条件改成永不成立 ⇒ test_dry_run_never_touches_network 变红（60s 超时，卡在真实 TCP connect 到 192.0.2.1）⇒ 证明该测试真的在区分『没建连接』与『停得早』；还原后 diff 为空、6/6 绿",
+      "item4 脚本 scripts/verify_s04_reenact_numerics.py AST/import OK；目标配置 configs/mthreads/exec_opt/s01_both_s04_pkv.yaml 存在，与 s01_both.yaml 的差集 = 仅 runtime.persistent_kv_slots: true（单变量成立）",
+      "item4/5 前置——模型在远端就绪：snapshots/a09a35458c702b33eeacc393d103063234e8bc28 存在，4 个 safetensors 分片齐全；两份 exec_opt 配置钉死的 model_revision 与该 snapshot **逐字符相同**",
+      "★ 第 1 项第三形态已修（第五轮）：汇总行与进度点**都在 stdout**、且故障发生在收尾阶段 ⇒ 二者可被同一故障同时摧毁（_regr6 实测）。改为**旁路 JSON 作主证据**：新增 scripts/_pytest_outcome_plugin.py，在 pytest_sessionfinish 把逐结局计数写进 PYTEST_OUTCOME_JSON（与 stdout 无关）。三层判据 = 旁路 JSON > 汇总行 > 进度点覆盖",
+      "第 1 项验收（_regr8，正确解释器，18 min）：用例 1620 / 真正执行 1619 / 跳过 1 / 失败 0 / 错误 0 / EXIT=0；收尾行 ✅ OK：0 failure / 0 error；纯逻辑模块全部真的执行了。跳过原因行自己标出判据来源 = 旁路 JSON（collected=13，合计=13）",
+      "第 1 项三轮同机对照：_regr6（修复前，3.13.12）跳过1/错误1/EXIT=1；_regr7（修复后，venv 无 torch）跳过88/EXIT=1；_regr8（修复后，3.13.12）跳过1/错误0/EXIT=0",
+      "第 3 项第五轮重推闭环：内容 sha256 比对（114 项清单）⇒ 精确 2 个文件差（scripts/_pytest_outcome_plugin.py 新增 + scripts/run_tests.py 内容变；tests/ 不在 digest_scope ⇒ 本就不部署，其改动不该出现在 delta = 预期）；推 2/2 OK；stamp --allow-dirty ⇒ 投放并校验通过；tree_digest = 17997a944cb43bcf3ee157afd877f551cc481c870b579ddd243025702b4d0453 = 本机重算值（125 个 scope 文件）",
+      "★ read_source_stamp 修复第二次在真机复现：远端 detect_source_identity(/root/ascend_probe_d1) = (16e82d2e..., stamp, True, 17997a944cb4...)；远端 resolve_source_digest = 17997a944cb4...",
+      "第 3 项反向对照全部实测（本轮）：no_reproducibility / empty_git_source ⇒ 源码身份缺失…拒绝复用；unknown_git_source=guess ⇒ 不可信；真实 EXECOPT4-* 三份 ⇒ stamp_stale ⇒ 拒绝",
+      "第 4/5 项前置再核（本轮）：验证脚本本机/远端 sha 逐字节相同（1d15804a9edd7abe...）；远端 AST OK；MUSA 激活正常（torch 2.2.0，MODEL_REVISION=a09a35458c70...）；单变量性再确认——s01_both_s04_pkv.yaml 相对基线只多两行（persistent_kv_slots: true + persistent_kv_capacity: 1024），后者在 slots=False 时不生效（real_backend.py 读取点已核）⇒ 两行 = 一个逻辑变量"
+    ]
+  },
+  "last_verified_action_2026_10_03": {
+    "code_fixes": [
+      "① 测试运行器：旁路插件**漏记 teardown 相位**（只记 setup/call）⇒ 真实的夹具收尾缺陷被「计数齐全 ⇒ 豁免非零退出码」读成通过（实测复现：pytest 报 1 passed,1 error，旁路报 error=0）。修：逐相位记录 + 会话级异常 + expected/reported nodeid 集合；判据抽成纯函数 _classify_pytest_run（集合双向对账 + 逐相位 + 会话异常 + 非零退出码只在命中已知外部签名时降级）。",
+      "② verify_s04_reenact_numerics.py **根本跑不起来**（实测 AttributeError: dict has no attr runtime）：改用项目 load_config + dataclasses.replace；补 logits 摘要对照（capture_logits_digest，默认关）；补重入时刻 KV 对照；tokens_out 三方对账（两臂 + 实观察）；无预热不得宣称预热扣除已验证；唯一输出路径 + 拒绝覆盖 + 记录源码/两臂生效配置/模型/环境身份；新增 --plan-only 离线路径。",
+      "③ 固定重复实验：主循环 if not fill_budget: break ⇒ --repeats 5 只跑 1 轮（实测 run_once 2 次、n_done=2/10、balanced=True、failures=[]、rc=0 ⇒ 少跑 8 项报完整成功）。修：break→continue + 新增 completion_flags（n_planned_fixed/complete/under_run）并据此置 rc；外层编排补 --baseline/--repeats 透传。",
+      "④ 续跑配置比较：写端 yaml.safe_dump（重新序列化）vs 读端比原始字节 ⇒ 本仓配置都带注释 ⇒ **恒判不一致** ⇒ 续跑永远不复用。修：统一为参数内容的规范摘要 config_data_digest()，两侧同一解析器；注释/键序变可复用，参数变/摘要缺失/身份不符一律拒绝。",
+      "⑤ 环境级：tests/test_exec_opt_plan._bash() 把裸 \"bash\" 放在候选首位 ⇒ 在 Windows 解析到被安全策略拉黑的 wsl.exe ⇒ **整个 pytest 进程被 SIGTERM**（except 接不住）。修：只探明确的 PortableGit 路径。"
+    ],
+    "date": "2026-10-03",
+    "offline_verification": [
+      "统一一次全量回归（_regr9，managed 3.13.12）：用例 1698 / 真正执行 1697 / 跳过 1 / 失败 0 / 错误 0 / EXIT=0；收尾行 ✅ OK：0 failure / 0 error；纯逻辑模块全部真的执行了。",
+      "较 _regr8（1620）新增 78 例 = harness 12→21（+9）、verify_s04_cli（+23）、exec_opt_matrix_main（+22）、config_identity_contract（+20）、real_backend_numerics 的 TestLogitsDigest（+4）。",
+      "破坏性对照（每条新判据都能被打红）：插件改回「只看 setup」⇒ teardown 用例变红；判据改回「计数齐全即豁免」⇒ 无法归因的非零退出码用例变红；continue 改回 break ⇒ 调用数 2!=10 两条变红；配置摘要退回比字节 ⇒ 真实写端快照用例变红。",
+      "fix 后未再出现沙箱 safe-delete 垫片造成的非零退出码（_regr9 无该跳过条目）。"
+    ],
+    "performance_experiment": "★ 已执行完成（EXECOPT5，2 臂 × 5 轮 = 10/10，新 tag）。summary: complete=true / under_run=false / completed_passes=5 / balanced=true / failures=[] / n_skipped_existing=0 / dry_run=false / elapsed 27.0 min / avg_item_s=162.2。⇒ 第 3 项的完成度判据在生产里第一次生效且为真。回拉后完整性 10/10。结果：**尾段（77 步有效样本）packΣ 中位 108.80 → 185.95 ms = +70.9%，逐轮同号 5/5，极差 16.3%**；全窗口 pack_tel 中位 +0.366%（6.74% 覆盖率稀释）；fwd_tel 两臂重叠（机制只作用在 pack）。⇒ **独立复现 §3.6 E20（+72.0%）**，确认为**真实的负面结果**：快路径在能行使的样本上是净成本。⚠️ warmup 轮数两臂不同（2 vs 1）⇒ driver 口径不可跨臂比；每个 run 恰有 1 个 >1s 起手步（两臂皆有）。详见 EXPERIMENTS.md §1.7 与 §3.8。",
+    "real_machine_numerical": "★ PASS（10/10 条预先冻结判据全绿）。S4000 真机、真 7B 权重、load_config 派生的两臂（仅差 PKV 两键）。telemetry: fastpath=7 fallback=5 **resyncs=2**（重入真的发生）；fallback_reasons={new_sequence:3, unequal_kv_len:2}。token 23 个逐一相同；logits 摘要 23 个采集点全部相同（sha256 逐位）；**重入时刻**与**结束时刻**的逐层 KV 均逐位相同；tokens_out 三方对账 baseline=23 pkv=23 实观察=23。证据 results/raw/_s04_verify/s04_reenact_verify_20261002T194537Z.json（本机/远端 sha256 一致）。⚠️ warmup_deduction_verified=false：本次未预热，**预热扣除未被验证**，不得据此声称已扣除。详见 EXPERIMENTS.md §3.7。",
+    "round": "用户第 6 条指令：按当前源码复核并修复 6 项（未执行不得写成通过）",
+    "status": "第 1–6 项全部完成（第 6 项含真机数值验证 PASS 与性能实验 EXECOPT5 已完成）。无失败项。⛔ OPT-04 仍禁止开始（S04 现已确认为净成本，见 §3.8）。"
+  },
+  "next_action": {
+    "blocked": "正式论文引用 EXECOPT5 前先解决 §4.4 A7（环境指纹来自另一个容器）与 A4（数量覆盖率 vs 时间权重）的表述问题。",
+    "do_not_repeat": [
+      "⛔ 不要再跑同协议的 S04 性能批次（EXECOPT4/EXECOPT5 已两批独立一致：+72.0% / +70.9%）",
+      "⛔ 不要重做第 1–5 项（代码修复/离线验证/真机数值验证/性能实验 均已完成并通过，见 last_verified_action_2026_10_03）",
+      "⛔ 不要开始 OPT-04（前置条件未满足）",
+      "⛔ 不要修改 EXECOPT5 原始产物或回填标签（A7 的矛盾是证据）"
+    ],
+    "priority_1": "复核 S01 的**实际部署收益**：原始基线（s4000_fp16.yaml，S01 全关）vs S01 臂（s01_both.yaml）。⚠️ EXECOPT5 两臂**都开着 S01** ⇒ 构造上不能证明 S01 自身收益。必须：可信环境（批次前置会重采指纹并校验容器/设备身份）+ 可信源码记录（stamp 校验通过）+ 两臂等轮 + 报**服务指标**（TTFT p50/p95/p99、TPOT p50/p90、达标吞吐、SLO 达标率）+ 同时报每轮 >1s 的起手步数。预注册见 NEXT_SESSION_TASKS.md。",
+    "priority_2": "S07 离线协议设计（不需机时）。"
+  },
+  "notes": [
+    "生成任务文本不代表已经执行任务。",
+    "后续软件从已有用户授权和最新记录核实预算；null 不是零或无限。",
+    "按作用范围处理阻断，继续不受影响的本地任务。",
+    "S00 只填了真实观察；未产生任何 MEASURED 产物，也未新增 EXPERIMENTS.md 结论行。",
+    "§5.3 的两处修复改变了 slo_weave 臂的判据倍率 ⇒ 既有含该臂的产物（EXP-S14B3-006..010）不得与修复后并表。",
+    "2026-09-30：EXECOPT1 批次因 ModuleNotFoundError(transformers) 失败 ⇒ 产物不可用，仅作反例；改用新 tag EXECOPT2 重跑。",
+    "2026-09-30：run_exec_opt_matrix 必须用 venv python 绝对路径（见 remote.venv_python_absolute）；裸 python3 会被 profile 重排的 PATH 抢走。",
+    "2026-09-30（续三）：EXECOPT4 的 driver_stats.*_total 与 n_forwards/tokens_out **含 warmup**，且各臂 warmup 轮数可能不同（实测 2 vs 1，差 117 次前向）⇒ 跨臂比 *_total 会读出假效应（+31%）。新增 driver_stats.measured_window 供正式段口径；EXECOPT4 产物早于该字段，只能用 telemetry 求和替代。",
+    "2026-09-30（续三）：exec_opt_batch.py 的推送步骤曾**静默不推**（解析人类报告得到伪路径 ⇒ push_files 判『跳过（不存在）』⇒ 退出码 0）⇒ 已加 --emit-paths + 双守卫 + 12 例单测。",
+    "2026-09-30（续三）：EXECOPT4 环境存在**双模态**（快 123s/63.7 tok/s vs 慢 137~143s/55~57），12 个 run 里 4 个落慢模态且跨 3 个臂 ⇒ 服务指标须先分层再比；pack_tel 不受影响、fwd_tel 受影响。",
+    "2026-10-01：★ 覆盖率的正解是 77/1143 = 6.74%（扣预热 + 分母取正式窗口前向组），不是 193/1260=15.3%。报覆盖率必须写明分母是前向组（1143）还是逻辑步（1080）。",
+    "2026-10-01：★ S04 在有效样本（单请求纯 decode 尾段 77 步）上 pack +72%；全窗口 +0.19% 是覆盖率稀释。「不可分辨」的说法已撤回。",
+    "2026-10-01：★ 「环境双模态」的说法已撤回 —— 那是每轮一次孤立单步长停顿（13.9–19.3 s），wall 差额与其逐轮对上；成因未定位 ⇒ 服务指标暂不可归因。",
+    "2026-10-01：★ 部署校验补闭环：stamp 非零退出或缺正标记 ⇒ 禁止 launch；续跑须核源码来源 + config 快照逐字节 + model_revision。历史产物不补标签。",
+    "2026-10-01：★ 用例教训：只测「进入→接续」不够，必须测状态迁移的回路（进入→离开→再进入）—— S04 重入数值错就是被这个盲区漏掉的。"
+  ],
+  "project_root": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization",
+  "purpose": "恢复指针；事实以仓库日志/登记及原始证据为准",
+  "remote": {
+    "authorization_reference": "沿用用户最新明确授权（handoff 00_START_HERE.txt 共同要求 3）；交接包未携带额度凭据",
+    "budget_remaining_hours": null,
+    "budget_used_hours": null,
+    "env_verified": {
+      "cpu_timing_cv": "0.003%–0.005%（7×1.0s 探针）",
+      "devices": 1,
+      "hf_home": "/root/autodl-tmp/hf",
+      "python": "3.10.8",
+      "revision_snapshot_present": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "torch": "2.2.0",
+      "torch_musa": "1.3.0+81caf0a",
+      "transformers": "4.46.3"
+    },
+    "gpu_budget_hours": null,
+    "host_reference": "existing remote_run credentials; do not store secret values here",
+    "minimum_missing": [
+      "实例开机 / 控制台确认运行状态",
+      "SSH 可达",
+      "剩余机时额度确认（当前 null = 未知，不按 0、不按无限）",
+      "HF 缓存内存在钉死的 revision snapshot a09a35458c702b33eeacc393d103063234e8bc28"
+    ],
+    "reachability_error": "paramiko.ssh_exception.SSHException: Error reading SSH protocol banner（exec 重试一次同样失败；S01–S03 会话期间未再复测）",
+    "reachability_error_2026_09_29": "paramiko.ssh_exception.SSHException: Error reading SSH protocol banner",
+    "reachability_note": "SSH 握手存在**间歇性**失败（裸 TCP 探测 1/5 成功、4/5 连上后零字节；原生 socket 8/8 成功）⇒ 交由 remote_run.py 的 _connect 重试吸收，勿据此改远端或换凭据。",
+    "reachability_note_2026_10_02": "★ 该端口已因 AutoDL 重启/迁移而变更（**第二次实证**：2026-09-24 换镜像 14671→14293；本次 28080→23576）。诊断签名：**目标端口 EOF（对端主动关闭）+ 同线路对照 SSH 有 banner** ⇒ 主机在线、该端口无服务 ⇒ 先怀疑端口、不要怀疑网络/凭据。只改仓库外 ~/.workbuddy/remote.env（.gitignore 已设防，git ls-files 为空）。验证两步都做了：① banner SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.11；② **认证**（banner≠认证通过）hostname=autodl-container-05264bbf0d-3b9c3488 / whoami=root。⚠️ 端口/provider 变更不改变实验条件（同实例同镜像），但**下次真机批次仍必须重新打戳**。",
+    "reachable_2026_09_29": false,
+    "reachable_2026_09_30": true,
+    "reachable_2026_10_02": true,
+    "scope": "本地静态审查 / 纯逻辑 / CPU 微型模型测试已授权自主执行；真机测量需远程可达与剩余机时",
+    "venv_python_absolute": "/root/musa-envs/qwen310/bin/python3（★ 必须用绝对路径：内层 bash -c 会重置 PATH）"
+  },
+  "run_scripts": {
+    "local_entrypoint": "python scripts/exec_opt_batch.py {plan|preflight|run|status|stop|pull} --tag <T>",
+    "local_verification": "39 passed（25 + 14）+ launch_batch.sh 本地全链路实跑 + 破坏验证",
+    "note": "2026-09-30 已在远端实跑：dry-plan ✓ / preflight ✓ / screen 批次真机运行 ✓。",
+    "plan_logic": "benchmark/exec_opt_plan.py",
+    "progress_reader": "scripts/_read_progress.py",
+    "remote_import_selfcheck": "scripts/_check_exec_opt_imports.py",
+    "remote_runner": "scripts/run_exec_opt_matrix.py",
+    "runbook": "handoff/optimization_20260929/EXEC_OPT_RUNBOOK.md",
+    "sha_diff_helper": "scripts/batch_sha_diff.py（1 次往返比对远端 sha，替代 128 次逐文件查询）",
+    "stale_lock_safety_valve": "scripts/clear_stale_batch_lock.py",
+    "verified_on_remote": true
+  },
+  "schema_version": 1,
+  "sessions": [
+    {
+      "blocking_reason": "真机不可达（SSH banner 失败）⇒ 远端基线核验与任何真机测量 REMOTE_PENDING；§5.1/§5.2 两个策略语义缺口按计划留待 S07 预注册裁定",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "src/ascend_opt/slo_weave.py",
+        "src/ascend_opt/cost_model.py",
+        "tests/test_slo_weave_sparse_lookup.py",
+        "tests/test_s00_known_gaps.py",
+        "scripts/audit_s00_blockers.py",
+        "results/processed/s00_audit.json",
+        "RESEARCH_LOG.md#2026-09-29-S00"
+      ],
+      "file": "sessions/S00_AUDIT_AND_BASELINE.txt",
+      "hardware_measured": false,
+      "id": "S00",
+      "notes": "本会话实现范围仅限纯逻辑层：修复 SLOWeave safety_margin 重复应用 + 稀疏 lookup 二分；另加审计脚本与两类反例/特征化用例。执行优化线 P1/P2a/P3 尚未开始实现。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "真机不可达 ⇒ TTFT / prefill 时间 / 显存未测",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/real_backend.py",
+        "tests/test_optim_s01_logits_sampling.py",
+        "configs/mthreads/exec_opt/s01_last_only.yaml",
+        "configs/mthreads/exec_opt/s01_sample_needed.yaml",
+        "configs/mthreads/exec_opt/s01_both.yaml",
+        "OPTIMIZATION_TEST_SESSION.md#5.2"
+      ],
+      "file": "sessions/S01_LOGITS_AND_SAMPLING.txt",
+      "hardware_measured": false,
+      "id": "S01",
+      "notes": "两个开关默认关闭；能力在装载期判定并落盘 requested/effective；破坏验证 5 failed。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "真机不可达 ⇒ allocated/reserved、分配重试、OOM、边界 ITL、吞吐未测",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/real_backend.py",
+        "tests/test_optim_s02_allocator.py",
+        "configs/mthreads/exec_opt/s02_no_empty_cache.yaml",
+        "OPTIMIZATION_TEST_SESSION.md#5.3"
+      ],
+      "file": "sessions/S02_ALLOCATOR_LIFECYCLE.txt",
+      "hardware_measured": false,
+      "id": "S02",
+      "notes": "retire_empty_cache 默认 True（原行为）；关掉后槽位仍逐请求释放；无内存压力控制器可判 allocated vs reserved（记为待办）。破坏验证 3 failed。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "真机不可达 ⇒ M=1/2/4/8/128/512 的算子耗时与净收益未测；真实 7B 形状未实测核对",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/linear_fusion.py",
+        "tests/test_optim_s03_linear_fusion.py",
+        "scripts/inspect_linear_shapes.py",
+        "configs/mthreads/exec_opt/s03_fuse_qkv.yaml",
+        "configs/mthreads/exec_opt/s03_fuse_gate_up.yaml",
+        "configs/mthreads/exec_opt/s03_fuse_both.yaml",
+        "configs/mthreads/exec_opt/s03_fuse_both_shapes.yaml",
+        "OPTIMIZATION_TEST_SESSION.md#5.4"
+      ],
+      "file": "sessions/S03_FUSED_LINEAR.txt",
+      "hardware_measured": false,
+      "id": "S03",
+      "notes": "★ 实测：QKV 窄片必须 contiguous（每层每次 3 次拷贝，bytes_copied 有记账），gate/up 不需要 ⇒ 两者净收益前景不同。state_dict 前后逐键相同、可原样回退。破坏验证 1 failed。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "远端不可达 ⇒ 运行脚本未在远端实跑（本地已组件级实跑 + 离线路演）",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "scripts/exec_opt_batch.py",
+        "scripts/run_exec_opt_matrix.py",
+        "scripts/clear_stale_batch_lock.py",
+        "benchmark/exec_opt_plan.py",
+        "handoff/optimization_20260929/EXEC_OPT_RUNBOOK.md",
+        "OPTIMIZATION_TEST_SESSION.md#5.5"
+      ],
+      "file": "sessions/S04_PERSISTENT_KV_AND_BUFFERS.txt",
+      "hardware_measured": false,
+      "id": "EXEC-RUN",
+      "notes": "跨会话的运行脚本交付（不属于 S04 本体）：本机一条命令完成 核验→推送→起跑→轮询→回拉；远端自驱动（穿插/均衡/预算/心跳/STOP/续跑/按产物判成功）。顺带补上陈旧批次锁安全阀。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "① EXECOPT4 的 S04 两臂带已复现的数值缺陷（重入读过期缓冲；已在 2026-10-01 修复）⇒ 那批的数值正确性未获证明，须重跑；② 判据结论已改写：覆盖率 77/1143 = 6.74%，在有效样本（单请求尾段 77 步）上 pack 109.02 → 187.52 ms = +72.0%（3 轮极差 0.4%）⇒ 能行使的地方是净成本；原「+0.19%、不可分辨」是被覆盖率稀释的错误口径；③ 服务指标受未解释的单步长停顿影响 ⇒ 机制归因暂不可判；④ 12/12 产物 git_commit=NOT_MEASURED（stamp 曾被忽略）。",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/real_backend.py（persistent_kv_slots 快路径；默认关闭；2026-10-01 修重入过期）",
+        "tests/test_optim_s04_persistent_kv.py（19 例，含 TestReattachAfterFallback 逐层 KV 对照）",
+        "EXPERIMENTS.md §3.6 E20 + §4.4 A3–A6",
+        "OPTIMIZATION_TEST_SESSION.md §5.9（含置顶更正）+ §5.9.9"
+      ],
+      "file": "sessions/S04_PERSISTENT_KV_AND_BUFFERS.txt",
+      "hardware_measured": true,
+      "id": "S04",
+      "offline_verified": true,
+      "status": "INDETERMINATE"
+    },
+    {
+      "blocking_reason": "★ 不是我们的代码坏了：MUSA 栈无原生 GQA 支持——torch_musa 的 SDPA 不接受 enable_gqa（非 kwargs、位置参数超限、scale 被强制约束），且 transformers 4.46.3 的 repeat_kv 是真复制（shares_storage=False），单层 B=8/L=512 约 0.30 ms x 28 层 ≈8.3 ms/步（≈10% fwd_ms）但几乎不随 L 增长（launch 开销主导）⇒ 按任务书『若不存在显著复制/热点，记录结果结束』『不支持即结束该分支』终止。负结论限当前 transformers/torch_musa 版本。",
+      "code_implemented": false,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "scripts/gqa_support_probe.py",
+        "results/raw/_probe/20260930/gqa_probe_ops.json（标签 PROBE_NOT_HARNESS）",
+        "RESEARCH_LOG.md#2026-09-30-续"
+      ],
+      "file": "sessions/S05_GQA_ATTENTION.txt",
+      "hardware_measured": true,
+      "id": "S05",
+      "offline_verified": false,
+      "status": "IMPLEMENTATION_FAILED"
+    },
+    {
+      "blocking_reason": "设计前提已具备（S04 交付固定地址常驻缓冲 + 定容量 + 槽位映射），但收益前提受 S04 覆盖面（15.3%）制约 ⇒ 待①裁定后再开。",
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S06_SYNCHRONIZATION_AND_GRAPHS.txt",
+      "hardware_measured": null,
+      "id": "S06",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    },
+    {
+      "blocking_reason": "预注册 §5.1（双预算如何处理受阻 decode）/ §5.2（closed_jittered 只改时间戳）仍待裁定。",
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [
+        "EVIDENCE_INDEX.md#3 缺口 28/29",
+        "tests/test_s00_known_gaps.py"
+      ],
+      "file": "sessions/S07_EXECUTION_AWARE_SCHEDULING.txt",
+      "hardware_measured": null,
+      "id": "S07",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S08_QUANTIZATION_OPTIONAL.txt",
+      "hardware_measured": null,
+      "id": "S08",
+      "offline_verified": null,
+      "status": "OPTIONAL_NOT_SELECTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S09_SPECULATIVE_OPTIONAL.txt",
+      "hardware_measured": null,
+      "id": "S09",
+      "offline_verified": null,
+      "status": "OPTIONAL_NOT_SELECTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S10_STRONG_BASELINES_AND_INTEGRATION.txt",
+      "hardware_measured": null,
+      "id": "S10",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S11_STATISTICS_PAPER_AND_REPRODUCTION.txt",
+      "hardware_measured": null,
+      "id": "S11",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    }
+  ],
+  "single_writer": "本会话结束时无并发写者；下一会话接手前请重新核验 mtime 与进程。",
+  "snapshot_commit_full": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4",
+  "snapshot_commit_short": "16e82d2",
+  "status_vocabulary": [
+    "NOT_STARTED",
+    "IN_PROGRESS",
+    "LOCAL_VERIFIED",
+    "REMOTE_PENDING",
+    "MEASURED_PENDING_AUDIT",
+    "VALIDATED_BENEFIT",
+    "VALIDATED_NO_BENEFIT",
+    "INDETERMINATE",
+    "IMPLEMENTATION_FAILED",
+    "OPTIONAL_NOT_SELECTED"
+  ],
+  "user_ruling_2026_10_03": {
+    "OPT_04": "STILL_GATED（按其独立前置条件验收，不因 S04 结束而自动放行）",
+    "S04_archival_verdict": "QUALIFIED_LOCAL_NEGATIVE（限定实现与负载的局部负结果）",
+    "S04_current_implementation": "KEEP_DEFAULT_OFF（默认关闭，不得改成默认开）",
+    "S07": "CONTINUE_OFFLINE_ONLY（可继续离线协议设计，不需机时）",
+    "graph_capture_S06": "DEFER（图捕获暂缓；S06 先限于计时与同步诊断）",
+    "mixed_length_slots": "DEFER（暂不扩展；属设计扩张，需另立裁定）",
+    "paper_citation_of_EXECOPT5": "BLOCKED_PENDING_ENV_EVIDENCE（先解决 §4.4 A7 环境证据与 A4 统计表述）",
+    "same_protocol_perf_batches": "STOP（EXECOPT4 3 轮 + EXECOPT5 5 轮已两批独立一致；再跑不增加信息，不消耗机时）"
+  },
+  "wrapup_2026_10_03": {
+    "conclusion_wording_fixes": [
+      "6.74% 明确为数量覆盖率；换算改用时间权重（baseline 0.5189% / pkv 0.8831%）+ 加性核对（残差 0.047%，88.6% 来自尾段）。",
+      "比值标注为「逐轮配对比值的中位数」（+70.86%；「中位数之比」为 +70.91%，口径不同不可混用）。",
+      "删除「fwd 区间重叠 ⇒ 无差异 / 只影响 pack」（区间重叠不是检验，n=5 推不出无差异）。",
+      "S04 归档为「限定实现与负载的局部负结果」，不得外推。"
+    ],
+    "env_fingerprint_mismatch": {
+      "contemporaneous_evidence": "批次预检 2026-10-03 03:46:58 的实时值：PY 3.10.8 / TORCH 2.2.0 / MUSA 1.3.0+81caf0a / TF 4.46.3 / TORCH_MUSA_AVAIL True / DEVS 1 / REV_ENV a09a35458c70… / HF_HOME；计时探针 7×1.0s 极差 0.000121s 稳健 CV 0.005%；cpu.max 容器 15 核。",
+      "finding": "EXECOPT5 产物里的 hardware_env 采集于 2026-09-28、容器 cf99469eb6；实跑容器是 05264bbf0d ⇒ 异机指纹。成因：load_hardware_env 只按路径找 results/raw/_env/env.json，无新鲜度/身份校验。",
+      "fix": "批次前置新增 step_env_fingerprint：重采指纹 + 校验容器/设备身份（fingerprint_identity_verdict）；指纹主机 != 实跑主机 ⇒ StepFailed 禁止起跑；换容器允许但记 container_changed。另把 plan/run 的步骤序列合并为 _preflight_sequence 一张表（原先两处各写一遍 ⇒ 新步骤只出现在 run 里）。",
+      "missing_registered_as_unmeasurable": [
+        "该容器的 MUSA driver 版本",
+        "该容器的 OS/kernel",
+        "该容器的 CPU 型号"
+      ],
+      "raw_artifacts": "未修改、未回填标签（矛盾保留为证据；有回归守卫 TestExecopt5ArtifactsWereNotEdited）",
+      "tests": "tests/test_env_fingerprint_identity.py（14 例，含 7 条反向）；破坏性对照：去掉身份对账 ⇒ 靶心用例变红。"
+    },
+    "next_action_refreshed": "STATE.next_action 已写明 do_not_repeat（含「不要再跑同协议 S04 批次」）与 priority_1 = S01 部署收益复核。",
+    "regression_regr10": "用例 1729 / 真正执行 1728 / 跳过 1 / 失败 0 / 错误 0 / EXIT=0（较 _regr9 +31，全部为新增测试：env_fingerprint_identity +14、run_tests_harness +5、verify_s04_cli +12）。",
+    "residual_loophole_fixes": [
+      "① 测试运行器：原来只读进程 returncode，旁路文件的 exitstatus 写而不比 ⇒ 现在两处必须一致，缺失/不一致都判失败（3 条反例）。",
+      "② 数值共同缺失：_compare_kv 两侧都空时 {} == {} 恒真 ⇒ 现在要求非空且层列表非空；token 同理。（破坏性对照：去掉守卫 ⇒ 2 条变红。）",
+      "③ 数值产物新增 numeric_digests（token/logits/KV 的 sha256+标量，不存张量）⇒ 事后复核不必重跑真机。"
+    ]
+  }
+}

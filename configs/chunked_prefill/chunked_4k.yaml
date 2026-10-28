@@ -1,0 +1,78 @@
+# 配置说明
+# ---------
+# 变量（相对 configs/baseline/default.yaml）：
+#   chunk.enabled: false -> true
+#   chunk.policy: fixed_chunk（关闭态）-> decode_priority_chunk
+#   chunk.chunk_size: 4096
+#   workload.name: short_chat -> long_context_qa（长 prompt、短输出，prefill 是瓶颈）
+#
+# 预期（必须先写下来，跑完再对照——这是判断「意外」的唯一依据）：
+#   - TTFT P99 持平或略降：长 prompt 不再独占算力，排队时间被摊平
+#   - TPOT P99 明显下降：decode 不再被整段 prefill 阻塞
+#   - 吞吐略降：切分带来更多的每步固定开销
+# 若实测 TTFT 反而恶化，先怀疑 chunk_size 选得太小（每步固定开销占比过高），
+# 而不是直接判定方案无效。用 configs/chunked_prefill/sweep.yaml 扫一遍再下结论。
+
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 50
+  notes: "分块预填充 chunk=4096，decode 优先"
+
+workload:
+  name: long_context_qa
+
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 1   # 给即将完成 prefill 的请求预留位置，防止 decode 被饿死
+
+chunk:
+  policy: decode_priority_chunk
+  enabled: true
+  chunk_size: 4096
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.125   # 8192 * 0.125 = 1024 token 留给 decode
+  min_decode_seqs: 1
+
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+
+controller:
+  enabled: false
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.10
+  # 冷却单位是**观测周期**（一次决策 = 一个周期），不是推理步。
+  # 决策节拍由上面的 control_interval_steps 决定；两者单位不同，别混。
+  cooldown_cycles: 3
+  chunk_size_init: 4096
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+
+runtime:
+  model: "Qwen2.5-7B-Instruct"   # 规范第 4 节：起步用 Qwen 系 7B~8B Dense
+  model_revision: "main"
+  precision: bf16
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto

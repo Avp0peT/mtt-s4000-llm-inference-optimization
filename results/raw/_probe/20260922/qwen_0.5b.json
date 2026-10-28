@@ -1,0 +1,56 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "prompt": "What is 1+1? Answer with just the number.",
+  "env": {
+    "python": "3.10.8",
+    "torch": "2.2.0",
+    "torch_musa": "1.3.0+81caf0a",
+    "transformers": "4.46.3",
+    "device_name": "MTT S4000",
+    "device_count": 1
+  },
+  "mem_before": {
+    "free_mib": 49054.0,
+    "total_mib": 49061.7
+  },
+  "load_s": 215.74,
+  "device": {
+    "param_device": "musa:0",
+    "param_dtype": "torch.float16",
+    "n_params": 494032768,
+    "all_params_on_musa": true
+  },
+  "mem_after_load": {
+    "free_mib": 48051.2,
+    "total_mib": 49061.7
+  },
+  "mem_load_delta_mib": 1002.8,
+  "prompt_tokens": 42,
+  "generation": {
+    "deterministic": true,
+    "new_tokens": 2,
+    "text": "2",
+    "latency_s": [
+      4.105,
+      0.102
+    ]
+  },
+  "mem_after_generate": {
+    "free_mib": 47921.6,
+    "total_mib": 49061.7
+  },
+  "mem_generate_delta_mib": 129.6,
+  "peak_allocated_mib": 953.0,
+  "correctness_fp32_first_forward": {
+    "max_abs_diff": 0.00020313262939453125,
+    "mean_abs_diff": 1.554934169689659e-05,
+    "cpu_argmax_last": 17,
+    "musa_argmax_last": 17,
+    "argmax_match": true,
+    "shape": [
+      1,
+      42,
+      151936
+    ]
+  }
+}

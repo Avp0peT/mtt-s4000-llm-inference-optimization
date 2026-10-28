@@ -1,0 +1,104 @@
+# 成本模型标定的形状网格（**协议 v1**）—— 第 11 步
+#
+# ⚠️ **v2 的变更理由**（预注册要求：扩采样点必须另开一轮并说明，不得事后加密）：
+# v1 的 `kv_len` 上限是 2048。第 13 步实测发现：真实单元格（`mixed` / 长上下文档）
+# 的 kv 会到 2176–4096，**超出 v1 范围** ⇒ 成本模型按纪律返回"不可外推" ⇒
+# SLOWeave 参考臂在那里**没有可行 chunk**（预算明明是正的 120ms）、退化为 decode-only
+# ⇒ 对照失去区分度。**扩容是为了恢复可用性，不是为了挑好看的数**。
+# 新增点：`pure_decode` 加 kv=4096（b1/b2/b4/b8），`mixed_serving` 加 kv=4096（b1/b4/b8）。
+#
+# ⚠️ 这份文件的取值点是**先定的**：第 11 步的验收要求"预先登记新的采集协议与版本"。
+# 看到结果之后再加密采样点，就会把"事后挑形状"混进来 ⇒ 要加密必须另开一轮（v2）并说明。
+#
+# 为什么是这些维度：模型要预测的是**真实服务步**的成本，而本项目的执行形状由
+# `benchmark/real_backend.py` 决定 —— 一步里同时有若干条序列做 decode、外加一条
+# 序列的一个 prefill 块（chunked prefill）。所以三个自变量就是
+# (batch = 正在解码的序列数, prefill_tok = 本步的 prefill token 数, kv_len = 上下文长度)，
+# 再加上"一步里有几个串行前向"。
+#
+# ⚠️ 与 `COST_PROFILE_S4000.md` 的关系：那份报告给的是**快态平台值**（async 块最小值），
+# 它只是**性能下界参考**。验收明确要求"SLO 预测须覆盖真实服务协议，不能只拟合快态最小值"
+# ⇒ 被拟合的是块 B。
+
+protocol_version: cost-calib-v2
+
+#: 三个自变量各自的取值域（网格的边界，不全是采样点）。
+axes:
+  batch: [1, 2, 4, 8]           # 正在解码的序列数（受 scheduler.max_num_seqs=8 约束）
+  prefill_tok: [0, 512, 1024, 2048]   # 0 = 纯 decode 步；512/1024/2048 与 chunk_size 取值对齐
+  kv_len: [0, 512, 1024, 2048, 4096]  # 上下文长度；0 只在纯 prefill 组用
+
+#: 四个采样组。每组写明**为什么要有它**（否则没人敢删也没人敢加）。
+groups:
+  - id: pure_prefill
+    why: 纯 prefill 的每步成本（无 decode 叠加）⇒ prefill 项的形状依赖
+    batch: [1]
+    prefill_tok: [512, 1024, 2048]
+    kv_len: [0]
+    n_forwards: [1]
+
+  - id: pure_decode
+    why: 纯 decode 的每步成本随 batch 与 kv 的变化 ⇒ decode 项与 KV 项
+    batch: [1, 2, 4, 8]
+    prefill_tok: [0]
+    kv_len: [512, 1024, 2048, 4096]
+    n_forwards: [1]
+
+  - id: mixed_serving
+    why: "**真实服务步** = decode 与 prefill 同时（chunked prefill 的核心形状）；模型若不覆盖它，SLO 预测就是空中楼阁"
+    batch: [1, 4, 8]
+    prefill_tok: [512, 1024]
+    kv_len: [1024, 4096]
+    n_forwards: [1]
+
+  - id: serial_forward_group
+    why: 实际一步里可能有多个**串行**前向（`telemetry.note` 的 `forwards=` 字段）⇒ 测加和性，决定模型是"按前向数线性"还是"按步"
+    batch: [1]
+    prefill_tok: [1024]
+    kv_len: [1024]
+    n_forwards: [1, 2, 3, 4]
+
+#: 两个采集块。**分开采、分开报**（预注册 §二）。
+blocks:
+  A:
+    name: fast_state_platform
+    method: async_chunk          # 连续提交 n 次、块尾 sync 一次 ⇒ 占空比 ~100%
+    duty_cycle: "~100%"
+    block_n: 20
+    n_blocks: 3
+    take: block_min              # 取**块最小值**为该格快态平台值（COST_PROFILE §4）
+    role: lower_bound_only       # ⚠️ 只作性能下界参考，**不得用于拟合**
+  B:
+    name: service_protocol
+    method: mimic_harness_step   # 复刻 harness 的逐步 sync + 真实 KV 生长（v5 的 S5 MIMIC 协议）
+    duty_cycle: "~85%"
+    warmup_calls: 30             # 吸收一次性编译 + autotune 微调（COST_PROFILE §4）
+    n_calls: 40
+    role: fitted                 # **被拟合的是这个**
+
+#: 必须一起记录的量（缺了就无法事后判断"测的是什么条件"）。
+record:
+  - per_call_device_ms          # 块 A：块总时长 / n
+  - per_call_wall_ms            # 块 B：逐步墙钟（**含** python 间隙与提交成本）
+  - submit_cost_ms              # 主机提交成本（b1 中位 75.25 ms、b2 88.45 ms，与设备同量级）
+  - duty_cycle_actual           # 实测占空比（它是性能态的开关）
+  - n_forwards                  # 本步有几个串行前向
+  - session_id
+  - block_index / call_index    # 保留原始序列，便于事后重算（不只存汇总）
+
+#: 会话与划分（预注册 §三）。**跨会话不得并表**（COST_PROFILE §6：绝对值漂移 1.3–4%）。
+session:
+  id_scheme: "<UTC 时间戳>-<hostname 前 8 位>-<git short>-<序号>"
+  cross_session_merge: forbidden
+  split_unit: [shape, session]   # ⚠️ **不是**相邻步；按形状/会话**整块**留出
+  forbidden_split:                   # ⚠️ **必须是列表**（写成字符串会被逐字符拆开，见校验里的同名守卫）
+    - stepwise_random                # 同一 session 的相邻步同批、同 KV 段、同性能态 ⇒ 随机切分会让留出集"见过邻居"
+    - adjacent_step
+    - step
+
+#: 指纹（预注册 §七）。加载模型时**逐项比对，不符即拒**。
+fingerprint:
+  hardware: {device_model: "MTT S4000", driver_version: "2.7.0", gmi_version: "1.14.0"}
+  software: {torch: "2.2.0", torch_musa: "1.3.0+81caf0a", transformers: "4.46.3", python: "3.10.8"}
+  model: {id: "Qwen/Qwen2.5-7B-Instruct", revision: "a09a35458c702b33eeacc393d103063234e8bc28"}
+  precision: fp16

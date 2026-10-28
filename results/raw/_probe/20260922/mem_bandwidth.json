@@ -1,0 +1,16 @@
+{
+  "device": "MTT S4000",
+  "mem_total_mib": 49061.7,
+  "copy_256mib": {
+    "tensor_mib": 256.0,
+    "reps": 20,
+    "per_copy_ms": 0.772,
+    "effective_gbps": 695.4
+  },
+  "copy_2048mib": {
+    "tensor_mib": 2048.0,
+    "reps": 20,
+    "per_copy_ms": 6.6272,
+    "effective_gbps": 648.1
+  }
+}

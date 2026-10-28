@@ -1,0 +1,54 @@
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 50
+  notes: 分块预填充 chunk=4096，decode 优先
+workload:
+  name: long_context_qa
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 1
+chunk:
+  policy: decode_priority_chunk
+  enabled: true
+  chunk_size: 4096
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.125
+  min_decode_seqs: 1
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+controller:
+  enabled: false
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.1
+  cooldown_cycles: 3
+  chunk_size_init: 4096
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+runtime:
+  model: Qwen2.5-7B-Instruct
+  model_revision: main
+  precision: bf16
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto

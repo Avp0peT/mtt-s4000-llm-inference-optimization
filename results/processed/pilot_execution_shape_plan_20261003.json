@@ -1,0 +1,71 @@
+{
+  "tag": "PILOT_OFFLINE_SHAPE_20261003",
+  "remote_root": null,
+  "remote_python": null,
+  "remote_identity_status": "REQUIRED_NOT_PROVIDED",
+  "cfg_dir": "configs/mthreads/prereg_batch",
+  "baseline_arg": "configs/mthreads/prereg_batch/static_small.yaml",
+  "arms_arg": [
+    "cost_single",
+    "cost_dual"
+  ],
+  "arms": [
+    {
+      "id": "P1",
+      "arm": "static_small",
+      "matrix_cell": "baseline",
+      "role": "静态对照（同起点）",
+      "controller": "关",
+      "cost_family": false,
+      "purpose": "测节拍 + 测该 cell 的 TPOT / 达标率基线"
+    },
+    {
+      "id": "P2",
+      "arm": "cost_single",
+      "matrix_cell": "cost_single",
+      "role": "单预算成本臂",
+      "controller": "开（单预算 prefill_deadline_ms=null）",
+      "cost_family": true,
+      "purpose": "测控制器的步级轨迹与回退率"
+    },
+    {
+      "id": "P3",
+      "arm": "cost_dual",
+      "matrix_cell": "cost_dual",
+      "role": "双预算成本臂",
+      "controller": "开（双预算 prefill_deadline_ms=2000）",
+      "cost_family": true,
+      "purpose": "测双预算是否改变步级轨迹（与 P2 逐 step 对比）"
+    }
+  ],
+  "cells": [
+    "baseline",
+    "cost_single",
+    "cost_dual"
+  ],
+  "repeats": 1,
+  "mode": "fixed-repeats（**显式** --repeats 1；**不**用 --fill-budget）",
+  "expected_total_runs": 3,
+  "planned_runs": [
+    "baseline#r0",
+    "cost_single#r0",
+    "cost_dual#r0"
+  ],
+  "n_planned_runs": 3,
+  "budget_minutes": 45,
+  "budget_check_boundary": "整轮边界；不中断正在运行的任务或轮次，不是硬超时",
+  "budget_minutes_expected": null,
+  "budget_estimation": "由相同 cell 的启动/标定与 pilot 实测节拍估算；当前未知",
+  "fz_state": {
+    "FZ-1": "A（逐步择一）—— 当前实现",
+    "FZ-2": "A（本步没被服务）—— 当前实现",
+    "utterance_ceiling": "只能说『在（逐步择一）语义下 / 在（本步没被服务）口径下』；**不得**把 A 写成『已选定最优语义』"
+  },
+  "not_for": "宣布性能优势（pilot 只查机制/覆盖/节拍）",
+  "validation_problems": [],
+  "matrix_dryplan_ok": true,
+  "matrix_dryplan_note": "矩阵 dry-plan 确认 **3 项** = 3 臂 × 1 轮（cells=['baseline', 'cost_single', 'cost_dual']）",
+  "ok": true,
+  "remote_command": null,
+  "evidence_class": "PLAN_ONLY（未执行任何批次）"
+}

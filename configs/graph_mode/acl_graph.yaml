@@ -1,0 +1,85 @@
+# 配置说明
+# ---------
+# 变量（相对 configs/baseline/default.yaml）：runtime.graph_mode / runtime.capture
+#
+# 图模式（ACL Graph 类）把固定的执行序列捕获为一张图，省掉每步的 launch 开销。
+# 它的收益集中在**每步固定开销**上，因此：
+#   - 短序列、小 batch 场景收益占比最高（固定开销占比大）
+#   - 一旦序列长度/批组成频繁变化，就会反复重捕获，收益可能变成负的
+#
+# 这解释了为什么本配置选 short_chat 作为负载：它是图模式的主场。
+# 若要在 long_context_qa 上测图模式，先预期「收益被摊薄、甚至因重捕获而变差」。
+#
+# 同样地：图模式在 --dry-run 下不生效（它对应 device_model.step_overhead_ms
+# 这一项，但模拟器不会自动降低它——那样等于预设结论）。
+# 评估图模式请走真机，并同时记录捕获次数与重捕获原因。
+
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 50
+  notes: "图模式对照（eager vs graph）"
+
+workload:
+  name: short_chat
+
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 0
+
+chunk:
+  policy: fixed_chunk
+  enabled: false
+  chunk_size: 8192
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+
+controller:
+  enabled: false
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.10
+  # 冷却单位是**观测周期**（一次决策 = 一个周期），不是推理步。
+  # 决策节拍由上面的 control_interval_steps 决定；两者单位不同，别混。
+  cooldown_cycles: 3
+  chunk_size_init: 4096
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+
+runtime:
+  model: "Qwen2.5-7B-Instruct"   # 规范第 4 节：起步用 Qwen 系 7B~8B Dense
+  model_revision: "main"
+  precision: bf16
+  graph_mode: acl_graph     # eager -> acl_graph
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto
+  capture:
+    max_batch_size: 32      # 捕获时假设的最大批大小；超出即重捕获
+    max_seq_len: 4096       # 捕获时的最大序列长度；不足会截断、超出会重捕获
+    # 下列统计是判断「图模式是否真的省了开销」的关键证据，必须采集
+    capture_count: 0
+    recapture_reasons: []

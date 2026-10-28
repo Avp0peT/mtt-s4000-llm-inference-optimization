@@ -1,0 +1,79 @@
+# 配置说明
+# ---------
+# 变量（相对 configs/baseline/default.yaml）：
+#   cache.enabled: false -> true
+#   workload.name: short_chat -> shared_prefix_4k（1 组共享 4096 token 前缀）
+#
+# 这是**双变量**改动，因此它不能直接与 baseline 相减得出「前缀缓存的收益」。
+# 正确用法：
+#   1) 与 baseline 的 shared_prefix_4k 变体对照（只变 cache.enabled），得到净收益；
+#   2) 与 short_chat 的对照用于说明「负载本身变了多少」。
+# 把它写成双变量是因为前缀缓存只有在有共享前缀时才有效——
+# 在无共享前缀的负载上测它，得到的必然是 0 收益，那不算结论。
+#
+# 关键观察指标：cache_hit_rate 与 TTFT。注意缓存只影响 TTFT，
+# 不应改变 TPOT；若实测 TPOT 也变了，说明测的是别的东西（如批组成被改变了）。
+
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 50
+  notes: "前缀缓存（共享 4K 前缀）"
+
+workload:
+  name: shared_prefix_4k
+
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 0
+
+chunk:
+  policy: fixed_chunk
+  enabled: false
+  chunk_size: 8192
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+
+cache:
+  enabled: true
+  block_size: 16            # 块切得越细，命中粒度越细，但管理开销上升
+  max_blocks: 8192          # = 131072 token 容量；容量不足会直接体现为命中率下降
+  eviction: lru
+  min_reuse_blocks: 1
+
+controller:
+  enabled: false
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.10
+  # 冷却单位是**观测周期**（一次决策 = 一个周期），不是推理步。
+  # 决策节拍由上面的 control_interval_steps 决定；两者单位不同，别混。
+  cooldown_cycles: 3
+  chunk_size_init: 4096
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+
+runtime:
+  model: "Qwen2.5-7B-Instruct"   # 规范第 4 节：起步用 Qwen 系 7B~8B Dense
+  model_revision: "main"
+  precision: bf16
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto

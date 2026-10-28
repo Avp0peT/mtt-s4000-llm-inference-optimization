@@ -1,0 +1,142 @@
+{
+ "model_version": "cost-model-v1",
+ "protocol_version": "cost-calib-v1",
+ "grid_sha256": "bac1f34f42d4830a",
+ "fit_on_sessions": [
+  "20260925T084017Z-autodl-c-s1",
+  "20260925T090446Z-autodl-c-s2",
+  "20260925T091845Z-autodl-c-s3"
+ ],
+ "n_records": 72,
+ "coefficients": {
+  "1": [
+   53.66118573446339,
+   0.21886483023260941,
+   -0.00045255809719274315
+  ],
+  "2": [
+   64.56800000000004,
+   0.0,
+   0.00530580357142855
+  ],
+  "4": [
+   58.80192888888898,
+   0.8619965624999997,
+   0.011880321180555353
+  ],
+  "8": [
+   62.54314222222207,
+   1.7240889062499996,
+   0.02296396701388833
+  ]
+ },
+ "basis": [
+  "1",
+  "prefill_tok",
+  "kv_len"
+ ],
+ "calibrated_range": {
+  "1": {
+   "prefill_tok": [
+    0,
+    2048
+   ],
+   "kv_len": [
+    0,
+    2048
+   ],
+   "n_points": 33
+  },
+  "2": {
+   "prefill_tok": [
+    0,
+    0
+   ],
+   "kv_len": [
+    512,
+    2048
+   ],
+   "n_points": 9
+  },
+  "4": {
+   "prefill_tok": [
+    0,
+    1024
+   ],
+   "kv_len": [
+    512,
+    2048
+   ],
+   "n_points": 15
+  },
+  "8": {
+   "prefill_tok": [
+    0,
+    1024
+   ],
+   "kv_len": [
+    512,
+    2048
+   ],
+   "n_points": 15
+  }
+ },
+ "safety_margin": 0.01766943457486417,
+ "safety_margin_basis": "留出形状上的低估误差 p95（预测值<实际值的那些样本的 p95 缺口）",
+ "n_forwards_is_multiplier": true,
+ "n_forwards_basis": "实测 n_forwards 1→4 的单前向成本逐位相同（262.7 ms）⇒ 加和性成立；故它作乘子，不参与范围检查",
+ "fingerprint": {
+  "hardware": {
+   "device_model": "MTT S4000",
+   "driver_version": "2.7.0",
+   "gmi_version": "1.14.0"
+  },
+  "software": {
+   "torch": "2.2.0",
+   "torch_musa": "1.3.0+81caf0a",
+   "transformers": "4.46.3",
+   "python": "3.10.8"
+  },
+  "model": {
+   "id": "Qwen/Qwen2.5-7B-Instruct",
+   "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "precision": "fp16"
+ },
+ "notes": "由 scripts/export_cost_model.py 从 cost-calib-v1 的标定产物导出。越界必须回退、不得外推；指纹不符不得静默使用。",
+ "applicability_boundary": {
+  "batch": [
+   "1",
+   "2",
+   "4",
+   "8"
+  ],
+  "kv_len_max": 2048,
+  "prefill_tok_max_per_batch": {
+   "1": [
+    0,
+    2048
+   ],
+   "2": [
+    0,
+    0
+   ],
+   "4": [
+    0,
+    1024
+   ],
+   "8": [
+    0,
+    1024
+   ]
+  },
+  "note": "**越界即回退，不得外推**。逐 batch 的 prefill/kv 实测边界见 calibrated_range；batch 不在 coefficients 里（例如真实服务里的 3/5/6/7，本模型只标了 1/2/4/8）同样算越界。"
+ },
+ "accuracy_caveat": {
+  "statement": "`safety_margin`（以及任何'低估 p95'数字）是**特定留出划分下**的留出误差，**不是泛化精度**。",
+  "evidence": "同一份数据换更严的留出：v1 的 1.77%（1-in-4）在 1-in-3 下变 68.78%、1-in-2 下变 95.25%；v3 同样从 5.15% 变 95.26%。",
+  "root_cause": "哈希划分对**训练集覆盖**是一次抽签：某些划分下某段的训练集只剩纯 decode（prefill_tok 全 0）⇒ 该段设计矩阵秩 < 参数个数 ⇒ prefill 系数学不到⇒ 一个实测 1857.9 ms 的混合形状被预测成 88.1 ms。",
+  "fix": "用**秩保证划分**（每段先凑满秩再留出）+ 更大的网格（同时满足'训练满秩'与'留出够大'）；见 configs/cost_calib/shape_grid_v4.yaml 与 scripts/costcalib_fit.py --split rank_guaranteed。",
+  "consequence": "**用本文件里的 safety_margin 当作'已覆盖低估尾部'是站不住的** —— 控制器据此做的 SLO 保护没有余量支撑。"
+ }
+}

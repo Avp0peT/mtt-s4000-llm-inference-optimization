@@ -1,0 +1,121 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 结果目录策略
+# ------------
+# results/raw/ 是**证据**，必须入库：它是所有结论的唯一溯源入口，
+#   丢了它，论文里的每个数字都变成不可复核的断言。
+# results/processed/ 与 results/figures/ 是**可重算的派生品**，不入库，
+#   避免有人把派生结果当原始数据改，也避免库里出现两条互相矛盾的同源数据。
+results/processed/*
+results/figures/
+results/export/
+
+# 环境指纹是**测量机器**的本地状态，随仓库分发会造成严重误导：
+# 它看起来像"这个项目的运行环境"，实际只是某台机器某一刻的快照。
+# 因此整目录不入库；需要交接时由 scripts/export_results.sh 打进导出包
+# （导出包里的 env.json 与具体的 run 绑定，含义明确）。
+results/raw/_env/
+
+# results/_incoming/ 是**回拉中转区**（`remote_run.py pull` 的落点）：
+# 产物在这里只是一份拷贝，**权威位置是 results/raw/<run_id>/**。
+# 中转副本一旦入库，同一份数据就有两个来源 ⇒ 与"results/processed/ 不入库"
+# 同一条理由。清理动作：确认 raw 下的副本逐文件 md5 一致后再删中转副本。
+results/_incoming/
+
+# 回拉中转/失败残骸：**绝不允许入库**
+# ------------------------------------
+# 踩过的坑（2026-09-28）：`git add results/raw/S14B2-*` 把 22 个 `.gz` 压缩副本
+# 一起入了库。它们是回拉通道的中转产物，不是权威产物；其中 `meta.json.gz`
+# 解压出来是 **0 字节**，另一个连 gzip 结束标记都没有（截断）。
+# 入库就等于把**坏数据**当成证据存进仓库，且与解压后的权威文件构成第二份真相。
+# `.tar` 同理：`remote_run.py pull <dir>` 在高竞争下会留下 0 字节/截断的 tar，
+# 大小远小于真实数据（660 K vs 4 M 级），却"看起来像一份产物"。
+# 判据：results/raw/<run_id>/ 下**只允许** config.snapshot.yaml / meta.json /
+#       requests.jsonl / telemetry.jsonl 这四类权威文件。
+results/raw/**/*.gz
+results/raw/**/*.tar
+results/raw/*.tar
+results/raw/_*.tar
+
+# 编辑器与系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 远程凭据：**绝不入库**。实际存放于仓库外 ~/.workbuddy/remote.env，
+# 由 scripts/remote_run.py 读取。此处再加一道守卫，防止有人把它复制进仓库。
+remote.env
+*.remote.env
+
+# .workbuddy/tmp/ 是**一次性诊断脚本与中转产物**的工作区
+# （推送脚本、S1–S5 校验脚本、从逐步骤遥测反推的诊断脚本等）。
+# 它们服务于当次操作的执行与排障，不属于项目源码 ⇒ 不入库。
+# ⚠️ 只忽略 tmp/，**不**忽略 .workbuddy/ 整体：.workbuddy/memory/ 是
+#    逐日工作日志，本来就在版本控制里（有意如此）。
+.workbuddy/tmp/
+
+# ── 排障用**一次性**产物（2026-09-28 新增）──────────────────────────
+# `.` 前缀的临时文件：远端探测输出、b64 中转、提交信息草稿、pytest 落盘。
+# 它们**可为当次诊断复现**，且每次内容都不同（含时刻、字节数）⇒ 入库只会
+# 制造无意义 diff，并把"当时的中间状态"伪装成项目状态。
+# ⚠️ **不**忽略 `.workbuddy/memory/*.md`（那才是日志与长期约定）。
+# ⚠️ **不**忽略 `.workbuddy/memory/*.sh` 与 `*.py`：排障**脚本**要入库，
+#    否则复现手段会随会话一起消失（踩过一次）。
+.workbuddy/memory/.*
+
+# 日志
+*.log
+
+# 第⑥步静态扫描的 dry-run 产物：**合成**数字（一阶设备模型），
+# 只用于证明链路能跑；可随时重跑，故不入库。真机数据只会进 results/raw/。
+results/scan_step6/
+
+# ── dry-run 产物（TEST_DATA）不进仓库（第 13 步新增）────────────────────
+# 它们的目录名以「YYYYMMDD-HHMMSS-」开头（CLI 按时间戳命名），而**真产物**
+# 一律以 `--tag` 开头（如 `S10-…`/`P8FULL-…`）⇒ 这条规则只挡 dry-run。
+# 为什么必须有：dry-run 的 digital 由一阶设备模型合成、标 TEST_DATA，
+# 一旦被 `git add -A` 带进仓库，看起来就和真证据一样。实测误提交过一次。
+results/raw/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]-*/
+
+# Publication snapshot: private local state, credentials and model weights
+.workbuddy/
+.env
+.env.*
+*.remote.env
+*.pem
+*.key
+*.safetensors
+*.pt
+*.pth
+*.bin
+_regr*.txt
+
+# Frozen derived inputs/evidence explicitly included in this publication
+!results/processed/costcalib_eval_v7.json
+!results/processed/dryplan_execution_shape_20261003.json
+!results/processed/execution-shape-cpu-20261003T120152118544Z.json
+!results/processed/execution_shape_manifest_20261003.json
+!results/processed/execution_shape_probe_plan_20261003.json
+!results/processed/offline_execution_shape_replay_cli_20261003.log
+!results/processed/offline_execution_shape_replay_cli_20261003.xml
+!results/processed/offline_execution_shape_tests_final_20261003.log
+!results/processed/offline_execution_shape_tests_final_20261003.xml
+!results/processed/pilot_execution_shape_plan_20261003.json
+!results/processed/prediction-execution-match-20261003T121140261440Z.json
+!results/processed/prereg_states.json
+!results/processed/s01_recheck_analysis.json
+!results/processed/s01num-offline-rolefix-20261003T115219571Z.json
+
+# Publication verification evidence
+!docs/validation/20261028/*.log

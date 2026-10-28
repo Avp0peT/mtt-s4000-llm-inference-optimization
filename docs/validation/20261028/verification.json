@@ -1,0 +1,76 @@
+[
+  {
+    "check": "core",
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "tests/test_workload.py",
+      "tests/test_metrics.py",
+      "tests/test_controller_gate_mode.py",
+      "tests/test_execution_shape.py",
+      "tests/test_cost_execution_contract.py",
+      "-q"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 29.27,
+    "log": "core.log"
+  },
+  {
+    "check": "execution_shape_regression",
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "tests/test_arm_selection.py",
+      "tests/test_arm_state_in_artifact.py",
+      "tests/test_cost_execution_contract.py",
+      "tests/test_cost_model.py",
+      "tests/test_cost_policy.py",
+      "tests/test_cost_policy_dual_budget.py",
+      "tests/test_dryplan_decision_chain.py",
+      "tests/test_execution_shape.py",
+      "tests/test_execution_shape_probe.py",
+      "tests/test_export_execution_shape_model.py",
+      "tests/test_next_batch_configs.py",
+      "tests/test_pilot_execution_plan.py",
+      "tests/test_pilot_flow_rules.py",
+      "tests/test_prediction_execution_match.py",
+      "tests/test_prepare_execution_pilot.py",
+      "tests/test_prereg_batch_configs.py",
+      "tests/test_real_backend.py",
+      "tests/test_shared_arm_impl.py",
+      "tests/test_step13_correctness.py",
+      "tests/test_verify_s01_numeric_offline.py",
+      "tests/test_verify_s01_realhw_entry.py",
+      "-q",
+      "--junitxml=docs/validation/20261028/execution_shape_regression.xml"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 23.45,
+    "log": "execution_shape_regression.log"
+  },
+  {
+    "check": "shape_dryplan",
+    "command": [
+      "python",
+      "scripts/execution_shape_probe.py",
+      "--manifest",
+      "results/processed/execution_shape_manifest_20261003.json",
+      "--dry-plan"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.25,
+    "log": "shape_dryplan.log"
+  },
+  {
+    "check": "pilot_dryplan",
+    "command": [
+      "python",
+      "scripts/pilot_execution_plan.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.34,
+    "log": "pilot_dryplan.log"
+  }
+]

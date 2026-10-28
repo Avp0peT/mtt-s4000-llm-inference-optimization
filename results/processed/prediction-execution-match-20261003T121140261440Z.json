@@ -1,0 +1,210 @@
+{
+  "data_label": "TEST_DATA",
+  "evidence_class": "OFFLINE_FAKE_DRIVER_CONTRACT",
+  "hardware_backed": false,
+  "matched": [
+    {
+      "decision_step": 0,
+      "target_step": 1,
+      "chunk": 4096,
+      "max_tokens": 8192,
+      "predicted_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r0",
+            "n_new_tokens": 1,
+            "kv_len": 8,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r0",
+                "n_new_tokens": 1,
+                "kv_len": 8,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 1,
+            "past_max": 8
+          }
+        ],
+        "n_forwards": 1,
+        "batch": 1
+      },
+      "predicted_fwd_ms": 1.0,
+      "predicted_host_ms": 0.5,
+      "prediction_value_basis": "recorded_decision_candidate",
+      "actual_step": 1,
+      "actual_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r0",
+            "n_new_tokens": 1,
+            "kv_len": 8,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r0",
+                "n_new_tokens": 1,
+                "kv_len": 8,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 1,
+            "past_max": 8
+          }
+        ],
+        "n_forwards": 1,
+        "batch": 1
+      },
+      "shape_match": true,
+      "n_forwards_match": true,
+      "actual_timing": {
+        "fwd_ms": 1.0,
+        "pack_ms": 0.0,
+        "readback_ms": 0.0,
+        "host_ms": 8.881784197001252e-16,
+        "driver_elapsed_ms": 1.0000000000000009,
+        "n_forwards": 1,
+        "unmodeled_driver_ms": 8.881784197001252e-16
+      },
+      "comparison_eligible": false,
+      "ineligible_reasons": [
+        "nonhardware_execution"
+      ],
+      "hardware_backed": false,
+      "timing_contract": "whole_step_fwd_plus_host_v1",
+      "host_definition": "driver.forward elapsed_ms - fwd_ms; excludes prime/warmup/external sync"
+    }
+  ],
+  "new_arrival_mismatch": [
+    {
+      "decision_step": 0,
+      "target_step": 1,
+      "chunk": 4096,
+      "max_tokens": 8192,
+      "predicted_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r0",
+            "n_new_tokens": 1,
+            "kv_len": 8,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r0",
+                "n_new_tokens": 1,
+                "kv_len": 8,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 1,
+            "past_max": 8
+          }
+        ],
+        "n_forwards": 1,
+        "batch": 1
+      },
+      "predicted_fwd_ms": 1.0,
+      "predicted_host_ms": 0.5,
+      "prediction_value_basis": "recorded_decision_candidate",
+      "actual_step": 1,
+      "actual_shape": {
+        "schema": "execution-shape-v1",
+        "items": [
+          {
+            "req_id": "r1",
+            "n_new_tokens": 4,
+            "kv_len": 0,
+            "role": "prefill",
+            "need_token": true
+          },
+          {
+            "req_id": "r0",
+            "n_new_tokens": 1,
+            "kv_len": 8,
+            "role": "decode",
+            "need_token": true
+          }
+        ],
+        "groups": [
+          {
+            "n_new_tokens": 4,
+            "items": [
+              {
+                "req_id": "r1",
+                "n_new_tokens": 4,
+                "kv_len": 0,
+                "role": "prefill",
+                "need_token": true
+              }
+            ],
+            "batch": 1,
+            "past_max": 0
+          },
+          {
+            "n_new_tokens": 1,
+            "items": [
+              {
+                "req_id": "r0",
+                "n_new_tokens": 1,
+                "kv_len": 8,
+                "role": "decode",
+                "need_token": true
+              }
+            ],
+            "batch": 1,
+            "past_max": 8
+          }
+        ],
+        "n_forwards": 2,
+        "batch": 2
+      },
+      "shape_match": false,
+      "n_forwards_match": false,
+      "actual_timing": {
+        "fwd_ms": 5.0,
+        "pack_ms": 0.0,
+        "readback_ms": 0.0,
+        "host_ms": 8.881784197001252e-16,
+        "driver_elapsed_ms": 5.000000000000001,
+        "n_forwards": 1,
+        "unmodeled_driver_ms": 8.881784197001252e-16
+      },
+      "comparison_eligible": false,
+      "ineligible_reasons": [
+        "execution_shape_changed",
+        "forward_group_count_unconfirmed_or_changed",
+        "nonhardware_execution"
+      ],
+      "hardware_backed": false,
+      "timing_contract": "whole_step_fwd_plus_host_v1",
+      "host_definition": "driver.forward elapsed_ms - fwd_ms; excludes prime/warmup/external sync"
+    }
+  ],
+  "fallback": [],
+  "shadow": []
+}
