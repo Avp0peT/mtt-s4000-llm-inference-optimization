@@ -1,0 +1,328 @@
+{
+  "context": {
+    "run_id": "cmp-prefix_cache-r1",
+    "workload": "shared_prefix_4k",
+    "config_path": "configs\\prefix_cache\\prefix_cache.yaml",
+    "repeat_index": 1,
+    "dry_run": true,
+    "extra": {
+      "dropped_requests": 0,
+      "steps": 1114,
+      "controller_decisions": 0,
+      "stall_reason": "",
+      "workload_fingerprint": {
+        "num_requests": 48,
+        "prompt_len_mean": 4217.1,
+        "prompt_len_min": 4096,
+        "prompt_len_max": 4348,
+        "gen_len_mean": 166.0,
+        "gen_len_min": 72,
+        "gen_len_max": 250,
+        "total_output_tokens": 7967,
+        "total_prompt_tokens": 202423,
+        "reusable_prompt_tokens": 196608,
+        "distinct_prefix_groups": 1,
+        "spec_name": "shared_prefix_4k",
+        "concurrency": 8,
+        "arrival": "closed",
+        "seed": 0,
+        "shared_prefix_len": 4096,
+        "prefix_reuse_ratio": 0.9713
+      },
+      "notes": "前缀缓存（共享 4K 前缀）"
+    }
+  },
+  "software_env": {
+    "python": "3.13.14",
+    "executable": "C:\\Users\\13944\\.workbuddy\\binaries\\python\\versions\\3.13.12\\python.exe",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+    "torch_version": "2.10.0+cu130",
+    "torch_npu_version": null,
+    "vllm_version": null,
+    "transformers_version": "4.50.0",
+    "ascend_opt_version": "0.2.0"
+  },
+  "hardware_env": {
+    "available": null,
+    "available_source": "missing",
+    "reason": "未找到 env.json（查找过：['C:\\\\Users\\\\13944\\\\WorkBuddy\\\\st\\\\ascend-llm-inference-optimization\\\\results\\\\raw\\\\cmp-prefix_cache-r1\\\\env.json', 'C:\\\\Users\\\\13944\\\\WorkBuddy\\\\st\\\\ascend-llm-inference-optimization\\\\results\\\\raw\\\\_env\\\\env.json']）；硬件可用性未知，请先运行 scripts/inspect_env.sh"
+  },
+  "n_samples": 1114,
+  "recorded_at": "2026-09-21T22:56:36+0800",
+  "summary": {
+    "run_id": "cmp-prefix_cache-r1",
+    "workload": "shared_prefix_4k",
+    "config": "prefix_cache",
+    "n_requests": 48,
+    "n_success": 48,
+    "n_failed": 0,
+    "n_rejected": 0,
+    "n_unfinished": 0,
+    "n_slo_satisfied": 48,
+    "failure_rate": 0.0,
+    "rejection_rate": 0.0,
+    "unfinished_rate": 0.0,
+    "slo_satisfaction_rate": 1.0,
+    "slo_goodput_req_s": 10.0307,
+    "slo_goodput_tok_s": 1664.888,
+    "ttft": {
+      "n": 48,
+      "p50": 25.5867,
+      "median": 25.5867,
+      "p90": 94.384,
+      "p95": 162.6033,
+      "p99": 193.5109,
+      "mean": 39.7436,
+      "min": 0.0,
+      "max": 200.68
+    },
+    "tpot": {
+      "n": 48,
+      "p50": 4.2814,
+      "median": 4.2814,
+      "p90": 4.6051,
+      "p95": 4.7076,
+      "p99": 4.8645,
+      "mean": 4.2275,
+      "min": 3.2598,
+      "max": 4.9836
+    },
+    "stall": {
+      "n": 48,
+      "p50": 27.0425,
+      "median": 27.0425,
+      "p90": 37.449,
+      "p95": 38.854,
+      "p99": 39.5149,
+      "mean": 25.7863,
+      "min": 3.42,
+      "max": 39.6967
+    },
+    "e2e": {
+      "n": 48,
+      "p50": 737.92,
+      "median": 737.92,
+      "p90": 1074.6887,
+      "p95": 1104.1457,
+      "p99": 1120.0447,
+      "mean": 736.6394,
+      "min": 332.0133,
+      "max": 1124.7133
+    },
+    "admission": {
+      "n": 48,
+      "p50": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "mean": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "queue": {
+      "n": 48,
+      "p50": 0.0,
+      "median": 0.0,
+      "p90": 54.5627,
+      "p95": 136.6243,
+      "p99": 178.2858,
+      "mean": 16.261,
+      "min": 0.0,
+      "max": 185.4267
+    },
+    "prefill": {
+      "n": 48,
+      "p50": 23.64,
+      "median": 23.64,
+      "p90": 40.77,
+      "p95": 44.325,
+      "p99": 45.2633,
+      "mean": 23.4826,
+      "min": 0.0,
+      "max": 45.42
+    },
+    "output_tokens": 7967,
+    "prompt_tokens": 202423,
+    "cached_tokens": 196608,
+    "cache_hit_rate": 0.9713,
+    "wall_ms": 4785.307,
+    "throughput_tok_s": 1664.888,
+    "stability": {
+      "ttft_robust_cv": 0.6615,
+      "tpot_robust_cv": 0.0647,
+      "ttft_cv": 1.1622,
+      "tpot_cv": 0.0854,
+      "ttft_mad": 11.4167,
+      "tpot_mad": 0.1868
+    },
+    "extra": {
+      "steps": 1114,
+      "dropped_requests": 0,
+      "stall_reason": "",
+      "dry_run": true,
+      "data_label": "TEST_DATA",
+      "label_reason": "本次为 --dry-run 模拟路径：数字由一阶设备模型合成，仅供链路验证，不得进入结论。"
+    },
+    "accounting_error_p99_ms": 0.0,
+    "data_label": "TEST_DATA"
+  },
+  "config": {
+    "config_path": "configs\\prefix_cache\\prefix_cache.yaml",
+    "config_stem": "prefix_cache",
+    "run": {
+      "repeats": 3,
+      "warmup_s": 30,
+      "warmup_count": 3,
+      "control_interval_steps": 8,
+      "slo": {
+        "ttft_ms": 2000,
+        "tpot_ms": 50,
+        "e2e_ms": null
+      },
+      "notes": "前缀缓存（共享 4K 前缀）"
+    },
+    "workload": "shared_prefix_4k",
+    "workload_overrides": {},
+    "scheduler": {
+      "policy": "continuous_batching",
+      "max_num_seqs": 32,
+      "reserve_decode_slots": 0
+    },
+    "chunk": {
+      "policy": "fixed_chunk",
+      "enabled": false,
+      "chunk_size": 8192,
+      "max_num_batched_tokens": 8192,
+      "decode_reserve_ratio": 0.0,
+      "min_decode_seqs": 1
+    },
+    "cache": {
+      "enabled": true,
+      "block_size": 16,
+      "max_blocks": 8192,
+      "capacity_tokens": 131072,
+      "eviction": "lru",
+      "min_reuse_blocks": 1
+    },
+    "controller": {
+      "enabled": false,
+      "target_tpot_ms": 50.0,
+      "target_ttft_ms": 2000.0,
+      "hysteresis": 0.1,
+      "cooldown_cycles": 3,
+      "chunk_size": [
+        512,
+        16384,
+        512
+      ],
+      "max_batched_tokens": [
+        2048,
+        32768,
+        1024
+      ],
+      "cache_hit_rate_high": null,
+      "min_available_memory_mb": null,
+      "critical_available_memory_mb": null
+    },
+    "device_model": {
+      "step_overhead_ms": 2.0,
+      "prefill_tok_per_ms": 6.0,
+      "decode_base_ms": 1.0,
+      "decode_per_seq_ms": 0.06,
+      "max_steps": 200000,
+      "_note": "一阶模型，仅供 --dry-run 打通链路，不可用于性能结论"
+    },
+    "runtime": {
+      "model": "Qwen2.5-7B-Instruct",
+      "model_revision": "main",
+      "precision": "bf16",
+      "graph_mode": "eager",
+      "tensor_parallel_size": 1,
+      "kv_cache_dtype": "auto"
+    }
+  },
+  "controller_trace": [],
+  "system_states": [],
+  "controller_effect": {
+    "n_steps": 1114,
+    "n_control_decisions": 0,
+    "n_decisions_changed": 0,
+    "n_decisions_recover": 0,
+    "n_decisions_over_memory": 0,
+    "n_steps_chunk_request_not_honoured": 0,
+    "n_steps_prefill_below_chunk_request": 1113,
+    "chunk_requested": {
+      "min": 8192,
+      "max": 8192,
+      "first": 8192,
+      "last": 8192
+    },
+    "chunk_effective": {
+      "min": 8192,
+      "max": 8192,
+      "first": 8192,
+      "last": 8192
+    },
+    "max_batched_tokens_requested": {
+      "min": 8192,
+      "max": 8192,
+      "first": 8192,
+      "last": 8192
+    },
+    "max_batched_tokens_effective": {
+      "min": 8192,
+      "max": 8192,
+      "first": 8192,
+      "last": 8192
+    },
+    "prefill_budget_effective": {
+      "min": 8184,
+      "max": 8192,
+      "first": 8192,
+      "last": 8191
+    },
+    "decision_interval_steps": null,
+    "n_cycles": null,
+    "n_skipped_cooldown": null,
+    "_note": "chunk_requested / max_batched_tokens_requested 是控制器的建议值，其余是实际生效值；两者的差额即『建议未兑现』的量。prefill_budget_effective 低于 chunk 上限是正常的（decode 保留与容量闸门），不构成缺陷判定。decision_interval_steps 用于核对决策节拍是否等于 control_interval_steps；n_skipped_cooldown 与 n_cycles 用于核对冷却是否**能**触发（恒为 0 说明冷却参数是死的）。"
+  },
+  "reproducibility": {
+    "run_id": "cmp-prefix_cache-r1",
+    "timestamp": "2026-09-21T22:56:35+0800",
+    "git_commit": "571143802ceafbc1a12f7f83cf9ac7fa29483c1c",
+    "hostname_or_machine_id": "LAPTOP-1LQ6BQ1P/13944",
+    "device_model": "NOT_MEASURED",
+    "device_count": "NOT_MEASURED",
+    "model": "Qwen2.5-7B-Instruct",
+    "model_revision": "main",
+    "precision": "bf16",
+    "quantization": "NOT_MEASURED",
+    "tensor_parallel_size": 1,
+    "input_length": 4217.1,
+    "output_length": 166.0,
+    "concurrency": 8,
+    "batch_configuration": "policy=continuous_batching;max_num_seqs=32",
+    "max_batched_tokens": 8192,
+    "chunk_size": 8192,
+    "prefix_cache_enabled": true,
+    "graph_mode": "eager",
+    "random_seed": 0,
+    "warmup_count": "NOT_MEASURED",
+    "measurement_count": 3,
+    "data_label": "TEST_DATA",
+    "execution_environment": "unknown",
+    "hardware_platform": "unknown",
+    "backend": "simulate",
+    "_missing_fields": [
+      "device_model",
+      "device_count",
+      "quantization",
+      "warmup_count"
+    ],
+    "_hardware_required": false
+  },
+  "data_label": "TEST_DATA"
+}
