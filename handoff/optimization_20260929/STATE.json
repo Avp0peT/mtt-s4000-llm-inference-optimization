@@ -1,0 +1,477 @@
+{
+  "created_date": "2026-09-29",
+  "current_session": "EXECUTION_SHAPE_OFFLINE_20261003",
+  "decisions_2026_10_03": {
+    "OPT_04": "仍按其独立前置条件验收；**不因 S04 结束而放行**。",
+    "S04": "KEEP_DEFAULT_OFF；停止重复同协议批次；暂不扩混长；不进图捕获；归档为「限定实现与负载的局部负结果」。",
+    "S06": "图捕获暂缓；先限于计时与同步诊断。",
+    "S07": "可继续离线协议设计（不需机时）。",
+    "evidence_tiers": "执行优化线三个真机性能批次**都不是 T1** ⇒ 目前只能进 T2（仅机制方向）。详见 EVIDENCE_INDEX.md §5。",
+    "paper_citation_gate": "正式论文引用 EXECOPT5 前，先解决环境证据（A7）与统计表述（A4/§8.8）。"
+  },
+  "next_action": {
+    "scope": "用户授权先完成离线部分；真机任务留待后续集中执行。",
+    "priority_1": "查看 OFFLINE_EXECUTION_SHAPE_20261003.txt 与 NEXT_BATCHES_PREREG.md §13；按 REMOTE_EXECUTION_PLAN_20261003.txt 集中验收/标定/验证。",
+    "blocked": "新执行契约尚无合格真机标定模型；旧 v7 不可直接用于新成本臂。远端状态本轮未检查。",
+    "priority_2": "通过独立验证后派生新模型 pilot 配置，核对恰好三项；先查同形匹配/覆盖/机制，再讨论正式比较。",
+    "do_not_repeat": [
+      "不重跑 S01RECHECK 同协议性能批次",
+      "S04保持默认关闭，不重复同协议批次",
+      "不执行已撤回的固定9点旧网格",
+      "不覆盖raw、历史配置或旧模型，不自动扩大25项矩阵"
+    ],
+    "deliverables": "本轮离线细节/测试以 OFFLINE_EXECUTION_SHAPE_20261003.txt 为入口；实验数字仍走 EXPERIMENTS.md。"
+  },
+  "notes": "本文件是**恢复指针**：新会话读完它就知道\"下一步做什么、细节去哪读\"。它**不承载**任何实验数字或过程叙事——那些在 RESEARCH_LOG / EXPERIMENTS / OPTIMIZATION_TEST_SESSION / EVIDENCE_INDEX 里，且各自有权威范围。更新纪律：只改指针与决策；**不要把细节抄进来**（抄进来必然分叉）。",
+  "project_root": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization",
+  "purpose": "恢复指针；事实以仓库日志/登记及原始证据为准",
+  "recovery_pointers": {
+    "2026-10-02 的全部核实项与更正": [
+      "RESEARCH_LOG.md 的 2026-10-02 三段（连接恢复 / 用户 6 条指令 / 重推重打戳）",
+      "OPTIMIZATION_TEST_SESSION.md §5.9.11",
+      "NEXT_SESSION_TASKS.md「上一轮 6 项总判定」+「对上面这张表的更正」"
+    ],
+    "2026-10-03 的代码修复与真机数值/性能结果": [
+      "RESEARCH_LOG.md 的 2026-10-03 两段（第 6 条指令 6 项 / 任务 D 调度语义）",
+      "OPTIMIZATION_TEST_SESSION.md §5.9.12",
+      "EXPERIMENTS.md §3.7（数值验证）/ §3.8（EXECOPT5 结论）/ §1.7（登记）"
+    ],
+    "S04 归档定性": "EXPERIMENTS.md §3.8 + paper/sections/08_limitations.md §8.6",
+    "_note": "★ 本文件**只保存恢复指针**，不复述容易过期的实验事实 —— 复述必然分叉。细节一律去读下面这些**权威源**。压缩前的完整快照见同目录 STATE_FULL_20261003.json（2026-10-03 备份）。",
+    "下一批实验的预注册": "NEXT_BATCHES_PREREG.md（配置 / 顺序 / 验收门 / 预算口径）",
+    "两处待冻结语义": "NEXT_SESSION_TASKS.md 的 **FZ-1 / FZ-2**",
+    "环境指纹异机（A7）与环境绑定边界": [
+      "EXPERIMENTS.md §4.4 **A7**",
+      "paper/sections/08_limitations.md §8.1（环境绑定）",
+      "本目录 DEPLOYMENT.json（部署摘要）+ scripts/deploy_status.py（本地是否已部署）"
+    ],
+    "证据资格分层（哪些数字能进论文）": [
+      "EVIDENCE_INDEX.md **§5**（T1/T2/T3 清单与判据）",
+      "paper/sections/08_limitations.md §8.9",
+      "tests/test_batch_evidence_eligibility.py（把 §5 的判定钉成测试）"
+    ],
+    "2026-10-03 第三轮离线修复": "分析器四元口径 + 三道闸门 + 产物自证身份（written_at/argv）；数值验收 6 判据；下一批协议 NEXT_BATCHES_PREREG.md §9–§12。含两处新发现缺陷：三版本并存（v5/v6/v7）、旧 JSON 冒充新结论。",
+    "当前执行形状修复": "NEXT_BATCHES_PREREG.md §13 + handoff/optimization_20260929/OFFLINE_EXECUTION_SHAPE_20261003.txt"
+  },
+  "remote": {
+    "authorization_reference": "沿用用户最新明确授权（handoff 00_START_HERE.txt 共同要求 3）；交接包未携带额度凭据",
+    "budget_remaining_hours": null,
+    "budget_used_hours": null,
+    "env_verified": {
+      "cpu_timing_cv": "0.003%–0.005%（7×1.0s 探针）",
+      "devices": 1,
+      "hf_home": "/root/autodl-tmp/hf",
+      "python": "3.10.8",
+      "revision_snapshot_present": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "torch": "2.2.0",
+      "torch_musa": "1.3.0+81caf0a",
+      "transformers": "4.46.3"
+    },
+    "gpu_budget_hours": null,
+    "host_reference": "existing remote_run credentials; do not store secret values here",
+    "minimum_missing": [
+      "实例开机 / 控制台确认运行状态",
+      "SSH 可达",
+      "剩余机时额度确认（当前 null = 未知，不按 0、不按无限）",
+      "HF 缓存内存在钉死的 revision snapshot a09a35458c702b33eeacc393d103063234e8bc28"
+    ],
+    "reachability_error": "paramiko.ssh_exception.SSHException: Error reading SSH protocol banner（exec 重试一次同样失败；S01–S03 会话期间未再复测）",
+    "reachability_error_2026_09_29": "paramiko.ssh_exception.SSHException: Error reading SSH protocol banner",
+    "reachability_note": "SSH 握手存在**间歇性**失败（裸 TCP 探测 1/5 成功、4/5 连上后零字节；原生 socket 8/8 成功）⇒ 交由 remote_run.py 的 _connect 重试吸收，勿据此改远端或换凭据。",
+    "reachability_note_2026_10_02": "★ 该端口已因 AutoDL 重启/迁移而变更（**第二次实证**：2026-09-24 换镜像 14671→14293；本次 28080→23576）。诊断签名：**目标端口 EOF（对端主动关闭）+ 同线路对照 SSH 有 banner** ⇒ 主机在线、该端口无服务 ⇒ 先怀疑端口、不要怀疑网络/凭据。只改仓库外 ~/.workbuddy/remote.env（.gitignore 已设防，git ls-files 为空）。验证两步都做了：① banner SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.11；② **认证**（banner≠认证通过）hostname=autodl-container-05264bbf0d-3b9c3488 / whoami=root。⚠️ 端口/provider 变更不改变实验条件（同实例同镜像），但**下次真机批次仍必须重新打戳**。",
+    "reachable_2026_09_29": false,
+    "reachable_2026_09_30": true,
+    "reachable_2026_10_02": true,
+    "reachable_2026_10_03": "❌ 不可达。TCP 可连（connect 成功）但**收不到 SSH banner**（recv 超时）。⇒ 症状是「主机在线、该端口无 SSH 服务」，但**根因保持待确认**：可能是映射端口变更，也可能是该端口后服务未起/被占用/上游策略变更 —— **本轮未定位根因，不写成「端口已经变化」**。**未**猜端口/改凭据/反复重试（遵守用户指令）。下一步：用户在 AutoDL 控制台确认当前映射端口 → 只改仓库外 ~/.workbuddy/remote.env → 单次探测。⚠️ 诊断签名（历史上两次指向端口变更）只能作为**假设**，不能替代控制台核对。",
+    "scope": "本轮不SSH/GPU；下一轮按用户安排集中执行真机清单。",
+    "venv_python_absolute": "/root/musa-envs/qwen310/bin/python3（★ 必须用绝对路径：内层 bash -c 会重置 PATH）",
+    "reachable_2026_10_03_late": false,
+    "reachability_error_2026_10_03_late": "TCP 可连 SSH_HOST_FROM_PRIVATE_CONFIG:23576（0.02 s）但 recv 无 SSH banner（TimeoutError）。单次探测，未重试、未猜新端口、未改凭据。⚠️ **根因待确认**（「端口已变」是假设、不是结论）。",
+    "port_2026_10_03_late": 23576,
+    "port_2026_10_03_late_note": "23576 是**上次成功使用**的映射端口，不是「当前已验证的新端口」。根因未确认前，不得据此推断端口已变。",
+    "current_verification": "NOT_CHECKED_THIS_OFFLINE_SESSION"
+  },
+  "run_scripts": {
+    "local_entrypoint": "python scripts/exec_opt_batch.py {plan|preflight|run|status|stop|pull} --tag <T>",
+    "local_verification": "39 passed（25 + 14）+ launch_batch.sh 本地全链路实跑 + 破坏验证",
+    "note": "2026-09-30 已在远端实跑：dry-plan ✓ / preflight ✓ / screen 批次真机运行 ✓。",
+    "plan_logic": "benchmark/exec_opt_plan.py",
+    "progress_reader": "scripts/_read_progress.py",
+    "remote_import_selfcheck": "scripts/_check_exec_opt_imports.py",
+    "remote_runner": "scripts/run_exec_opt_matrix.py",
+    "runbook": "handoff/optimization_20260929/EXEC_OPT_RUNBOOK.md",
+    "sha_diff_helper": "scripts/batch_sha_diff.py（1 次往返比对远端 sha，替代 128 次逐文件查询）",
+    "stale_lock_safety_valve": "scripts/clear_stale_batch_lock.py",
+    "verified_on_remote": true
+  },
+  "schema_version": 1,
+  "session_2026_10_03_offline": {
+    "done": [
+      "A 证据与统计收尾（用时分解 + 两个统计口径 + 证据资格清单 T1/T2/T3）",
+      "B 验证工具修复（取消字符串豁免 / 断言与会话分开记 / tokens_out 同口径 / 采集完整性）",
+      "C 环境与部署守卫（新鲜度 + 四类身份 + deploy_status：本地未部署）",
+      "D 调度语义修正（双预算 decode_at_risk + closed_jittered 抖动改为客户端×轮次）——**离线验证通过、真机待验，不宣称服务收益**",
+      "E 后续实验离线准备（清点 + 三类划分 + 只派生缺的两份配置 + 预注册 NEXT_BATCHES_PREREG.md）",
+      "F 论文与交接收尾（sections 08/06、RESEARCH_PLAN §0、PROJECT_MAP、正文重建、STATE 压缩）"
+    ],
+    "hardware_touched": false,
+    "next": {
+      "blocked": "正式论文引用 EXECOPT5 前先解决 §4.4 A7（环境指纹来自另一个容器）与 A4（数量覆盖率 vs 时间权重）的表述问题。",
+      "do_not_repeat": [
+        "⛔ 不要再跑同协议的 S04 性能批次（EXECOPT4/EXECOPT5 已两批独立一致：+72.0% / +70.9%）",
+        "⛔ 不要重做第 1–5 项（代码修复/离线验证/真机数值验证/性能实验 均已完成并通过，见 last_verified_action_2026_10_03）",
+        "⛔ 不要开始 OPT-04（前置条件未满足）",
+        "⛔ 不要修改 EXECOPT5 原始产物或回填标签（A7 的矛盾是证据）"
+      ],
+      "priority_1": "下一批协议（**尚未开跑**）：围绕真实问题「TPOT 多数超过 100 ms、SLO 达标率仅 2/64 = 3.125%」整理；先做**最小可辨别机制的 pilot**，**不要**直接上 5 臂 × 5 轮。协议入口 NEXT_BATCHES_PREREG.md。⚠️ 开跑前须先离线统一：v5/v7 成本模型、`static_small` 定义、负载与 FZ-1/FZ-2 语义。",
+      "priority_2": "S07 离线协议设计（不需机时）。",
+      "recently_completed": "S01 的实际部署收益复核（`S01RECHECK`，2026-10-03，T1）**已完成，不再是下一步**。"
+    },
+    "regression": "用例 1842 / 真正执行 1841 / 跳过 1 / 失败 0 / 错误 0 / EXIT=0（_regr11；唯一跳过=已知 2026-09-28 缺陷）",
+    "scope": "用户指令的 A–F 全部离线任务。**全程未 SSH、未启动远端命令、未碰 GPU、未下载模型、未修改 results/raw。**"
+  },
+  "session_2026_10_03_s01_recheck": {
+    "batch": "2 臂 × 5 轮 AB/BA，10/10，complete=true/under_run=false，29.0 min，budget_limited=false",
+    "effect": "TTFT p50 −4.31%（5/5）、p95 −4.13%、p99 −4.04%；TPOT −0.06%（3/5，不足以判定）；吞吐**改善 4/5**（+0.21%）；**SLO 达标率两臂同为 2/64 = 3.125%**（配对比值 1.0000 只表示相同）",
+    "identity": {
+      "container": "autodl-container-05264bbf0d-3b9c3488",
+      "driver": "2.7.0",
+      "git_commit": "16e82d2ea117",
+      "git_dirty": true,
+      "git_source": "stamp",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "musa": "3.1.0",
+      "tree_digest": "472697170d43…"
+    },
+    "not_done_per_instruction": [
+      "25 项机制批次（未启动）",
+      "S04 扩展（未动）",
+      "图捕获（未动）"
+    ],
+    "post_batch_change": "批次**之后**改过 scripts/run_exec_opt_matrix.py 的一个字段名（stopped_by_budget 语义修正）。本批数字以产物内的 tree_digest 为准；该改动不影响任何已测数字。",
+    "prereg": "判据 `PREREG` **随 scripts/analyze_s01_recheck.py 版本化**；⚠️ 仓库内**没有**独立的事前封存副本 ⇒ **不得**表述为'已预注册'。协议文本见 NEXT_BATCHES_PREREG.md。",
+    "read": "EXPERIMENTS.md §1.8（登记）/ §3.9（结论）；EVIDENCE_INDEX.md §5（资格）",
+    "recompute": "python scripts/analyze_s01_recheck.py --tag S01RECHECK --control s01_reference",
+    "tag": "S01RECHECK",
+    "tier": "T1（源码身份 + 环境绑定 + 判据随脚本版本化，三者全闭合）—— 本线第一个 T1",
+    "verdict": "SUPPORTED（主指标 TTFT p50 配对比值中位 ≤−2% 且 5/5 同向）",
+    "correction_2026_10_03": "分析口径更正：初版把 SLO 达标率写成 1.000（把**配对比值**当**绝对率**）、把吞吐方向写成 4/5 更慢（按时延方向判吞吐）。**原始数据未改**，更正落在 EXPERIMENTS.md §3.9 / RESEARCH_LOG.md / EVIDENCE_INDEX.md §5 / NEXT_SESSION_TASKS.md 与本文件。"
+  },
+  "sessions": [
+    {
+      "blocking_reason": "真机不可达（SSH banner 失败）⇒ 远端基线核验与任何真机测量 REMOTE_PENDING；§5.1/§5.2 两个策略语义缺口按计划留待 S07 预注册裁定",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "src/ascend_opt/slo_weave.py",
+        "src/ascend_opt/cost_model.py",
+        "tests/test_slo_weave_sparse_lookup.py",
+        "tests/test_s00_known_gaps.py",
+        "scripts/audit_s00_blockers.py",
+        "results/processed/s00_audit.json",
+        "RESEARCH_LOG.md#2026-09-29-S00"
+      ],
+      "file": "sessions/S00_AUDIT_AND_BASELINE.txt",
+      "hardware_measured": false,
+      "id": "S00",
+      "notes": "本会话实现范围仅限纯逻辑层：修复 SLOWeave safety_margin 重复应用 + 稀疏 lookup 二分；另加审计脚本与两类反例/特征化用例。执行优化线 P1/P2a/P3 尚未开始实现。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "真机不可达 ⇒ TTFT / prefill 时间 / 显存未测",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/real_backend.py",
+        "tests/test_optim_s01_logits_sampling.py",
+        "configs/mthreads/exec_opt/s01_last_only.yaml",
+        "configs/mthreads/exec_opt/s01_sample_needed.yaml",
+        "configs/mthreads/exec_opt/s01_both.yaml",
+        "OPTIMIZATION_TEST_SESSION.md#5.2"
+      ],
+      "file": "sessions/S01_LOGITS_AND_SAMPLING.txt",
+      "hardware_measured": false,
+      "id": "S01",
+      "notes": "两个开关默认关闭；能力在装载期判定并落盘 requested/effective；破坏验证 5 failed。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "真机不可达 ⇒ allocated/reserved、分配重试、OOM、边界 ITL、吞吐未测",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/real_backend.py",
+        "tests/test_optim_s02_allocator.py",
+        "configs/mthreads/exec_opt/s02_no_empty_cache.yaml",
+        "OPTIMIZATION_TEST_SESSION.md#5.3"
+      ],
+      "file": "sessions/S02_ALLOCATOR_LIFECYCLE.txt",
+      "hardware_measured": false,
+      "id": "S02",
+      "notes": "retire_empty_cache 默认 True（原行为）；关掉后槽位仍逐请求释放；无内存压力控制器可判 allocated vs reserved（记为待办）。破坏验证 3 failed。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "真机不可达 ⇒ M=1/2/4/8/128/512 的算子耗时与净收益未测；真实 7B 形状未实测核对",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/linear_fusion.py",
+        "tests/test_optim_s03_linear_fusion.py",
+        "scripts/inspect_linear_shapes.py",
+        "configs/mthreads/exec_opt/s03_fuse_qkv.yaml",
+        "configs/mthreads/exec_opt/s03_fuse_gate_up.yaml",
+        "configs/mthreads/exec_opt/s03_fuse_both.yaml",
+        "configs/mthreads/exec_opt/s03_fuse_both_shapes.yaml",
+        "OPTIMIZATION_TEST_SESSION.md#5.4"
+      ],
+      "file": "sessions/S03_FUSED_LINEAR.txt",
+      "hardware_measured": false,
+      "id": "S03",
+      "notes": "★ 实测：QKV 窄片必须 contiguous（每层每次 3 次拷贝，bytes_copied 有记账），gate/up 不需要 ⇒ 两者净收益前景不同。state_dict 前后逐键相同、可原样回退。破坏验证 1 failed。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "远端不可达 ⇒ 运行脚本未在远端实跑（本地已组件级实跑 + 离线路演）",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "scripts/exec_opt_batch.py",
+        "scripts/run_exec_opt_matrix.py",
+        "scripts/clear_stale_batch_lock.py",
+        "benchmark/exec_opt_plan.py",
+        "handoff/optimization_20260929/EXEC_OPT_RUNBOOK.md",
+        "OPTIMIZATION_TEST_SESSION.md#5.5"
+      ],
+      "file": "sessions/S04_PERSISTENT_KV_AND_BUFFERS.txt",
+      "hardware_measured": false,
+      "id": "EXEC-RUN",
+      "notes": "跨会话的运行脚本交付（不属于 S04 本体）：本机一条命令完成 核验→推送→起跑→轮询→回拉；远端自驱动（穿插/均衡/预算/心跳/STOP/续跑/按产物判成功）。顺带补上陈旧批次锁安全阀。",
+      "offline_verified": true,
+      "status": "LOCAL_VERIFIED"
+    },
+    {
+      "blocking_reason": "① EXECOPT4 的 S04 两臂带已复现的数值缺陷（重入读过期缓冲；已在 2026-10-01 修复）⇒ 那批的数值正确性未获证明，须重跑；② 判据结论已改写：覆盖率 77/1143 = 6.74%，在有效样本（单请求尾段 77 步）上 pack 109.02 → 187.52 ms = +72.0%（3 轮极差 0.4%）⇒ 能行使的地方是净成本；原「+0.19%、不可分辨」是被覆盖率稀释的错误口径；③ 服务指标受未解释的单步长停顿影响 ⇒ 机制归因暂不可判；④ 12/12 产物 git_commit=NOT_MEASURED（stamp 曾被忽略）。",
+      "code_implemented": true,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "benchmark/real_backend.py（persistent_kv_slots 快路径；默认关闭；2026-10-01 修重入过期）",
+        "tests/test_optim_s04_persistent_kv.py（19 例，含 TestReattachAfterFallback 逐层 KV 对照）",
+        "EXPERIMENTS.md §3.6 E20 + §4.4 A3–A6",
+        "OPTIMIZATION_TEST_SESSION.md §5.9（含置顶更正）+ §5.9.9"
+      ],
+      "file": "sessions/S04_PERSISTENT_KV_AND_BUFFERS.txt",
+      "hardware_measured": true,
+      "id": "S04",
+      "offline_verified": true,
+      "status": "INDETERMINATE"
+    },
+    {
+      "blocking_reason": "★ 不是我们的代码坏了：MUSA 栈无原生 GQA 支持——torch_musa 的 SDPA 不接受 enable_gqa（非 kwargs、位置参数超限、scale 被强制约束），且 transformers 4.46.3 的 repeat_kv 是真复制（shares_storage=False），单层 B=8/L=512 约 0.30 ms x 28 层 ≈8.3 ms/步（≈10% fwd_ms）但几乎不随 L 增长（launch 开销主导）⇒ 按任务书『若不存在显著复制/热点，记录结果结束』『不支持即结束该分支』终止。负结论限当前 transformers/torch_musa 版本。",
+      "code_implemented": false,
+      "conclusion_eligible": false,
+      "evidence_references": [
+        "scripts/gqa_support_probe.py",
+        "results/raw/_probe/20260930/gqa_probe_ops.json（标签 PROBE_NOT_HARNESS）",
+        "RESEARCH_LOG.md#2026-09-30-续"
+      ],
+      "file": "sessions/S05_GQA_ATTENTION.txt",
+      "hardware_measured": true,
+      "id": "S05",
+      "offline_verified": false,
+      "status": "IMPLEMENTATION_FAILED"
+    },
+    {
+      "blocking_reason": "设计前提已具备（S04 交付固定地址常驻缓冲 + 定容量 + 槽位映射），但收益前提受 S04 覆盖面（15.3%）制约 ⇒ 待①裁定后再开。",
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S06_SYNCHRONIZATION_AND_GRAPHS.txt",
+      "hardware_measured": null,
+      "id": "S06",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    },
+    {
+      "blocking_reason": "预注册 §5.1（双预算如何处理受阻 decode）/ §5.2（closed_jittered 只改时间戳）仍待裁定。",
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [
+        "EVIDENCE_INDEX.md#3 缺口 28/29",
+        "tests/test_s00_known_gaps.py"
+      ],
+      "file": "sessions/S07_EXECUTION_AWARE_SCHEDULING.txt",
+      "hardware_measured": null,
+      "id": "S07",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S08_QUANTIZATION_OPTIONAL.txt",
+      "hardware_measured": null,
+      "id": "S08",
+      "offline_verified": null,
+      "status": "OPTIONAL_NOT_SELECTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S09_SPECULATIVE_OPTIONAL.txt",
+      "hardware_measured": null,
+      "id": "S09",
+      "offline_verified": null,
+      "status": "OPTIONAL_NOT_SELECTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S10_STRONG_BASELINES_AND_INTEGRATION.txt",
+      "hardware_measured": null,
+      "id": "S10",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    },
+    {
+      "blocking_reason": null,
+      "code_implemented": null,
+      "conclusion_eligible": null,
+      "evidence_references": [],
+      "file": "sessions/S11_STATISTICS_PAPER_AND_REPRODUCTION.txt",
+      "hardware_measured": null,
+      "id": "S11",
+      "offline_verified": null,
+      "status": "NOT_STARTED"
+    }
+  ],
+  "single_writer": "本会话结束时无并发写者；下一会话接手前请重新核验 mtime 与进程。",
+  "snapshot_commit_full": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4",
+  "snapshot_commit_short": "16e82d2",
+  "status_vocabulary": [
+    "NOT_STARTED",
+    "IN_PROGRESS",
+    "LOCAL_VERIFIED",
+    "REMOTE_PENDING",
+    "MEASURED_PENDING_AUDIT",
+    "VALIDATED_BENEFIT",
+    "VALIDATED_NO_BENEFIT",
+    "INDETERMINATE",
+    "IMPLEMENTATION_FAILED",
+    "OPTIONAL_NOT_SELECTED"
+  ],
+  "user_ruling_2026_10_03": {
+    "OPT_04": "STILL_GATED（按其独立前置条件验收，不因 S04 结束而自动放行）",
+    "S04_archival_verdict": "QUALIFIED_LOCAL_NEGATIVE（限定实现与负载的局部负结果）",
+    "S04_current_implementation": "KEEP_DEFAULT_OFF（默认关闭，不得改成默认开）",
+    "S07": "CONTINUE_OFFLINE_ONLY（可继续离线协议设计，不需机时）",
+    "graph_capture_S06": "DEFER（图捕获暂缓；S06 先限于计时与同步诊断）",
+    "mixed_length_slots": "DEFER（暂不扩展；属设计扩张，需另立裁定）",
+    "paper_citation_of_EXECOPT5": "BLOCKED_PENDING_ENV_EVIDENCE（先解决 §4.4 A7 环境证据与 A4 统计表述）",
+    "same_protocol_perf_batches": "STOP（EXECOPT4 3 轮 + EXECOPT5 5 轮已两批独立一致；再跑不增加信息，不消耗机时）"
+  },
+  "session_2026_10_03_offline_fix3": {
+    "scope": "S01RECHECK 的分析修正与验收补齐 + 下一批协议准备。**未重跑性能矩阵、未碰 GPU、未改 results/raw**。",
+    "hardware_touched": false,
+    "done": [
+      "分析器：四元口径（对照绝对/处理绝对/配对变化/分母）+ 三道闸门（完整性/配对/身份）拦截 SUPPORTED；吞吐方向按 HIGHER_IS_BETTER 修正",
+      "分析器：产物新增 written_at + argv 自证身份；未传 --json 时显式提示磁盘上是旧产物",
+      "分析器：反例测试 21 → 26（新增 TestJsonWriteIsSelfIdentifying 5 条，真跑子进程 + 真产物）",
+      "数值验收：6 项判据齐备（预期请求集合 / token 长度与总数对账 / 中间 chunk need_token=False / 混批 True-False / 跳过计数 > 0 / logits 未采集保留未验证）；离线 10 条全绿",
+      "结论文档更正：EXPERIMENTS.md §3.9、EVIDENCE_INDEX.md §5、RESEARCH_LOG.md、【3】节、NEXT_SESSION_TASKS.md、PROJECT_MAP.md、STATE.json",
+      "下一批协议：NEXT_BATCHES_PREREG.md §9–§12（口径统一 + pilot + 预算 + 八道前置门）"
+    ],
+    "found_defects": [
+      {
+        "id": "v6-missed",
+        "what": "§9.2 初版只写 v5/v7 **两版**不一致；穷举 configs/mthreads/**/*.yaml 后发现 phase1_step15/* 与 phase1_step14b/* 整目录指向 **model_v6.json** ⇒ 实际**三版并存**。",
+        "how_found": "把在用版本集合写成断言后**测试当次变红**（集合含 model_v6.json）。",
+        "fix": "断言钉住真实三元集合 {v5, v6, v7}；§9.2 重写为三版并记入 G1b（补记 v6 键数/grid_sha256）。",
+        "lesson": "版本清点必须**穷举**，抽样两处对读会漏整目录。"
+      },
+      {
+        "id": "stale-json-masquerade",
+        "what": "同配置否定对照控制台正确打 UNKNOWN，但紧接读到的 results/processed/s01_recheck_analysis.json 仍是 SUPPORTED/gates_ok=true ⇒ 我一度误判『闸门没传播到产物』。真相：脚本只在 --json 时写文件，磁盘那份是**上一次**的旧产物。",
+        "how_found": "stat 证实 mtime 未变；再传 --json 重跑，闸门**确实**传播（UNKNOWN/False）。",
+        "fix": "产物加 written_at + argv；不传 --json 时显式提示『本次未写任何文件；磁盘上是旧产物』；新增 5 条回归（3 轮破坏性对照：总是写文件 ⇒ 2 红；删 written_at/argv ⇒ 2 红；payload 写死 gates_ok=True ⇒ 1 红）。",
+        "lesson": "危险方向与直觉相反：不是闸门失效，是**旧产物冒充新结论**。"
+      }
+    ],
+    "regression": "tests/test_s01_recheck_analysis.py + tests/test_verify_s01_numeric_offline.py + tests/test_s01_recheck_plan.py + tests/test_next_batch_configs.py = **82 passed**（原 77，+5）。",
+    "not_done_per_instruction": [
+      "未重跑同协议性能矩阵（保留已有 10 份原始产物）",
+      "未启动新的性能批次 / 未开跑 pilot / 未开始 OPT-04",
+      "真机短数值验收**未做**（远端不可达；见 remote.reachable_2026_10_03）"
+    ],
+    "next": "下一批协议（尚未开跑）：先离线清 §12 的 G1/G1b/G2/G3 与 FZ-1/FZ-2 裁定；远端可达是唯一硬阻塞。"
+  },
+  "session_2026_10_03_offline_fix4": {
+    "scope": "**仅离线收尾**（用户明令不启动 GPU 性能矩阵、保留 S01RECHECK 10 份性能产物）：① 把代表状态演练接到**真实配置与真实决策链**（load_config → build_arm → plan_step/CostPolicy.decide）；② 落实 pilot 三臂各一次的执行清单；③ 修真机数值验收入口（显式 --driver auto + 设备/revision/优化三项核验 + 四类身份绑定）；④ 四项小修（TTFT 两侧有限且>0 / 非有限值置 null 且严格 JSON / 本机必测不得转 skip / 删除「P1 必须落在 (0,1)」规则 + 预算说明与 decide_stop 对齐）。",
+    "hardware_touched": false,
+    "done": [
+      "dryplan_decision_chain.py：四态均为**计划负载下实际可达**的队列形状（batch_start_prefill / steady_decode / mixed_admit / contended_prefill）；逐候选记录 生成候选·预测·预算分支·所选动作·回退原因",
+      "dryplan 结论（如实、不美化）：两臂在四态上**动作完全相同**；批次起点步**查表缺失**（未用手选命中点替代）；steady_decode/mixed_admit 退化（140.8>120）；contended_prefill 严重退化（851.5>120）",
+      "★ 新发现：**v7 网格结构性空洞** —— 起点步形状 (batch≥2, kv_len=0) 从未被采样（batch≥2 的 kv_min=512）⇒ 起点步构造上不可预测",
+      "产出**缺失形状表 + 最小补标定方案**（另开一轮；kv=0 × batch∈{2,4,8} × pf∈{512,1024,1536} ≈ 9 点；绑定计划 cell）；结论 = **先补标定，不要直接扩大为性能收益矩阵**",
+      "enumerate_prereg_states.py 降级为**预算函数示例**（artifact_role=budget_function_example；不再声称机制被行使）",
+      "pilot_execution_plan.py：三臂只此一处定义；repeats=1；**计划期即可核对恰好 3 项**；真的跑 run_exec_opt_matrix --dry-plan 交叉核对（cells=['baseline','cost_single','cost_dual']，3 项，repeats=1）",
+      "verify_s01_numeric_acceptance.py：--require-real-hw（非 auto ⇒ 拒绝并引用 cpu 默认值）；_hardware_problems 拒绝式核验（MUSA 设备 / resolved revision / 优化生效 / hardware_backed）；四类身份绑定 + evidence_scope 明禁升级 CPU 证据",
+      "analyze_s01_recheck.py：新增 _finite_positive + ③c「TTFT 两侧有限且>0」检查；sanitize_json；写出加 allow_nan=False",
+      "NEXT_BATCHES_PREREG.md：§10.3 删除 (0,1) 规则（终裁 = 按三臂结果与机制行为判断）；§10.4 预算说明逐条对齐 decide_stop；§10 加入 pilot 清单脚本引用"
+    ],
+    "found_defects": [
+      {
+        "id": "open-interval-rule-was-also-wrong",
+        "what": "上一轮把「达标率 ∈ {0,1} ⇒ 停」换成了「达标率必须落在开区间 (0,1)」—— **同族错误**：仍用数值区间决定是否扩大。用户第二次点名要求删除。",
+        "how_found": "用户明示；且 test_pilot_flow_rules 里那条断言 (0,1) 的用例本身就是旧规则的残留。",
+        "fix": "删除该规则并**登记为废止**（两条旧规则都进 blockquote 引述）；现行判据改为 E1（机制被行使）+ E4（身份一致）；达标率三个取值明确『只用于解释、不单独构成停/续』；测试同步改写。",
+        "lesson": "换一个形式但保留同一个错误判据结构 = 没修。『撤回必须传播到引用处』包括**替换规则本身**。"
+      },
+      {
+        "id": "skip-masks-not-run",
+        "what": "test_prereg_batch_configs / test_verify_s01_numeric_offline / test_s01_recheck_analysis 里共 13 处裸 skipTest，缺输入时『没跑』在报告里显示为 skip（与 pass 只差一个字符）。",
+        "how_found": "grep 全仓 skipTest 并逐条分类（仓库内输入 vs 外部依赖）。",
+        "fix": "新增 _tiny_support.require_local_file（缺 ⇒ **AssertionError**）+ ExternalArtifactMissing（外部依赖专用 skip 类型）；仓库内输入的三处改为硬失败；端到端用例改用带理由的 ExternalArtifactMissing；新增 tests/test_must_run_not_skipped.py（含『产物在本机时端到端必须 0 skip』的实跑断言）+ 破坏性对照（改名产物 ⇒ 2 failed 而非 skip）。",
+        "lesson": "`skipTest` 让『没跑』看起来像『通过』—— 已在本仓咬过一次（-r5 不存在 ⇒ 6 条反例静默跳过）。"
+      },
+      {
+        "id": "budget-wording-vs-decide-stop",
+        "what": "§10.4 只笼统写『干净退出守卫 / 不是硬超时』，未与 benchmark/exec_opt_plan.py:decide_stop 的真实分支对齐（真实动机是**保持重复均衡**：预算不够跑完整轮 ⇒ 不开始那一轮）。",
+        "how_found": "逐条读 decide_stop 源码；发现『不打断正在跑的 run』『只在整轮边界』这两条文档没写。",
+        "fix": "§10.4 加 decide_stop 语义表（5 种情形）+ 明确『不打断』『整轮边界』『保持重复均衡』；§11 同步；测试改断言点名 decide_stop。",
+        "lesson": "预算说明是判据的一部分：『干净退出』与『整轮边界守卫』在工程后果上不同（后者才会保留均衡重复）。"
+      }
+    ],
+    "regression": "见 tests_total（本批逐文件现跑）。S01RECHECK 分析器在新 ③c 门下仍 PASS（TTFT p50 −4.31%，5/5 同向）。",
+    "not_done_per_instruction": [
+      "未启动 GPU 性能矩阵",
+      "未重跑 S01RECHECK（10 份性能原始产物保留）",
+      "真机短数值验收**未执行**（远端仍不可达；即使用户解阻塞，本轮也只交付**命令**）",
+      "OPT-04 仍未解冻"
+    ],
+    "next": "先补 v7 网格的起点步空洞（另开一轮标定，≈9 点），再考虑扩大为性能矩阵；pilot 三臂清单已就绪、待远端可达。"
+  },
+  "historical_next_action_before_execution_shape": {
+    "blocked": "正式论文引用 EXECOPT5 前先解决 §4.4 A7（环境指纹来自另一个容器）与 A4（数量覆盖率 vs 时间权重）的表述问题。",
+    "do_not_repeat": [
+      "⛔ 不要再跑同协议的 S04 性能批次（EXECOPT4/EXECOPT5 已两批独立一致：+72.0% / +70.9%）",
+      "⛔ 不要重做第 1–5 项（代码修复/离线验证/真机数值验证/性能实验 均已完成并通过，见 last_verified_action_2026_10_03）",
+      "⛔ 不要重跑 S01 性能矩阵（`S01RECHECK` 已完成，10/10，T1）——见 session_2026_10_03_s01_recheck",
+      "⛔ 不要开始 OPT-04（前置条件未满足）",
+      "⛔ 不要修改 EXECOPT5 或 S01RECHECK 原始产物或回填标签（A7 的矛盾是证据）"
+    ],
+    "priority_1": "下一批协议（**尚未开跑**）：围绕真实问题「TPOT 多数超过 100 ms、SLO 达标率仅 2/64 = 3.125%」整理；先做**最小可辨别机制的 pilot**，**不要**直接上 5 臂 × 5 轮。协议入口 NEXT_BATCHES_PREREG.md。⚠️ 开跑前须先离线统一：v5/v7 成本模型、`static_small` 定义、负载与 FZ-1/FZ-2 语义。",
+    "priority_2": "S07 离线协议设计（不需机时）。",
+    "recently_completed": "S01 的**实际部署收益**复核（`S01RECHECK`，2026-10-03）：TTFT p50 −4.31%（5/5）、T1。**已完成，不再是下一步。**"
+  }
+}

@@ -1,0 +1,109 @@
+离线交付：执行形状、成本预测与后续真机准备
+日期：2026-10-03
+项目：C:\Users\13944\WorkBuddy\st\ascend-llm-inference-optimization
+
+状态
+代码修复：已完成。本轮既定离线任务已完成，已有未提交工作保留。
+离线验证：通过；真实 CPU 微型模型验证仅具 LOCAL_CPU_MICRO 资格。
+真机验证：本轮未执行，未 SSH、未调用 GPU、未检查当前远端可达性。
+性能与模型结论：没有新增真机收益或合格实测成本模型。旧 raw/历史配置/模型未修改。
+
+一、修复了什么
+
+1. 数值验收按角色判定：对照 S01 off/skip=0/last-only=0；处理 on/skip=2/
+   last-only>0。两臂设备与 resolved revision 仍须一致。
+   源码复用 tree/stamp 身份，git dirty 未知保留 null；环境指纹保留 SHA/采集时刻，
+   异机指纹不冒充本机版本，新鲜度未证实就明示 not_verified。真机产物禁止覆盖。
+2. 新 execution_shape.py 是计划→参与计算请求与驱动分组的共享逻辑。
+   接纳 8 条、chunk512 实际仅 1 条获得计算配额；chunk2048 为1536/512两条。
+   续 prefill 计入，零分配新请求不计入；每请求保留 token/KV/角色/need_token。
+   decode KV 排除最后一个尚未输入模型的采样 token，未知 KV 不用0代替。
+3. 两个后端交给控制器的是步后重新分区的队列；避免已完成或已转 decode
+   的请求仍留在旧列表。waiting 的 KV 由计划缓存命中推导，不强填0。
+4. 生产工厂强制 execution-shape-v1；旧标量 API 仅留作历史诊断并明确标注。
+   新模型必须匹配整步向量、执行开关、硬件/软件/权重和执行源码摘要。
+   旧 v7 的缺契约返回 execution_contract_unvalidated，不偷换成预算不可行。
+   不把不同前向组的旧点相加，也不做未经验证的插值/外推。
+5. host 与 fwd 在预算中各计一次；降级排序和同进度候选排序使用 fwd+host。
+   TEST_DATA 反例：100+100ms 与110+0ms均超预算时，正确选总成本110ms者。
+   无上限预算的 describe 保持严格JSON，不输出Infinity。
+6. 新 prediction_execution_match 只把候选预测绑定到下一实际步骤。
+   新到达/补位、组数差异、失败/过期或非硬件执行不具模型误差比较资格。
+   只证明共享形状规则正确，不宣称每个后续步骤必然与先前预测同形。
+7. 离线 fixture 队列互斥、到达/容量/进度合法，每状态独立初始化。
+   全部标 TEST_DATA/independent_fixture，生产可达性仍未验证。
+
+二、真实缺口清单
+
+results/processed/dryplan_execution_shape_20261003.json
+results/processed/execution_shape_manifest_20261003.json
+
+两个成本臂、四个合法合成状态、32次候选评估，14处旧batch输入修正，
+去重得到6个整步形状（包含1/2/3组实际前向）。这不是全负载覆盖率证明。
+所有当前v7预测都因新执行契约未验证而回退；未知与否证已分开。
+旧scalar键/范围仅作历史诊断，不能当作当前S01生产路径的已验证覆盖。
+固定9点补标定建议已撤回；新清单由实际候选自动生成，不是手写Cartesian网格。
+
+三、后续真机工具已离线准备
+
+scripts/execution_shape_probe.py
+  默认 --dry-plan；显式 --execute 才连接本进程的 MUSA 驱动。
+  每个记录在计时窗外重建真实KV；KV0没有past，不钳成1。
+  整个driver逻辑前向计时：total=elapsed，host=elapsed-fwd；pack/readback另列。
+scripts/export_execution_shape_model.py
+  3个训练进程→冻结表→绑定冻结SHA的3个独立验证进程→过门才导出。
+  验证失败/证据缺失/TEST_DATA/重复会话不会产生正式模型；输出禁止覆盖。
+scripts/prepare_execution_pilot.py
+  仅接收通过独立验证的MEASURED新模型，派生到全新配置目录。
+  静态基线按字节复制；两成本臂换新模型并移除旧host估算项。
+scripts/pilot_execution_plan.py
+  唯一safe tag，远端根/Python须显式传，--cfg-dir支持新派生目录。
+  实际矩阵dry-plan核对 baseline/cost_single/cost_dual，各一次，恰好3项。
+scripts/dryplan_decision_chain.py
+  --cfg-dir支持派生配置的新模型离线重放；无法预测打印“不可判”。
+
+真机执行说明：handoff/optimization_20260929/REMOTE_EXECUTION_PLAN_20261003.txt。
+研究协议：NEXT_BATCHES_PREREG.md §13。
+三训练+三验证共1080个测量逻辑步骤，预热下限18min，另有prime/装载成本。
+总机时未知，先核实第一个训练进程节拍；45min不是整个链的硬上限。
+没有启动pilot，也没有生成冒充就绪的实测模型或正式派生配置。
+
+四、验证证据
+
+本机解释器 C:\Python313\python.exe；PYTHONUTF8=1，PYTHONIOENCODING=utf-8。
+21个相关测试模块联合回归：375 passed、87 subtests passed，0 fail/error/skip，exit0。
+  results/processed/offline_execution_shape_tests_final_20261003.log
+  results/processed/offline_execution_shape_tests_final_20261003.xml
+派生配置重放CLI后续小修：23 passed、10 subtests passed，exit0，0 skip。
+  results/processed/offline_execution_shape_replay_cli_20261003.log / .xml
+上述计数有重叠，不相加为独立测试总数；没有重新运行整个历史测试仓库。
+
+真实CPU固定排程证明：
+  results/processed/s01num-offline-rolefix-20261003T115219571Z.json
+  两臂各24token，摘要一致，skip=[0,2]，last-only=[0,12]。
+真实CPU生产驱动shape证明：
+  results/processed/execution-shape-cpu-20261003T120152118544Z.json
+  两步、4次模型前向，以独立手写预期核对mask、position_ids、KV和need_token。
+下一步匹配/新到达不匹配证明：
+  results/processed/prediction-execution-match-20261003T121140261440Z.json
+  FakeDriver，TEST_DATA，comparison_eligible=false，不冒充真机模型误差。
+计划dry-run产物：execution_shape_probe_plan_20261003.json、pilot_execution_shape_plan_20261003.json
+  （均在results/processed；后者只验证3项次数，仍用历史目录，不能直接作为新模型就绪证据）。
+
+修正过的验证问题：首次命令误写不存在的test_step_planner.py，未执行测试，随后改用实际模块；
+首次相邻配置测试未设置UTF8，子进程打印异常造成1fail/5skip，正确环境复跑25项全过。
+最终联合回归无跳过。没有用skip或改弱断言掩盖这些失败。
+
+五、派生产物覆盖失误（必须保留）
+
+生成新版时误覆盖了旧 ignored/untracked results/processed/dryplan_decision_chain.json，
+没有保留其原字节，不能声称已恢复。旧路径现为 INVALIDATED_OVERWRITTEN/valid=false
+占位记录，无arms/metrics，指向新版本。写入器已拒绝再次写入旧路径，并有回归验证。
+原始实验数据、历史模型和冻结配置未改；不以虚构重建掩盖该失误。
+
+六、下一次会话从哪里开始
+
+按 REMOTE_EXECUTION_PLAN_20261003.txt 集中执行：当前环境/部署身份→短数值验收→
+必要整步标定→冻结→独立验证→导出与派生配置→离线重放→三项诊断pilot。
+任何依赖门失败即保留证据停止后续实验，不自动扩大25项收益矩阵。
+S01RECHECK不重跑，S04继续默认关闭；本轮没有新增性能结论。

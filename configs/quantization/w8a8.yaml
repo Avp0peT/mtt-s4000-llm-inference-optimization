@@ -1,0 +1,91 @@
+# 配置说明
+# ---------
+# 变量（相对 configs/baseline/default.yaml）：runtime 段
+#   precision: bf16 -> w8a8
+#   runtime.quantization 打开
+#
+# 重要：量化的收益发生在算子与显存带宽层面，**策略层模拟无法表达**。
+# 在 --dry-run 下本配置与 baseline 产物完全一致——这个「零差异」是预期行为，
+# 不是 bug。要评估量化必须走真机路径，并且必须单独测量精度损失
+# （困惑度 / 任务指标），否则「更快但更笨」会被记成纯收益。
+#
+# 登记建议：参考 EXPERIMENTS.md 的 EXP-quant-* 条目，同时登记精度评估口径。
+
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 50
+  notes: "W8A8 量化对照"
+
+workload:
+  name: short_chat
+
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 0
+
+chunk:
+  policy: fixed_chunk
+  enabled: false
+  chunk_size: 8192
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+
+controller:
+  enabled: false
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.10
+  # 冷却单位是**观测周期**（一次决策 = 一个周期），不是推理步。
+  # 决策节拍由上面的 control_interval_steps 决定；两者单位不同，别混。
+  cooldown_cycles: 3
+  chunk_size_init: 4096
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+
+runtime:
+  model: "Qwen2.5-7B-Instruct"   # 规范第 4 节：起步用 Qwen 系 7B~8B Dense
+  model_revision: "main"
+  precision: w8a8
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto
+  # quantization 是元数据里的**标量标签**（进 meta 的 reproducibility 段），
+  # 细节放 quantization_detail，避免把嵌套结构塞进标量字段。
+  quantization: "w8a8"
+  quantization_detail:
+    weight_dtype: int8
+    activation_dtype: int8
+    # 校准集与算法必须写清楚，否则量化结果不可复现
+    calibration_dataset: ""
+    algorithm: ""
+    per_channel: true
+  # 精度评估（必须同时测，不能只报速度）
+  accuracy_eval:
+    metric: ""          # 如 perplexity / 任务准确率
+    dataset: ""
+    tolerance: null     # 允许的最大退化，超过即判定不可用

@@ -1,0 +1,127 @@
+{
+  "deployed_tree_digest": "472697170d43f88a055d8934439ef34e127f8947fe544b78c267383e239b97ae",
+  "note": "最后一次真实部署 = S01RECHECK 批次启动时的远端树（三方摘要一致：STAMP==远端重算==本机当时值）",
+  "post_batch_tool_changes": {
+    "current_local_digest": "1ef43cea485c868bb037fc055cc5d5c4018826c5747124262bb42ccb009a35a8",
+    "files": [
+      "scripts/analyze_s01_recheck.py（新增，只读分析器）",
+      "scripts/run_exec_opt_matrix.py（stopped_by_budget 语义修正）"
+    ],
+    "if_resume_this_batch": "classify_existing 会因身份不符**拒绝复用** —— 这是正确行为，不要去绕过它。",
+    "impact_on_measured_numbers": "无（分析与汇总命名都不参与测量）",
+    "why": "批次之后只改了**离线工具**（不在测量路径上）。"
+  },
+  "recorded_at": "2026-10-03T16:15:44+08:00",
+  "s01recheck_measured_digest": "472697170d43f88a055d8934439ef34e127f8947fe544b78c267383e239b97ae",
+  "schema": "deployment-status-v1",
+  "tool_changes_2026_10_03_second_wave": {
+    "files": [
+      "scripts/analyze_s01_recheck.py（四元口径重写：对照绝对/处理绝对/配对变化/分母；wall_ms 与 fwd_pack_ms 分名；吞吐方向修正；5 对唯一闸门）",
+      "scripts/verify_s01_numeric_acceptance.py（补 6 项判据 + 唯一 run_id + 身份落盘）",
+      "tests/test_s01_recheck_analysis.py（新增 21 例）",
+      "tests/test_verify_s01_numeric_offline.py（新增 10 例，离线假驱动）"
+    ],
+    "impact_on_measured_numbers": "无（全部是离线分析与判据工具，不参与测量；未重跑任何性能矩阵）",
+    "why": "按用户指令修正分析口径并补强数值验收判据。"
+  },
+  "remote_reachability_2026_10_03": {
+    "telnet_like_probe": "TCP 可连（connect 成功），但**收不到 SSH banner**（recv 超时）",
+    "observation": "SSH_HOST_FROM_PRIVATE_CONFIG:23576",
+    "conclusion": "主机在线但**该端口已无 SSH 服务** ⇒ 按既往两次实证（14671→14293、28080→23576），高度怀疑 AutoDL 重启/迁移**又改了映射端口**",
+    "action_taken": "**未**猜端口、**未**改凭据、**未**反复重试（遵守用户指令）",
+    "action_needed": "用户在 AutoDL 控制台确认新映射端口 → 只改仓库外 ~/.workbuddy/remote.env（`.gitignore` 已设防）→ 再单次探测",
+    "blocked_task": "S01RECHECK 数值验收的真机短跑（离线判定逻辑已全部就位并通过测试）"
+  },
+  "tool_changes_2026_10_03_third_wave": {
+    "scope": "**仅离线**：分析器与验收脚本修正 + 下一批协议准备。未重跑性能矩阵、未碰 GPU。",
+    "analyzer": "scripts/analyze_s01_recheck.py：四元口径 + 三道闸门（complete/pairing/identity）拦截 SUPPORTED/REGRESSED；吞吐方向 HIGHER_IS_BETTER；产物新增 written_at + argv；未传 --json 时显式提示磁盘上是旧产物。",
+    "numeric_acceptance": "scripts/verify_s01_numeric_acceptance.py：6 项判据齐备（预期请求集合 / token 长度与总数对账 / 中间 chunk need_token=False / 混批 True-False / 跳过计数 > 0 / logits 未采集保留未验证）。",
+    "tests": "4 个相关测试文件合计 **82 passed**（原 77，+5）。",
+    "destructive_controls": [
+      "分析器新类 3 轮注入：总是写文件 ⇒ 2 红；删 written_at/argv ⇒ 2 红；payload 写死 gates_ok=True ⇒ 1 红；还原全绿。",
+      "数值验收离线集成：假驱动 4 处破坏 ⇒ 4 红；还原 ⇒ 10 绿。"
+    ],
+    "new_findings": [
+      "成本模型**三版并存**（v5/v6/v7）：phase1_step15/* 与 phase1_step14b/* 指向 v6，此前只记 v5/v7 ⇒ NEXT_BATCHES_PREREG.md §9.2 已重写，前置门新增 G1b。",
+      "『旧 JSON 冒充新结果』：不加 --json 时不写文件，磁盘上是上一次的产物 ⇒ 已加 written_at/argv + 显式提示 + 5 条回归。"
+    ],
+    "deployment_performed": false,
+    "deployment_note": "本会话**未推送、未部署**（无远端访问）。下一批开跑前须按 §12 的 G7 重采并校验环境指纹。"
+  },
+  "tool_changes_2026_10_03_fourth_wave": {
+    "scope": "**仅离线**：数值验收固定排程 + 分析器有效数值门 + 下一批派生配置与状态枚举 + pilot 流程拆分。**未启动 GPU 性能矩阵**，**未重跑** S01RECHECK 的 10 份性能原始产物（results/raw/** 只读）。",
+    "files": [
+      "scripts/verify_s01_numeric_acceptance.py（固定合法 11 步排程；真实 CPU 微型驱动，不再只用 FakeDriver；逐步校验 slot 数量/唯一性/请求集合/输出位置；产物已存在即拒绝覆盖）",
+      "scripts/analyze_s01_recheck.py（新增 _finite + check_valid_numeric：主指标须**恰好 5 对有限且合法**；paired_rows 分母 0 ⇒ 显式 None；verdict 数值门不过 ⇒ UNKNOWN + 逐条原因 + 非零退出码；main 拆分 base_gates_ok / ok_v）",
+      "scripts/gen_prereg_batch_configs.py（新增：把下一批草案生成**可执行 YAML**，不靠默认值）",
+      "scripts/enumerate_prereg_states.py（新增：离线枚举纯 prefill / 纯 decode / 混合步 / 查表缺失）",
+      "tests/test_s01_recheck_analysis.py（+18 例：TestValidNumericGate 10 + TestValidNumericGateAtMainEntry 8，真实 main 入口）",
+      "tests/test_prereg_batch_configs.py（新增 24 例）",
+      "tests/test_pilot_flow_rules.py（新增 20 例）"
+    ],
+    "generated_configs": [
+      "configs/mthreads/prereg_batch/cost_single.yaml（prefill_deadline_ms=null）",
+      "configs/mthreads/prereg_batch/cost_dual.yaml（prefill_deadline_ms=2000）",
+      "configs/mthreads/prereg_batch/static_small.yaml（chunk on @1024，控制器关）"
+    ],
+    "frozen_values": "外部 SLO tpot=100 / ttft=2000；内部步预算 120；成本模型 configs/cost_calib/model_v7.json；MODEL_REVISION=a09a35458c702b33eeacc393d103063234e8bc28；S01 开关 {logits_last_only, sample_needed_only}；max_num_seqs=8。**均写入实际 YAML**（不靠默认值或文档描述）。",
+    "impact_on_measured_numbers": "无（全部是离线分析/判据/配置生成工具，不参与测量；未重跑任何性能矩阵）。",
+    "tests_total": "组合回归 **149 passed / 3 skipped**（skip 为 GPU 依赖项，离线预期）。",
+    "destructive_controls": [
+      "B-1 放宽数值比较 ⇒ 7 红（含真实 main 入口项）；B-2 gates_ok=base_gates_ok（接好但未通电）⇒ 4 红（含零分母）。还原全绿。",
+      "C-1 内部预算 120→100 ⇒ 2 红；C-2 删 S01 开关 ⇒ 1 红；C-3 pure_prefill 标 decode_at_risk=True ⇒ 3 红（改分类前提而非阈值）。还原 24/24 绿。",
+      "D-1 复活旧停止规则 ⇒ 2 红；D-2 §11 重插预算数 ⇒ 1 红。还原 20/20 绿。"
+    ],
+    "new_findings": [
+      "★ step_deadline_ms **不是** ControllerConfig 字段 —— 它由 benchmark/arm_factory.py:99 从 controller.target_tpot_ms **派生**。把它写进 YAML ⇒ ValueError 未知字段（我自己的测试抓到）。⇒ 派生量不许当配置项写。",
+      "★ -r5 **不存在**：真实布局为 `-`（第 0 轮）+ `-r1..-r4` ＝ 5 轮。探测 -r1..-r5 会让 6 个端到端测试**静默 skip**，把『没跑』伪装成『通过』。",
+      "★ 破坏性对照的注入必须**合法但错**：写成 `if False: # INJECTED BREAK` + 缩进体会因 IndentationError 而『红』，那是假对照。",
+      "代表状态枚举（TEST_DATA）：候选命中率 3/4，预算分支差异 1/4；双预算可行 2/4 vs 单预算 1/4 ⇒ 两套预算给出**不同可行集**，机制确实被行使。"
+    ],
+    "deployment_performed": false,
+    "deployment_note": "本会话**未推送、未部署**（远端不可达）。下一批开跑前须按 NEXT_BATCHES_PREREG.md §12 的 G7 重采并校验环境指纹。"
+  },
+  "remote_reachability_2026_10_03_late": {
+    "reachable": false,
+    "host_port": "SSH_HOST_FROM_PRIVATE_CONFIG:23576",
+    "signature": "TCP connect OK (0.02 s) 但 recv 无 SSH banner（TimeoutError）",
+    "root_cause": "**待确认**（本轮未定位）",
+    "diagnostic_signature_is_a_hypothesis_only": "症状（TCP 可连、无 banner）在历史上**两次**确实由映射端口变更引起 ⇒ 极易被顺手写成『端口已经变化』。当前**假设**＝映射端口变更；**竞争假设**＝该端口后服务未起 / 被占用 / 上游策略变更。⚠️ 本轮**未定位根因 ⇒ 不得写成『端口已经变化』**。",
+    "action_taken": "**单次**探测；未重试、未猜新端口、未改凭据。",
+    "blocked_task": "S01 数值验收的真机短跑（结果 JSON/日志回拉）；以及下一批 pilot 开跑。",
+    "next_step_for_user": "请在 AutoDL 控制台**核对当前映射端口**（不是猜一个再试）；只改仓库外 ~/.workbuddy/remote.env，然后**单次**探测。"
+  },
+  "tool_changes_2026_10_03_fifth_wave": {
+    "scope": "**仅离线收尾**：真实决策链演练 + pilot 三臂执行清单 + 真机数值验收入口加固 + 四项小修（TTFT 两侧有限且>0 / 非有限值置 null 且严格 JSON / 本机必测不得转 skip / 删除 P1 必须落在 (0,1) 规则 + 预算说明与 decide_stop 对齐）。**未启动 GPU 性能矩阵**；**保留** S01RECHECK 的 10 份性能原始产物（results/raw/** 只读，未重跑）。",
+    "files": [
+      "scripts/dryplan_decision_chain.py（新增：真实链路 load_config → build_arm → plan_step/CostPolicy.decide 的**代表状态演练**；四态均为计划负载下**实际可达**的队列形状；产出 results/processed/dryplan_decision_chain.json）",
+      "scripts/pilot_execution_plan.py（新增：pilot 三臂执行清单**只此一处定义**；repeats=1；计划期即可核对**恰好 3 项**；真的跑 `run_exec_opt_matrix --dry-plan` 交叉核对）",
+      "scripts/enumerate_prereg_states.py（改称**预算函数示例**；产物加 artifact_role=budget_function_example / not_evidence_of；不再声称机制被行使）",
+      "scripts/verify_s01_numeric_acceptance.py（新增 --require-real-hw 守卫 + _hardware_problems 拒绝式核验 + 四类身份绑定 + sanitize_json 严格 JSON）",
+      "scripts/analyze_s01_recheck.py（新增 _finite_positive + TTFT 两侧有限且>0 检查 ③c；sanitize_json；JSON 写出加 allow_nan=False）",
+      "NEXT_BATCHES_PREREG.md（§10.3 删除 (0,1) 规则，终裁为「按三臂结果与机制行为判断」；§10.4 预算说明与 decide_stop 逐条对齐；§10 加入 pilot_execution_plan.py 引用）",
+      "tests/test_dryplan_decision_chain.py（新增 11 例）",
+      "tests/test_pilot_execution_plan.py（新增 15 例）",
+      "tests/test_verify_s01_realhw_entry.py（+5 例：严格 JSON / 清洗器 / 破坏性对照）",
+      "tests/test_must_run_not_skipped.py（新增 5 例：本机必测不得转 skip 的纪律回归）",
+      "tests/test_s01_recheck_analysis.py（+5 例：TTFT 正值 + 非有限置 null；11 处裸 skipTest 改为 ExternalArtifactMissing）",
+      "tests/test_prereg_batch_configs.py（枚举产物缺失改为**失败**不 skip）",
+      "tests/test_verify_s01_numeric_offline.py（config 缺失改为**失败**不 skip）",
+      "tests/_tiny_support.py（新增 require_local_file / ExternalArtifactMissing）"
+    ],
+    "key_findings": [
+      "**v7 网格存在结构性空洞**：batch_start_prefill 步的形状是 (batch≥2, kv_len=0)，而 model_v7 只在 batch=1 采过 kv_len=0（batch≥2 的 kv_min=512）⇒ **起点步构造上不可预测**。已在演练中**如实保留查表缺失结果**，未用手选命中点替代。",
+      "两臂在四个可达状态上**动作完全相同**（本批不要求两臂必须不同，只要求决策过程真实、结果如实）。",
+      "steady_decode / mixed_admit 退化为最经济候选（115.5 + host 25.3 = 140.8 > 120 ms）；contended_prefill 退化严重（833.6 + 17.9 = 851.5 > 120 ms）。",
+      "**最小补标定方案**：另开一轮，在 kv_len=0 × batch∈{2,4,8} × pf∈{512,1024,1536} ≈ 9 点补采，绑定到计划 cell。**先补标定，不要直接扩大为性能收益矩阵**。",
+      "pilot 默认值陷阱两个：`--repeats` 不给 ⇒ 退到 fill-budget（3~50 轮）；`--baseline` 用默认 ⇒ cells 变 4。⇒ 显式 `--repeats 1` + P1 走 `--baseline`。"
+    ],
+    "impact_on_measured_numbers": "无（全部是离线分析/判据/演练/清单工具，不参与测量；未重跑任何性能矩阵；last_only/sample_needed_only 判据语义未改）。",
+    "tests_total": "见同批 TEST_STATUS（逐文件）。新增/改动文件均 CR=0（LF-only）。",
+    "not_done": [
+      "**未**启动 GPU 性能矩阵（用户明令）。",
+      "**未**重跑 S01RECHECK（保留 10 份原始产物）。",
+      "OPT-04 **仍未解冻**（前置未满足）。"
+    ]
+  }
+}

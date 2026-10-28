@@ -1,0 +1,1025 @@
+{
+  "run_id": "s01num-offline-rolefix-20261003T115219571Z",
+  "timestamp": "2026-10-03T19:52:48+0800",
+  "command": "scripts/verify_s01_numeric_acceptance.py --config-a configs/mthreads/exec_opt/s01_reference.yaml --config-b configs/mthreads/exec_opt/s01_both.yaml --driver cpu --run-id s01num-offline-rolefix-20261003T115219571Z --json results/processed/s01num-offline-rolefix-20261003T115219571Z.json",
+  "exit_code": 0,
+  "driver_mode": "cpu",
+  "config_a": "configs\\mthreads\\exec_opt\\s01_reference.yaml",
+  "config_b": "configs\\mthreads\\exec_opt\\s01_both.yaml",
+  "identity": {
+    "source": {
+      "git_commit": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4",
+      "git_source": "git",
+      "git_dirty": true,
+      "tree_digest": "6b35c356d22bde04087d5412b3cceb558cdfe252d02f944e70dbdc2cc281325f",
+      "tree_digest_basis": "computed_on_host",
+      "stamp": {
+        "git_commit": null,
+        "git_dirty": null,
+        "validated": null,
+        "reason": "无部署戳 SOURCE_PROVENANCE.json（源码树未经部署脚本投放）",
+        "deployed_at": null,
+        "deployed_by": null
+      }
+    },
+    "config": {
+      "a": "configs\\mthreads\\exec_opt\\s01_reference.yaml",
+      "b": "configs\\mthreads\\exec_opt\\s01_both.yaml",
+      "a_sha256": "6b27871d95c28c6a476739c7c572f34500d50cc5a451312c048f35a18d6b583f",
+      "b_sha256": "668514c1ae97fbe303048df435fe901511ad9e62a47369c063bd53c5f0fcd361"
+    },
+    "model": {
+      "revision_requested": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "revision_resolved_a": null,
+      "revision_resolved_b": null
+    },
+    "environment": {
+      "hostname": "LAPTOP-1LQ6BQ1P",
+      "python": "3.13.7",
+      "executable": "C:\\Python313\\python.exe",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "fingerprint_path": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\results\\raw\\_env\\env.json",
+      "fingerprint_sha256": "a9071618eebf8a22f944c44b94858f29e001fb4a3c00e0a7c836ceaab907cf98",
+      "fingerprint": {
+        "collected_at": "2026-09-28T00:16:44+0800",
+        "hostname": "autodl-container-cf99469eb6-b877706e",
+        "os": {
+          "system": "Linux",
+          "release": "5.15.0-105-generic",
+          "version": "#115-Ubuntu SMP Mon Apr 15 09:52:04 UTC 2024",
+          "machine": "x86_64",
+          "kernel": "Linux-5.15.0-105-generic-x86_64-with-glibc2.35"
+        },
+        "cpu": {
+          "logical_cores": 128,
+          "model": "x86_64"
+        },
+        "software": {
+          "python": "3.10.8",
+          "executable": "/root/musa-envs/qwen310/bin/python3",
+          "torch_version": "2.2.0",
+          "torch_version_cuda_field": null,
+          "torch_npu_available": null,
+          "torch_npu_version": null,
+          "torch_musa_version": "1.3.0+81caf0a",
+          "vllm_version": null,
+          "vllm_ascend_version": null,
+          "transformers_version": "4.46.3"
+        },
+        "env_vars": {
+          "MODEL_NAME": "Qwen/Qwen2.5-7B-Instruct",
+          "MODEL_REVISION": "a09a35458c702b33eeacc393d103063234e8bc28",
+          "MODEL_PATH": "/root/autodl-tmp/hf/hub/models--Qwen--Qwen2.5-7B-Instruct",
+          "MODELS_DIR": "/root/autodl-tmp/models",
+          "MODEL_PRECISION": "fp16"
+        },
+        "cann": {
+          "paths_checked": [
+            "/usr/local/Ascend/ascend-toolkit/latest",
+            "/usr/local/Ascend/latest"
+          ],
+          "version_files": {},
+          "ok": false,
+          "probe": "npu-smi not found in PATH"
+        },
+        "device": {
+          "npu_smi_available": false,
+          "npu_smi_info": null,
+          "npu_smi_error": "npu-smi not found in PATH",
+          "topology": null,
+          "mthreads_gmi_available": true,
+          "mthreads_gmi_info": "Mon Sep 28 00:16:46 2026\n---------------------------------------------------------------\n    mthreads-gmi:1.14.0          Driver Version:2.7.0\n---------------------------------------------------------------\nID   Name           |PCIe                |%GPU  Mem            \n     Device Type    |Pcie Lane Width     |Temp  MPC Capable    \n                                         |      ECC Mode       \n+-------------------------------------------------------------+\n0    MTT S4000      |00000000:12:00.0    |0%    2MiB(49152MiB)\n     Physical       |16x(16x)            |42C   YES            \n                                         |      N/A            \n---------------------------------------------------------------\n\n---------------------------------------------------------------\nProcesses:\nID   PID       Process name                         GPU Memory\n                                                         Usage\n+-------------------------------------------------------------+\n0    191739    N/A                                       <1MiB\n---------------------------------------------------------------",
+          "mthreads_gmi_error": null,
+          "model": "MTT S4000",
+          "count": 1
+        },
+        "memory": {
+          "free_m": "total        used        free      shared  buff/cache   available\nMem:         1031697       11718      177592           5      842387     1013811\nSwap:              0           0           0"
+        },
+        "probes": {
+          "ascend": {
+            "tool": "npu-smi",
+            "tool_present": false,
+            "ok": false,
+            "device_count": null,
+            "model": null,
+            "error": "npu-smi not found in PATH",
+            "result": false
+          },
+          "mthreads": {
+            "tool": "mthreads-gmi",
+            "tool_present": true,
+            "ok": true,
+            "device_count": 1,
+            "model": "MTT S4000",
+            "error": null,
+            "result": true
+          }
+        },
+        "available": true,
+        "available_reason": "npu-smi -> False；mthreads-gmi -> True（合成规则：任一认出设备即可用；有认不出的则为未知；否则不可用）",
+        "platform": "mthreads",
+        "schema_version": 2,
+        "discovery": {
+          "hostname": "autodl-container-cf99469eb6-b877706e",
+          "looks_like_ascend_host": false,
+          "looks_like_mthreads_host": true,
+          "detected_platform": "mthreads",
+          "values": {
+            "ASCEND_DEVICE_MODEL": "MTT S4000",
+            "ASCEND_DEVICE_COUNT": 1,
+            "ASCEND_DRIVER_VERSION": null,
+            "CANN_VERSION": null,
+            "TORCH_VERSION": "2.2.0",
+            "TORCH_NPU_VERSION": null,
+            "VLLM_VERSION": null,
+            "VLLM_ASCEND_VERSION": null,
+            "MODEL_PATH": "/root/autodl-tmp/hf/hub/models--Qwen--Qwen2.5-7B-Instruct",
+            "MODEL_NAME": "Qwen/Qwen2.5-7B-Instruct",
+            "MODEL_REVISION": "a09a35458c702b33eeacc393d103063234e8bc28",
+            "MODEL_PRECISION": "fp16",
+            "MTT_DRIVER_VERSION": "2.7.0",
+            "MUSA_VERSION": "3.1.0",
+            "TORCH_MUSA_VERSION": "1.3.0+81caf0a",
+            "VLLM_MUSA_VERSION": null
+          },
+          "sources": {
+            "ASCEND_DEVICE_MODEL": "mthreads-gmi:device-table",
+            "ASCEND_DEVICE_COUNT": "mthreads-gmi:device-table",
+            "ASCEND_DRIVER_VERSION": null,
+            "CANN_VERSION": null,
+            "TORCH_VERSION": "python:import torch",
+            "TORCH_NPU_VERSION": null,
+            "VLLM_VERSION": null,
+            "VLLM_ASCEND_VERSION": null,
+            "MODEL_PATH": "env:MODEL_PATH",
+            "MODEL_NAME": "env:MODEL_NAME",
+            "MODEL_REVISION": "env:MODEL_REVISION",
+            "MODEL_PRECISION": "env:MODEL_PRECISION",
+            "MTT_DRIVER_VERSION": "mthreads-gmi:version-line",
+            "MUSA_VERSION": "file:/usr/local/musa/version.json",
+            "TORCH_MUSA_VERSION": "python:import torch_musa",
+            "VLLM_MUSA_VERSION": null
+          },
+          "missing": [
+            "ASCEND_DRIVER_VERSION",
+            "CANN_VERSION",
+            "TORCH_NPU_VERSION",
+            "VLLM_VERSION",
+            "VLLM_ASCEND_VERSION"
+          ],
+          "mtt_missing": [
+            "VLLM_MUSA_VERSION"
+          ],
+          "note": "本块描述的是**采集它的这台机器**。规范要求这些事实从执行推理的远程主机发现，因此在开发机上采集会得到一串 null——那不是「没有信息」，那是在说「这台机器不是推理环境」。"
+        },
+        "available_source": "declared",
+        "source": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\results\\raw\\_env\\env.json"
+      },
+      "fingerprint_matches_host": false,
+      "fingerprint_freshness": "not_verified",
+      "driver_version": null,
+      "musa_version": null,
+      "versions_basis": "unavailable",
+      "captured_at": "2026-10-03T19:52:23+0800",
+      "a": {
+        "model_revision_config": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "python": "3.13.7"
+      },
+      "b": {
+        "model_revision_config": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "precision": "fp16",
+        "python": "3.13.7"
+      },
+      "device": "cpu",
+      "driver_kind": "transformers",
+      "hardware_backed": false
+    }
+  },
+  "source_identity": {
+    "git_commit": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4",
+    "git_source": "git",
+    "git_dirty": true,
+    "tree_digest": "6b35c356d22bde04087d5412b3cceb558cdfe252d02f944e70dbdc2cc281325f",
+    "tree_digest_basis": "computed_on_host",
+    "stamp": {
+      "git_commit": null,
+      "git_dirty": null,
+      "validated": null,
+      "reason": "无部署戳 SOURCE_PROVENANCE.json（源码树未经部署脚本投放）",
+      "deployed_at": null,
+      "deployed_by": null
+    }
+  },
+  "env_identity_a": {
+    "model_revision_config": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "precision": "fp16",
+    "python": "3.13.7"
+  },
+  "env_identity_b": {
+    "model_revision_config": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "precision": "fp16",
+    "python": "3.13.7"
+  },
+  "expected": {
+    "tokens_per_req": {
+      "s0": 8,
+      "s1": 8,
+      "s2": 8
+    },
+    "total": 24,
+    "false_rows": [
+      [
+        "g2.s1_prefill_chunk",
+        "s1"
+      ],
+      [
+        "g3.mixed_decode_prompt",
+        "s1"
+      ]
+    ],
+    "n_false_rows": 2,
+    "mixed_groups": [
+      "g3.mixed_decode_prompt"
+    ],
+    "n_mixed_groups": 1,
+    "n_steps": 11
+  },
+  "schedule": [
+    {
+      "step": "g1.prefill_full",
+      "items": [
+        [
+          "s0",
+          64,
+          true
+        ],
+        [
+          "s2",
+          80,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g2.s1_prefill_chunk",
+      "items": [
+        [
+          "s1",
+          70,
+          false
+        ]
+      ]
+    },
+    {
+      "step": "g3.mixed_decode_prompt",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          false
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g4.s1_topup",
+      "items": [
+        [
+          "s1",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g5.decode_r0",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          true
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g5.decode_r1",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          true
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g5.decode_r2",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          true
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g5.decode_r3",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          true
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g5.decode_r4",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          true
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g5.decode_r5",
+      "items": [
+        [
+          "s0",
+          1,
+          true
+        ],
+        [
+          "s1",
+          1,
+          true
+        ],
+        [
+          "s2",
+          1,
+          true
+        ]
+      ]
+    },
+    {
+      "step": "g6.s1_final_decode",
+      "items": [
+        [
+          "s1",
+          1,
+          true
+        ]
+      ]
+    }
+  ],
+  "arm_a": {
+    "config": "configs\\mthreads\\exec_opt\\s01_reference.yaml",
+    "driver_kind": "transformers",
+    "hardware_backed": false,
+    "tokens": {
+      "s0": [
+        43,
+        6,
+        55,
+        4,
+        37,
+        7,
+        31,
+        18
+      ],
+      "s1": [
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19
+      ],
+      "s2": [
+        46,
+        46,
+        46,
+        46,
+        46,
+        46,
+        46,
+        46
+      ]
+    },
+    "slots_seen": [
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "expected_req_ids": [
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "token_digest": "ddcc78644acfe0502e4d88b702e742ae228a36da7040596c47dd38ce6877c112",
+    "logits_digests": [],
+    "n_steps_logits": 0,
+    "no_token_positions": [
+      [
+        "g2.s1_prefill_chunk",
+        "s1",
+        0
+      ],
+      [
+        "g3.mixed_decode_prompt",
+        "s1",
+        0
+      ]
+    ],
+    "per_step": [
+      {
+        "step": "g1.prefill_full",
+        "n_items": 2,
+        "n_slots": 2,
+        "returned_ids": [
+          "s0",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g2.s1_prefill_chunk",
+        "n_items": 1,
+        "n_slots": 1,
+        "returned_ids": [
+          "s1"
+        ],
+        "expected_ids": [
+          "s1"
+        ],
+        "expect_no_token": [
+          "s1"
+        ],
+        "problems": []
+      },
+      {
+        "step": "g3.mixed_decode_prompt",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [
+          "s1"
+        ],
+        "problems": []
+      },
+      {
+        "step": "g4.s1_topup",
+        "n_items": 1,
+        "n_slots": 1,
+        "returned_ids": [
+          "s1"
+        ],
+        "expected_ids": [
+          "s1"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r0",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r1",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r2",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r3",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r4",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r5",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g6.s1_final_decode",
+        "n_items": 1,
+        "n_slots": 1,
+        "returned_ids": [
+          "s1"
+        ],
+        "expected_ids": [
+          "s1"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      }
+    ],
+    "violations": [],
+    "execution_optimizations": {
+      "logits_last_only": {
+        "requested": false,
+        "effective": false,
+        "unsupported_reason": "",
+        "n_calls_last_only": 0,
+        "n_calls_all_positions": 12
+      },
+      "sample_needed_only": {
+        "requested": false,
+        "effective": false,
+        "n_sampled_rows": 0,
+        "n_sampling_rows_skipped": 0
+      },
+      "retire_empty_cache": {
+        "requested_at_retire": true,
+        "n_empty_cache_calls": 0,
+        "n_suppressed": 0
+      },
+      "linear_fusion": null,
+      "persistent_kv_slots": {
+        "requested": false,
+        "effective": false,
+        "n_fastpath_steps": 0,
+        "n_fallback_steps": 0,
+        "fallback_reasons": {},
+        "n_resyncs": 0,
+        "capacity": null,
+        "n_kv_heads": null,
+        "head_dim": null,
+        "dtype": null,
+        "bytes_allocated": 0,
+        "bytes_peak": 0,
+        "n_allocations": 0
+      },
+      "capture_logits_digest": {
+        "requested": false,
+        "effective": false,
+        "n_logits_digests": 0
+      }
+    },
+    "driver_identity": {
+      "kind": "transformers",
+      "model_revision": null,
+      "model_revision_resolved": null,
+      "device": "cpu",
+      "precision": "fp32",
+      "sampling": "greedy"
+    }
+  },
+  "arm_b": {
+    "config": "configs\\mthreads\\exec_opt\\s01_both.yaml",
+    "driver_kind": "transformers",
+    "hardware_backed": false,
+    "tokens": {
+      "s0": [
+        43,
+        6,
+        55,
+        4,
+        37,
+        7,
+        31,
+        18
+      ],
+      "s1": [
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19
+      ],
+      "s2": [
+        46,
+        46,
+        46,
+        46,
+        46,
+        46,
+        46,
+        46
+      ]
+    },
+    "slots_seen": [
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "expected_req_ids": [
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "token_digest": "ddcc78644acfe0502e4d88b702e742ae228a36da7040596c47dd38ce6877c112",
+    "logits_digests": [],
+    "n_steps_logits": 0,
+    "no_token_positions": [
+      [
+        "g2.s1_prefill_chunk",
+        "s1",
+        0
+      ],
+      [
+        "g3.mixed_decode_prompt",
+        "s1",
+        0
+      ]
+    ],
+    "per_step": [
+      {
+        "step": "g1.prefill_full",
+        "n_items": 2,
+        "n_slots": 2,
+        "returned_ids": [
+          "s0",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g2.s1_prefill_chunk",
+        "n_items": 1,
+        "n_slots": 1,
+        "returned_ids": [
+          "s1"
+        ],
+        "expected_ids": [
+          "s1"
+        ],
+        "expect_no_token": [
+          "s1"
+        ],
+        "problems": []
+      },
+      {
+        "step": "g3.mixed_decode_prompt",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [
+          "s1"
+        ],
+        "problems": []
+      },
+      {
+        "step": "g4.s1_topup",
+        "n_items": 1,
+        "n_slots": 1,
+        "returned_ids": [
+          "s1"
+        ],
+        "expected_ids": [
+          "s1"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r0",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r1",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r2",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r3",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r4",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g5.decode_r5",
+        "n_items": 3,
+        "n_slots": 3,
+        "returned_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expected_ids": [
+          "s0",
+          "s1",
+          "s2"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      },
+      {
+        "step": "g6.s1_final_decode",
+        "n_items": 1,
+        "n_slots": 1,
+        "returned_ids": [
+          "s1"
+        ],
+        "expected_ids": [
+          "s1"
+        ],
+        "expect_no_token": [],
+        "problems": []
+      }
+    ],
+    "violations": [],
+    "execution_optimizations": {
+      "logits_last_only": {
+        "requested": true,
+        "effective": true,
+        "unsupported_reason": "",
+        "n_calls_last_only": 12,
+        "n_calls_all_positions": 0
+      },
+      "sample_needed_only": {
+        "requested": true,
+        "effective": true,
+        "n_sampled_rows": 24,
+        "n_sampling_rows_skipped": 2
+      },
+      "retire_empty_cache": {
+        "requested_at_retire": true,
+        "n_empty_cache_calls": 0,
+        "n_suppressed": 0
+      },
+      "linear_fusion": null,
+      "persistent_kv_slots": {
+        "requested": false,
+        "effective": false,
+        "n_fastpath_steps": 0,
+        "n_fallback_steps": 0,
+        "fallback_reasons": {},
+        "n_resyncs": 0,
+        "capacity": null,
+        "n_kv_heads": null,
+        "head_dim": null,
+        "dtype": null,
+        "bytes_allocated": 0,
+        "bytes_peak": 0,
+        "n_allocations": 0
+      },
+      "capture_logits_digest": {
+        "requested": false,
+        "effective": false,
+        "n_logits_digests": 0
+      }
+    },
+    "driver_identity": {
+      "kind": "transformers",
+      "model_revision": null,
+      "model_revision_resolved": null,
+      "device": "cpu",
+      "precision": "fp32",
+      "sampling": "greedy"
+    }
+  },
+  "logits_status": "未验证（两臂都未采集 logits 摘要）",
+  "problems": [],
+  "ok": true,
+  "evidence_class": "LOCAL_CPU_MICRO",
+  "evidence_scope": "本机 CPU 微型驱动 ⇒ 只证明**接口与判据语义**，**不是**硬件数值行为；**不得**升级为 S4000 证据",
+  "verdict": "PASS 两臂数值逐位相同",
+  "_json_notes": []
+}

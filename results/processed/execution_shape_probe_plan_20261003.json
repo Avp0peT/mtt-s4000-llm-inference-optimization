@@ -1,0 +1,61 @@
+{
+  "status": "PLAN_ONLY",
+  "schema": "execution_shape_probe_v1",
+  "split": "training",
+  "points": [
+    {
+      "point_id": "shape-41ffc6d467303954",
+      "execution_shape_key": "[[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "n_forwards": 1,
+      "warmup_s": 30,
+      "records": 30,
+      "independent_processes_required": 3
+    },
+    {
+      "point_id": "shape-519918568aa12eb3",
+      "execution_shape_key": "[[1536,0,\"prefill\",true],[512,0,\"prefill\",false]]",
+      "n_forwards": 2,
+      "warmup_s": 30,
+      "records": 30,
+      "independent_processes_required": 3
+    },
+    {
+      "point_id": "shape-d2773390924e6756",
+      "execution_shape_key": "[[768,768,\"prefill\",true],[768,768,\"prefill\",true],[512,0,\"prefill\",false],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "n_forwards": 3,
+      "warmup_s": 30,
+      "records": 30,
+      "independent_processes_required": 3
+    },
+    {
+      "point_id": "shape-d7a25583895849b2",
+      "execution_shape_key": "[[768,768,\"prefill\",true],[768,768,\"prefill\",true],[508,0,\"prefill\",false],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "n_forwards": 3,
+      "warmup_s": 30,
+      "records": 30,
+      "independent_processes_required": 3
+    },
+    {
+      "point_id": "shape-dcffd4bd305ca261",
+      "execution_shape_key": "[[512,0,\"prefill\",false]]",
+      "n_forwards": 1,
+      "warmup_s": 30,
+      "records": 30,
+      "independent_processes_required": 3
+    },
+    {
+      "point_id": "shape-f8dd5ba6b696c22d",
+      "execution_shape_key": "[[512,768,\"prefill\",false],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true],[1,1539,\"decode\",true]]",
+      "n_forwards": 2,
+      "warmup_s": 30,
+      "records": 30,
+      "independent_processes_required": 3
+    }
+  ],
+  "one_invocation": "one independent process; all shapes; no GPU call in dry-plan",
+  "execution_timing": "whole_step_fwd_plus_host_v1",
+  "prime_and_warmup_outside_measurement": true,
+  "training_and_validation": "separate invocations; freeze training estimator before validation",
+  "duration_seconds": null,
+  "coverage": "exact listed shapes only; no shape generalization"
+}

@@ -1,0 +1,56 @@
+# P27 图的来源与重建（.source.txt）
+
+> 本文件由 `scripts/plot_step16_decouple.py` 自动生成，**请勿手改**。
+> 对应 `paper/sections/04_failure_analysis.md` 的【待补·P27】占位块。
+
+## 重建命令
+
+```bash
+python scripts/plot_step16_decouple.py --processed results/processed --out paper/figures
+```
+
+## 输入（内容哈希用于确认「图来自哪一份文件」）
+
+* `results/processed/decouple_v1_v3.json`
+  * sha256 = `cfee2f5c96c3aa4a531c4b510a97be134050c3f65c2d20722c40a3df5d812cd9`
+  * holdout_modulus = 2
+  * 格子数 = 4
+* `results/processed/decouple_v3_v4.json`
+  * sha256 = `bc427e1cd86a9c4a51c9596d04a94260c64dd884bb406f365c3f09a146e8f207`
+  * holdout_modulus = 2
+  * 格子数 = 4
+* `results/processed/lookup_bucket_sweep.json`
+  * sha256 = `d850244be50ede01728c0d1d0f35243d2e521bcc394b847c9cbdb3adf26eb35e`
+  * calib = `results/processed/costcalib_eval_v4.json`
+  * shapes_tag = `S14B1`
+  * n_records = 124, n_shapes = 280, 格子数 = 20
+
+## 溯源标签（run_id / tag）
+
+⚠️ 这两份 JSON **本身**是 `scripts/` 的离线产物，其 run_id 溯源在各自的
+生成脚本与登记行里；**图不引入任何新 run**。按占位块要求，此处列出其所引用的标签：
+
+* 图 A（decouple）：标定/评估族 —— 见 `results/processed/decouple_*.json` 内的
+  `eval_json` 字段（每格一个，指向被评估的成本模型评测产物）。
+* 图 B（lookup sweep）：`shapes_tag` = `S14B1`（形状普查批），`calib` = `results/processed/costcalib_eval_v4.json`。
+
+## 产物
+
+* `fig_p27a_decouple.png` / `fig_p27a_decouple.svg`
+* `fig_p27b_lookup_sweep.png` / `fig_p27b_lookup_sweep.svg`
+
+## 读法（**照抄结论，不要在图里重新解释**）
+
+* 图 A：`hash` 列两代几乎不动（≈95%），`rank_guaranteed` 列随网格加密而下降
+  ⇒ **主因是划分方式，不是网格密度**。
+* 图 B：`pf_step` 的各行**逐字相同**（惰性），只有 `kv_step` 在动
+  ⇒ 「范围外回退」的瓶颈在 **kv 桶**，不在 prefill 桶。
+
+⚠️ **陷阱（必须一起写）**：`kv_step=0` 的四格 `coverage = 0.000`，
+而它们的 `over_p95` 恰好**最低**（0.0013）——这会误导成「不分桶最准」。
+实际是 **coverage=0 = 一条形状都没命中查表**（`loo_n=124`、`loo_skipped=0`，
+是**实测的 0**，不是缺测）⇒ 该配置**不可用**；其低误差只反映「被评估到的那些形状」。
+**不得**据 `kv_step=0` 的低 `over_p95` 说它最好。
+
+⚠️ 阈值与判据（低估 p95 > 5% ⇒ `model_holds=False`）来自**预注册**，
+本脚本只照抄，不新造。

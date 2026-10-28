@@ -1,0 +1,35 @@
+================================================================================================
+pilot 三臂执行清单（**跑之前**就能核对任务数）
+================================================================================================
+tag / cfg-dir : PILOT_20261028T132305Z_63668ab34bc2  /  configs/mthreads/prereg_batch
+模式          : fixed-repeats（**显式** --repeats 1；**不**用 --fill-budget）
+预算          : 45 min；整轮边界；不中断正在运行的任务或轮次，不是硬超时
+预计用时      : 待同 cell 节拍；不承诺在预算分钟数内结束
+远端路径状态  : REQUIRED_NOT_PROVIDED（本脚本不会连接远端核验）
+
+项   臂             矩阵格         控制器                                     用途
+P1  static_small  baseline    关                                       测节拍 + 测该 cell 的 TPOT / 达标率基线
+P2  cost_single   cost_single 开（单预算 prefill_deadline_ms=null）         测控制器的步级轨迹与回退率
+P3  cost_dual     cost_dual   开（双预算 prefill_deadline_ms=2000）         测双预算是否改变步级轨迹（与 P2 逐 step 对比）
+
+repeats       : 1
+计划任务      : 3 项  = 臂数 3 × 轮数 1
+明细          : baseline#r0, cost_single#r0, cost_dual#r0
+★ P1 走 `--baseline`（矩阵格名 = baseline）；P2/P3 走 `--arms` ⇒ 恰好 3 格
+
+FZ 状态（三臂一致）：
+  FZ-1: A（逐步择一）—— 当前实现
+  FZ-2: A（本步没被服务）—— 当前实现
+  utterance_ceiling: 只能说『在（逐步择一）语义下 / 在（本步没被服务）口径下』；**不得**把 A 写成『已选定最优语义』
+
+⚠️ pilot 只用于检查**机制 / 覆盖 / 节拍**，**不用于宣布性能优势**。
+⚠️ 判『机制是否被行使』只看 P2/P3（它们才有 budget_kind）；P1 是静态对照。
+
+真机命令（**显式 --repeats 1、--baseline 指向 P1**）：
+未生成：远端目录和 Python 待执行端核验。
+计划参数（只用于核对，不是可执行真机命令）：
+--tag PILOT_20261028T132305Z_63668ab34bc2 --cfg-dir configs/mthreads/prereg_batch --baseline configs/mthreads/prereg_batch/static_small.yaml --arms cost_single cost_dual --repeats 1 --order block --budget-minutes 45
+
+矩阵 dry-plan 交叉核对：✓ 矩阵 dry-plan 确认 **3 项** = 3 臂 × 1 轮（cells=['baseline', 'cost_single', 'cost_dual']）
+
+★ 校验通过：3 项（= 3 臂 × 1 轮），与预期 3 一致，且矩阵 dry-plan 独立确认。

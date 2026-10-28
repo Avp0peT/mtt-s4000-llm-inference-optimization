@@ -1,0 +1,71 @@
+# ⚠️ 本文件由 scripts/gen_phase1_step3_configs.py **生成**，不要手工编辑。
+# 改这里请改生成器（或它的模板 configs/mthreads/s4000_fp16.yaml）后重新生成，
+# 否则下一次生成会把手工改动静默覆盖掉。
+#
+# 权威说明（逐字段的"为什么"）保留在模板 configs/mthreads/s4000_fp16.yaml 里，
+# 包括两条容易踩的警告：cache.block_size 是**模拟粒度**而非设备参数；
+# 以及不要预设推理引擎。生成配置只承载"这一格与别的格差在哪"。
+#
+# 臂：static_chunk    并发：8
+# 与相邻臂的差异（单变量自检已在生成时通过）：
+#   static        -> static_chunk  只差 chunk.enabled
+#   static_chunk  -> adaptive      只差 controller.enabled
+run:
+  repeats: 3
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 50
+  notes: PHASE1-③ arm=static_chunk concurrency=8 (chunk.enabled=True, controller.enabled=False)
+workload:
+  name: phase1_anchor
+  num_requests: 8
+  concurrency: 8
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 0
+chunk:
+  policy: fixed_chunk
+  enabled: true
+  chunk_size: 512
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+controller:
+  enabled: false
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.1
+  cooldown_cycles: 3
+  chunk_size_init: 512
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+runtime:
+  model: Qwen/Qwen2.5-7B-Instruct
+  model_revision: main
+  precision: fp16
+  quantization: none
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto
+  execution_environment: remote_mthreads
+  hardware_platform: mthreads

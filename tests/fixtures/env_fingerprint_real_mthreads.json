@@ -1,0 +1,134 @@
+{
+ "collected_at": "2026-09-28T00:16:44+0800",
+ "hostname": "autodl-container-cf99469eb6-b877706e",
+ "os": {
+  "system": "Linux",
+  "release": "5.15.0-105-generic",
+  "version": "#115-Ubuntu SMP Mon Apr 15 09:52:04 UTC 2024",
+  "machine": "x86_64",
+  "kernel": "Linux-5.15.0-105-generic-x86_64-with-glibc2.35"
+ },
+ "cpu": {
+  "logical_cores": 128,
+  "model": "x86_64"
+ },
+ "software": {
+  "python": "3.10.8",
+  "executable": "/root/musa-envs/qwen310/bin/python3",
+  "torch_version": "2.2.0",
+  "torch_version_cuda_field": null,
+  "torch_npu_available": null,
+  "torch_npu_version": null,
+  "torch_musa_version": "1.3.0+81caf0a",
+  "vllm_version": null,
+  "vllm_ascend_version": null,
+  "transformers_version": "4.46.3"
+ },
+ "env_vars": {
+  "MODEL_NAME": "Qwen/Qwen2.5-7B-Instruct",
+  "MODEL_REVISION": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "MODEL_PATH": "/root/autodl-tmp/hf/hub/models--Qwen--Qwen2.5-7B-Instruct",
+  "MODELS_DIR": "/root/autodl-tmp/models",
+  "MODEL_PRECISION": "fp16"
+ },
+ "cann": {
+  "paths_checked": [
+   "/usr/local/Ascend/ascend-toolkit/latest",
+   "/usr/local/Ascend/latest"
+  ],
+  "version_files": {},
+  "ok": false,
+  "probe": "npu-smi not found in PATH"
+ },
+ "device": {
+  "npu_smi_available": false,
+  "npu_smi_info": null,
+  "npu_smi_error": "npu-smi not found in PATH",
+  "topology": null,
+  "mthreads_gmi_available": true,
+  "mthreads_gmi_info": "Mon Sep 28 00:16:46 2026\n---------------------------------------------------------------\n    mthreads-gmi:1.14.0          Driver Version:2.7.0\n---------------------------------------------------------------\nID   Name           |PCIe                |%GPU  Mem            \n     Device Type    |Pcie Lane Width     |Temp  MPC Capable    \n                                         |      ECC Mode       \n+-------------------------------------------------------------+\n0    MTT S4000      |00000000:12:00.0    |0%    2MiB(49152MiB)\n     Physical       |16x(16x)            |42C   YES            \n                                         |      N/A            \n---------------------------------------------------------------\n\n---------------------------------------------------------------\nProcesses:\nID   PID       Process name                         GPU Memory\n                                                         Usage\n+-------------------------------------------------------------+\n0    191739    N/A                                       <1MiB\n---------------------------------------------------------------",
+  "mthreads_gmi_error": null,
+  "model": "MTT S4000",
+  "count": 1
+ },
+ "memory": {
+  "free_m": "total        used        free      shared  buff/cache   available\nMem:         1031697       11718      177592           5      842387     1013811\nSwap:              0           0           0"
+ },
+ "probes": {
+  "ascend": {
+   "tool": "npu-smi",
+   "tool_present": false,
+   "ok": false,
+   "device_count": null,
+   "model": null,
+   "error": "npu-smi not found in PATH",
+   "result": false
+  },
+  "mthreads": {
+   "tool": "mthreads-gmi",
+   "tool_present": true,
+   "ok": true,
+   "device_count": 1,
+   "model": "MTT S4000",
+   "error": null,
+   "result": true
+  }
+ },
+ "available": true,
+ "available_reason": "npu-smi -> False；mthreads-gmi -> True（合成规则：任一认出设备即可用；有认不出的则为未知；否则不可用）",
+ "platform": "mthreads",
+ "schema_version": 2,
+ "discovery": {
+  "hostname": "autodl-container-cf99469eb6-b877706e",
+  "looks_like_ascend_host": false,
+  "looks_like_mthreads_host": true,
+  "detected_platform": "mthreads",
+  "values": {
+   "ASCEND_DEVICE_MODEL": "MTT S4000",
+   "ASCEND_DEVICE_COUNT": 1,
+   "ASCEND_DRIVER_VERSION": null,
+   "CANN_VERSION": null,
+   "TORCH_VERSION": "2.2.0",
+   "TORCH_NPU_VERSION": null,
+   "VLLM_VERSION": null,
+   "VLLM_ASCEND_VERSION": null,
+   "MODEL_PATH": "/root/autodl-tmp/hf/hub/models--Qwen--Qwen2.5-7B-Instruct",
+   "MODEL_NAME": "Qwen/Qwen2.5-7B-Instruct",
+   "MODEL_REVISION": "a09a35458c702b33eeacc393d103063234e8bc28",
+   "MODEL_PRECISION": "fp16",
+   "MTT_DRIVER_VERSION": "2.7.0",
+   "MUSA_VERSION": "3.1.0",
+   "TORCH_MUSA_VERSION": "1.3.0+81caf0a",
+   "VLLM_MUSA_VERSION": null
+  },
+  "sources": {
+   "ASCEND_DEVICE_MODEL": "mthreads-gmi:device-table",
+   "ASCEND_DEVICE_COUNT": "mthreads-gmi:device-table",
+   "ASCEND_DRIVER_VERSION": null,
+   "CANN_VERSION": null,
+   "TORCH_VERSION": "python:import torch",
+   "TORCH_NPU_VERSION": null,
+   "VLLM_VERSION": null,
+   "VLLM_ASCEND_VERSION": null,
+   "MODEL_PATH": "env:MODEL_PATH",
+   "MODEL_NAME": "env:MODEL_NAME",
+   "MODEL_REVISION": "env:MODEL_REVISION",
+   "MODEL_PRECISION": "env:MODEL_PRECISION",
+   "MTT_DRIVER_VERSION": "mthreads-gmi:version-line",
+   "MUSA_VERSION": "file:/usr/local/musa/version.json",
+   "TORCH_MUSA_VERSION": "python:import torch_musa",
+   "VLLM_MUSA_VERSION": null
+  },
+  "missing": [
+   "ASCEND_DRIVER_VERSION",
+   "CANN_VERSION",
+   "TORCH_NPU_VERSION",
+   "VLLM_VERSION",
+   "VLLM_ASCEND_VERSION"
+  ],
+  "mtt_missing": [
+   "VLLM_MUSA_VERSION"
+  ],
+  "note": "本块描述的是**采集它的这台机器**。规范要求这些事实从执行推理的远程主机发现，因此在开发机上采集会得到一串 null——那不是「没有信息」，那是在说「这台机器不是推理环境」。"
+ }
+}

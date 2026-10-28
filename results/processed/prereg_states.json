@@ -1,0 +1,156 @@
+{
+  "evidence_class": "TEST_DATA",
+  "artifact_role": "budget_function_example",
+  "not_evidence_of": "本批机制被行使 —— 形状是手选的，未走 plan_step（见 dryplan_decision_chain.py）",
+  "note": "离线演练；不代替真机标定，不得据此宣布双预算有效/无效（FZ-1/FZ-2 未裁定）",
+  "cost_model": {
+    "path": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization\\configs\\cost_calib\\model_v7.json",
+    "model_version": "cost-model-v1",
+    "protocol_version": "cost-calib-v7",
+    "grid_sha256": "5c3b66f75c89522c",
+    "default_mode": null,
+    "safety_margin": 0.16023195465353585
+  },
+  "cost_model_relaxations": [
+    "离线路径：**未做指纹校验**（离线没有真实运行环境可观测）⇒ 这一层防护只在带实测指纹的路径上生效"
+  ],
+  "budgets": {
+    "internal_step_ms": 120.0,
+    "prefill_ms": 2000.0,
+    "external_slo_tpot_ms": 100.0
+  },
+  "states": [
+    {
+      "state": "pure_prefill",
+      "desc": "纯 prefill：队列里只有等待起步的请求，没有 decode 在跑（**双预算 prefill 分支的唯一适用场景**）",
+      "feed": "等待中 2 个（各 1536 token，尚未起步），在解码 0 个",
+      "shape": {
+        "batch": 1,
+        "prefill_tok": 1024,
+        "kv_len": 0
+      },
+      "in_calibrated_range": true,
+      "predicted_forward_ms": 317.01,
+      "predicted_by_mode": {
+        "lookup": 317.01,
+        "segmented": 321.37
+      },
+      "host_overhead_ms": 0.0,
+      "predicted_step_ms": 317.01,
+      "margin": 0.16023195465353585,
+      "candidate_hit": true,
+      "fallback_reason": null,
+      "budget_dual": {
+        "kind": "prefill",
+        "ms": 2000.0
+      },
+      "budget_single": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_branch_differs": true,
+      "feasible_under_dual": true,
+      "feasible_under_single": false,
+      "would_degrade": false
+    },
+    {
+      "state": "pure_decode",
+      "desc": "纯 decode：没有等待起步的请求，全在解码",
+      "feed": "等待中 0 个，在解码 4 个（各已解 1024 token）",
+      "shape": {
+        "batch": 4,
+        "prefill_tok": 0,
+        "kv_len": 1024
+      },
+      "in_calibrated_range": true,
+      "predicted_forward_ms": 84.88,
+      "predicted_by_mode": {
+        "lookup": 84.88,
+        "segmented": 79.45
+      },
+      "host_overhead_ms": 10.76,
+      "predicted_step_ms": 95.64,
+      "margin": 0.16023195465353585,
+      "candidate_hit": true,
+      "fallback_reason": null,
+      "budget_dual": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_single": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_branch_differs": false,
+      "feasible_under_dual": true,
+      "feasible_under_single": true,
+      "would_degrade": false
+    },
+    {
+      "state": "mixed_step",
+      "desc": "混合步：既有 decode 在跑、又有新请求要起步（**判决点**：按 §5.1 修正，此处必须走 decode 预算而非 prefill）",
+      "feed": "等待中 1 个（1536 token），在解码 4 个",
+      "shape": {
+        "batch": 4,
+        "prefill_tok": 512,
+        "kv_len": 1024
+      },
+      "in_calibrated_range": true,
+      "predicted_forward_ms": 580.31,
+      "predicted_by_mode": {
+        "lookup": 580.31,
+        "segmented": 591.72
+      },
+      "host_overhead_ms": 10.76,
+      "predicted_step_ms": 591.07,
+      "margin": 0.16023195465353585,
+      "candidate_hit": true,
+      "fallback_reason": null,
+      "budget_dual": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_single": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_branch_differs": false,
+      "feasible_under_dual": false,
+      "feasible_under_single": false,
+      "would_degrade": true
+    },
+    {
+      "state": "lookup_miss",
+      "desc": "查表缺失：**在标定范围内**、但该 (batch,pf,kv) 无实测键 ⇒ lookup 模式返回 None ⇒ 应回退",
+      "feed": "在解码 6 个，本步 pf=128（v7 的 pf 网格无 128 键）",
+      "shape": {
+        "batch": 6,
+        "prefill_tok": 128,
+        "kv_len": 1024
+      },
+      "in_calibrated_range": true,
+      "predicted_forward_ms": null,
+      "predicted_by_mode": {
+        "lookup": null,
+        "segmented": 280.16
+      },
+      "host_overhead_ms": 17.88,
+      "predicted_step_ms": null,
+      "margin": null,
+      "candidate_hit": false,
+      "fallback_reason": "该 (batch,pf,kv) 无实测键（lookup 未命中）",
+      "budget_dual": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_single": {
+        "kind": "decode",
+        "ms": 120.0
+      },
+      "budget_branch_differs": false,
+      "feasible_under_dual": false,
+      "feasible_under_single": false,
+      "would_degrade": false
+    }
+  ]
+}

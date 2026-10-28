@@ -1,0 +1,74 @@
+run:
+  repeats: 5
+  warmup_s: 30
+  control_interval_steps: 8
+  slo:
+    ttft_ms: 2000
+    tpot_ms: 100.0
+  notes: PHASE1-14 cell=fixed arm=cost；四臂在每个 cell 内**只差 controller.kind / chunk 静态设定**｜signal_criterion=decode_p90（第09步冻结）
+workload:
+  name: short_chat
+  prompt_len_min: 1536
+  prompt_len_max: 1536
+  gen_len_min: 32
+  gen_len_max: 32
+  concurrency: 16
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 8
+  reserve_decode_slots: 0
+chunk:
+  policy: fixed_chunk
+  enabled: true
+  chunk_size: 1024
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+cache:
+  enabled: false
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+controller:
+  enabled: true
+  target_tpot_ms: 120.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.08
+  cooldown_cycles: 3
+  chunk_size_init: 1024
+  chunk_size_min: 512
+  chunk_size_max: 2048
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 8192
+  max_batched_tokens_max: 8192
+  max_batched_tokens_step: 1024
+  signal_mode: layered
+  kind: cost
+  cost_model_fingerprint_source: observed
+  signal_criterion: decode_p90
+  cost_model_path: configs/cost_calib/model_v6.json
+  host_overhead_ms:
+    2: 3.06
+    4: 10.76
+    8: 25.29
+  host_overhead_fit:
+  - 3.705
+  - -4.35
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+runtime:
+  model: Qwen/Qwen2.5-7B-Instruct
+  model_revision: a09a35458c702b33eeacc393d103063234e8bc28
+  precision: fp16
+  quantization: none
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto
+  execution_environment: remote_mthreads
+  hardware_platform: mthreads

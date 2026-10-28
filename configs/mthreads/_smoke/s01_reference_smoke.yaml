@@ -1,0 +1,138 @@
+# ⚠️ **派生文件，请勿手改** —— 由 scripts/gen_smoke_configs.py 生成。
+# 来源：configs/mthreads/exec_opt/s01_reference.yaml
+# 用途：**短启动 + 数值正确性验收**（不是批次配置！负载被改到极小）。
+# 判据：两臂产出的 **token 序列逐位相同**（S01 的开关动的正是取 logits / 采样）。
+# ⚠️ 这些开关在 `--dry-run` 下**不生效** ⇒ 必须真机短跑，模拟路径验不出来。
+# ⚠️ **派生文件，请勿手改** —— 由 scripts/gen_exec_opt_configs.py 生成。
+# 来源：configs/mthreads/s4000_fp16.yaml（唯一来源；改基线请改它再重新生成）
+# 开关：P0：S01 **参照臂**（两个开关全关）；只把 model_revision 钉死成与 s01_both 同一个 commit ⇒ 与 s01_both 的有效差异恰好是两个 S01 开关
+# 模型 revision 已**钉死**为 a09a35458c702b33eeacc393d103063234e8bc28
+#   （`main` 是引用不是版本；不钉死就无法把两批评数归到同一权重上）
+#   ⚠️ 真机前置：确认该 snapshot 已在本地 HF 缓存内，否则会走网络或直接失败。
+# 用法：python -m benchmark.run_benchmark --config configs/mthreads/exec_opt/s01_reference.yaml --dry-run
+# 配置说明
+# ---------
+# **研究主体平台 MTT S4000 的基线**（规范 `Remote Execution Environment` 一节：
+# 权威推理环境是远程 MTT 主机）。
+#
+# 与 configs/baseline/default.yaml 的关系：本文件**不是**它的单变量变体，而是
+# **另一个平台上的参照点**。两个平台上的数字属于不同实验条件，不得并进同一个
+# 中位数（聚合与绘图的分组键含 hardware_platform + backend）。
+# 因此这里同时改了平台与精度（bf16 -> fp16），这是有意的：平台基线换了参照系，
+# 不是"只动了一个变量"。任何以本文件为起点做的优化实验，仍须遵守单变量。
+#
+# 用法：python -m benchmark.run_benchmark --config configs/mthreads/s4000_fp16.yaml --dry-run
+
+run:
+  repeats: 3                 # < 3 次的结果不能作为结论（AGENTS.md 正文第 9 节 / 附录 A4）
+  warmup_s: 30               # 真机路径：计时窗口之外的按时间预热
+  control_interval_steps: 8  # 自适应控制器每隔多少步决策一次
+  slo:
+    ttft_ms: 2000            # SLO 判定口径（达标率与达标吞吐共用），跨实验必须保持一致
+    # tpot_ms 是**逐请求**判据（每个请求单独比，不是比汇总 p50）。
+    # 2026-09-24 重新标定：50 → 100。理由：逐请求 TPOT 实测区间 [61.7, 168.0] ms，
+    # 阈值 50 低于下界 ⇒ 恒不可达 ⇒ 达标率三列恒为 0（判据无效，不是"达标率低"）。
+    # 100 ms = 10 tok/s，落在区间内且对 chunk_size 敏感（正是本项目要测的权衡）。
+    # 标定工具 scripts/calibrate_slo.py；旧配置 phase1_step3/step3b 仍为 50（已执行证据不容改）。
+    tpot_ms: 100
+  notes: "MTT S4000 平台基线（研究主体）"
+
+workload:
+  name: short_chat
+  # ⚠️ 极小负载（短启动/数值验收专用）；**不是**批次负载。
+  num_requests: 4
+  concurrency: 2
+  prompt_len_min: 64
+  prompt_len_max: 64
+  gen_len_min: 8
+  gen_len_max: 8
+scheduler:
+  policy: continuous_batching
+  max_num_seqs: 32
+  reserve_decode_slots: 0
+
+chunk:
+  policy: fixed_chunk
+  enabled: false             # 关闭分块：整个 prompt 一次算完
+  chunk_size: 8192
+  max_num_batched_tokens: 8192
+  decode_reserve_ratio: 0.0
+  min_decode_seqs: 1
+
+cache:
+  enabled: false             # 关闭前缀缓存
+  # ⚠️ block_size 是**本处前缀缓存的模拟粒度**（cache_policy 消费），不是设备/引擎参数。
+  # 不要把它当成"MTT 引擎块大小"去调：那个 64 属于**旧版 MTT-vLLM / MTTransformer** 栈的
+  # 引擎要求，与当前走 Transformers 的验证路线无关。要动它，先看 cache_policy 的语义。
+  block_size: 16
+  max_blocks: 8192
+  eviction: lru
+  min_reuse_blocks: 1
+
+controller:
+  enabled: false             # 关闭自适应
+  target_tpot_ms: 50.0
+  target_ttft_ms: 2000.0
+  hysteresis: 0.10
+  # 冷却单位是**观测周期**（一次决策 = 一个周期），不是推理步。
+  # 决策节拍由上面的 control_interval_steps 决定；两者单位不同，别混。
+  cooldown_cycles: 3
+  chunk_size_init: 4096
+  chunk_size_min: 512
+  chunk_size_max: 16384
+  chunk_size_step: 512
+  max_batched_tokens_init: 8192
+  max_batched_tokens_min: 2048
+  max_batched_tokens_max: 32768
+  max_batched_tokens_step: 1024
+
+# 仅在 --dry-run 下使用的一阶设备模型；上真机后需用 MTT S4000 上的实测数据校准。
+# 未校准前它算出的任何数字都只是 TEST_DATA，不得作为该平台的性能结论。
+device_model:
+  step_overhead_ms: 2.0
+  prefill_tok_per_ms: 6.0
+  decode_base_ms: 1.0
+  decode_per_seq_ms: 0.06
+  max_steps: 200000
+
+# runtime 段：运行时开关集合，只记录进 meta.json 用于溯源，策略层不消费。
+# 这些字段直接对应规范第 8 节要求的可复现性元数据；留空即会在 meta 里
+# 被标成 NOT_MEASURED，而不是悄悄省掉。
+#
+# 警告：这些开关在 --dry-run 下不生效，不能用模拟路径评估它们的收益。
+runtime:
+  # ⚠️ 必须写**完整 repo id**（`<org>/<name>`），不能只写模型名。
+  # 踩过：这里原本写成 "Qwen2.5-7B-Instruct"（缺 `Qwen/` 前缀），而 HF 是按
+  # repo id 找缓存的——于是本地已缓存的 `models--Qwen--Qwen2.5-7B-Instruct`
+  # **完全匹配不上**，请求会走去网络，在该机上表现为
+  # `RepositoryNotFoundError: 404 ... Qwen2.5-7B-Instruct/resolve/main/config.json`。
+  # 这个错看起来像"模型没下载"，实际是"名字少了一段"。
+  model: "Qwen/Qwen2.5-7B-Instruct"   # 规范第 4 节：起步用 Qwen 系 7B~8B Dense
+  model_revision: "a09a35458c702b33eeacc393d103063234e8bc28"
+  # 主体平台按 fp16 部署。**这是声明，不是实测**：首轮真机运行前必须在远程主机上
+  # 核对该机的实际部署精度，若不符就改这里，而不是让 meta 与事实不一致。
+  #
+  # 不要预设推理引擎：当前路线是先用 Transformers 做单请求验证，跑通后再接真实后端、
+  # 做连续批处理/前缀缓存/分块预填充实验，**最后**才按所需功能选引擎。
+  # 权重转换与"引擎块大小 64"是旧版 MTT-vLLM / MTTransformer 栈的要求，**不是所有
+  # S4000 推理方式的通用要求**，走 Transformers 路线时不需要也不应照搬。
+  precision: fp16
+  quantization: "none"            # 显式"未量化"；留空会被读成"没记录"
+  graph_mode: eager
+  tensor_parallel_size: 1
+  kv_cache_dtype: auto
+
+  # 执行环境声明（规范末节 "Remote Execution Environment"）。
+  # 研究主体是 MTT S4000，故本配置显式声明 remote_mthreads：判定才会去问
+  # "**执行推理的那台机器**有没有卡"，而不是拿本机（无卡）指纹误杀真实测数据。
+  # 声明本身不是证据——仍需在远程主机上采集的指纹确认设备可用。
+  # 允许取值：remote_ascend / remote_mthreads / local / unknown。
+  # 拼错会在加载配置时直接报错，不会静默降级成"没声明"。
+  execution_environment: remote_mthreads
+
+  # 面向的硬件平台。与执行环境**分开**：平台是"硬件是什么"（事实，可被指纹校验），
+  # 执行环境是"推理在哪跑"（声明，决定标签）。两者刻意不互相推导。
+  # 允许取值：ascend / mthreads / unknown。
+  # 与执行环境矛盾的组合（例如 remote_ascend + mthreads）会在加载配置时报错：
+  # 两个字段都会写进 meta 并被下游按平台筛选，矛盾的记录事后没人能发现。
+  hardware_platform: mthreads

@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-29T19:38:58.780441+08:00",
+  "project_root": "C:\\Users\\13944\\WorkBuddy\\st\\ascend-llm-inference-optimization",
+  "head": "16e82d2ea117ee4017adf3d0a716e81df12bf0e4",
+  "git_status_porcelain_v1": [
+    "M .workbuddy/memory/2026-09-28.md",
+    " M .workbuddy/memory/MEMORY.md",
+    " M .workbuddy/memory/automations/ff68910c-5d34-475c-9a25-7affe66018cb/memory.md",
+    " M AGENTS.md",
+    " M EVIDENCE_INDEX.md",
+    " M EXPERIMENTS.md",
+    " M HANDOFF.md",
+    " M NEXT_SESSION_TASKS.md",
+    " M README.md",
+    " M RESEARCH_LOG.md",
+    " M benchmark/real_backend.py",
+    " M benchmark/run_benchmark.py",
+    " M src/ascend_opt/controller.py",
+    " M src/ascend_opt/cost_policy.py",
+    " M src/ascend_opt/workload.py",
+    "?? OPTIMIZATION_IMPLEMENTATION_PLANS.md",
+    "?? OPTIMIZATION_ROADMAP_SESSIONS.md",
+    "?? OPTIMIZATION_TEST_SESSION.md",
+    "?? PROJECT_MAP.md",
+    "?? configs/cost_calib/shape_grid_v8.yaml",
+    "?? handoff/",
+    "?? results/raw/_costcalib/costcalib_v8_s1.json",
+    "?? results/raw/_costcalib/costcalib_v8_s2.json",
+    "?? results/raw/_probe/20260928/",
+    "?? scripts/_b4_inspect.py",
+    "?? scripts/analyze_b4_small_chunk.py",
+    "?? scripts/analyze_opt01_s14b2.py",
+    "?? scripts/check_opt02_acceptance.py",
+    "?? scripts/gen_shape_grid_v8.py",
+    "?? scripts/push_files.sh",
+    "?? tests/test_closed_loop_jitter.py",
+    "?? tests/test_controller_gate_mode.py",
+    "?? tests/test_cost_policy_dual_budget.py"
+  ],
+  "selected_files": [
+    {
+      "path": "AGENTS.md",
+      "exists": true,
+      "bytes": 26078,
+      "sha256": "a7c502199aeef0eda596b0d6779f68a8f8fe64f7c29626fd19fba0cab3b42eea",
+      "modified_utc": "2026-09-29T08:49:44.673353+00:00"
+    },
+    {
+      "path": "README.md",
+      "exists": true,
+      "bytes": 69146,
+      "sha256": "9a162e6de10bbc06bba33830f39a666d7e8a0e952404f47f194f3dde6a10f37c",
+      "modified_utc": "2026-09-29T08:49:40.188510+00:00"
+    },
+    {
+      "path": "PROJECT_MAP.md",
+      "exists": true,
+      "bytes": 23959,
+      "sha256": "227ce95ed2b808014fed29ab663b721dbef35ea1e9bd4b7cd17e0b7ada96a9a3",
+      "modified_utc": "2026-09-29T11:38:02.794337+00:00"
+    },
+    {
+      "path": "RESEARCH_PLAN.md",
+      "exists": true,
+      "bytes": 17896,
+      "sha256": "8e949c4a54c791a009e20944340de3d64f6fa9901485b984f09eaf40a37b0605",
+      "modified_utc": "2026-09-24T16:59:20.420552+00:00"
+    },
+    {
+      "path": "EXPERIMENTS.md",
+      "exists": true,
+      "bytes": 249292,
+      "sha256": "e25f79e024fae250bf9c2056d139b7f3060b9fd42845c974bae3354f21956fc4",
+      "modified_utc": "2026-09-29T08:49:18.374955+00:00"
+    },
+    {
+      "path": "RESEARCH_LOG.md",
+      "exists": true,
+      "bytes": 248160,
+      "sha256": "9ae3c508947190bce4a11edbddf63c268d7843ddcbf96b42feb8ae5cafbe5358",
+      "modified_utc": "2026-09-29T08:49:23.725732+00:00"
+    },
+    {
+      "path": "EVIDENCE_INDEX.md",
+      "exists": true,
+      "bytes": 25578,
+      "sha256": "23846c9b2b7652b958bc7b72f667edc218b6da0a30a805e8b2069f70703742fb",
+      "modified_utc": "2026-09-28T14:41:55.623829+00:00"
+    },
+    {
+      "path": "NEXT_SESSION_TASKS.md",
+      "exists": true,
+      "bytes": 386090,
+      "sha256": "fa9ac1e62a912b028f0d62e90bb04155ae3066fdb3eb6d556613c1b496fefec0",
+      "modified_utc": "2026-09-29T08:49:13.213557+00:00"
+    },
+    {
+      "path": "OPTIMIZATION_TEST_SESSION.md",
+      "exists": true,
+      "bytes": 25206,
+      "sha256": "b84b320d3dac3ee40369a389b5ee3b919a62e9b555d31b43651b2d461e3dad4e",
+      "modified_utc": "2026-09-28T14:45:46.795995+00:00"
+    },
+    {
+      "path": "OPTIMIZATION_ROADMAP_SESSIONS.md",
+      "exists": true,
+      "bytes": 13802,
+      "sha256": "aac547e28578dfa32ca8d28a5bea4cf46831145345ad23660a095b9e0da5ad97",
+      "modified_utc": "2026-09-28T12:02:50.550063+00:00"
+    },
+    {
+      "path": "OPTIMIZATION_IMPLEMENTATION_PLANS.md",
+      "exists": true,
+      "bytes": 25475,
+      "sha256": "363c79d6a528ec0e3282ebd6a024cf3f50b20f562b0ca76b61ec951ad0abd919",
+      "modified_utc": "2026-09-29T11:24:57.416628+00:00"
+    },
+    {
+      "path": "COST_PROFILE_S4000.md",
+      "exists": true,
+      "bytes": 12790,
+      "sha256": "6d4eb487e9e5f1245ca269f7d6b345236a6ba48ca8747b9bc31129a29614c439",
+      "modified_utc": "2026-09-26T11:53:05.833223+00:00"
+    },
+    {
+      "path": "SOURCES.md",
+      "exists": true,
+      "bytes": 16091,
+      "sha256": "1992187c7de0c739be16ccc017bc524aff4e7699a97dcd07f9abfc46d969c210",
+      "modified_utc": "2026-09-24T13:31:31.445143+00:00"
+    },
+    {
+      "path": "benchmark/real_backend.py",
+      "exists": true,
+      "bytes": 117763,
+      "sha256": "4e3e1ca6bec816471d1acf78d2f84c4d62d6471293f3c5af422956d980285ceb",
+      "modified_utc": "2026-09-28T15:28:11.961740+00:00"
+    },
+    {
+      "path": "benchmark/run_benchmark.py",
+      "exists": true,
+      "bytes": 75387,
+      "sha256": "5c6bdff04b59e135d829fbcef78553361dbc2e67c94302b800570a74475b1bfc",
+      "modified_utc": "2026-09-28T15:27:20.923367+00:00"
+    },
+    {
+      "path": "src/ascend_opt/controller.py",
+      "exists": true,
+      "bytes": 77576,
+      "sha256": "77fba2333c0e8150b1674b2499949f1c69691e8408af724dd94e6cdf16a156b1",
+      "modified_utc": "2026-09-28T12:51:52.074625+00:00"
+    },
+    {
+      "path": "src/ascend_opt/cost_policy.py",
+      "exists": true,
+      "bytes": 25017,
+      "sha256": "e6f3b65fc7839ae8e0a2538d84dfde015cfc195f5629541d8806ace3657c00c4",
+      "modified_utc": "2026-09-28T15:20:54.696113+00:00"
+    },
+    {
+      "path": "src/ascend_opt/slo_weave.py",
+      "exists": true,
+      "bytes": 9073,
+      "sha256": "b03349c763c4821ef0adbbb66c8a7bec3dacb1fc613e4c242549bfd4dfaae749",
+      "modified_utc": "2026-09-26T06:49:10.919757+00:00"
+    },
+    {
+      "path": "src/ascend_opt/cost_model.py",
+      "exists": true,
+      "bytes": 12242,
+      "sha256": "c3c99db660bce23de18e805835c50af96352ad851846ce16ddd91f8bacaaf113",
+      "modified_utc": "2026-09-26T08:07:40.368420+00:00"
+    },
+    {
+      "path": "src/ascend_opt/workload.py",
+      "exists": true,
+      "bytes": 24234,
+      "sha256": "b5e90d40c50a8b177e0a2837629e7eaa20659fcace2fd81d6e828ed50b6bc1d2",
+      "modified_utc": "2026-09-28T15:28:12.506607+00:00"
+    },
+    {
+      "path": "scripts/remote_run.py",
+      "exists": true,
+      "bytes": 43598,
+      "sha256": "2b8d8614f86aadfc770bd52f2561d55ea55f30e445ed3b04344b5bdc041181df",
+      "modified_utc": "2026-09-28T04:24:41.743246+00:00"
+    },
+    {
+      "path": "scripts/run_tests.py",
+      "exists": true,
+      "bytes": 12443,
+      "sha256": "7c015d0b08e74bd9dfa4b3e2ea6a7aa6ee5e872b676d606301299a7fd29d066f",
+      "modified_utc": "2026-09-24T13:52:44.987274+00:00"
+    },
+    {
+      "path": "tests/test_closed_loop_jitter.py",
+      "exists": true,
+      "bytes": 6192,
+      "sha256": "aa64224887dbb72cbf2b56af2c438c9cf37f9fecb390ce1f351a62aac59faa37",
+      "modified_utc": "2026-09-28T15:27:45.161219+00:00"
+    },
+    {
+      "path": "tests/test_controller_gate_mode.py",
+      "exists": true,
+      "bytes": 13302,
+      "sha256": "deb4647ddae80c4d59695aeb3b455c73071564784f96d76071833186291cde05",
+      "modified_utc": "2026-09-28T12:50:47.334409+00:00"
+    },
+    {
+      "path": "tests/test_cost_policy_dual_budget.py",
+      "exists": true,
+      "bytes": 10018,
+      "sha256": "f64deea7c4c72a895d067320767d2194c7b577643307e066a8ca2f2e68bde0e6",
+      "modified_utc": "2026-09-28T15:16:52.959091+00:00"
+    }
+  ],
+  "scope": "Local selective metadata snapshot only; no repository code, raw evidence, weights, or credentials are embedded.",
+  "limitations": [
+    "Not an atomic repository snapshot; concurrent changes must be rechecked.",
+    "Not proof of remote deployment or current hardware state.",
+    "Uncommitted work is present and must not be reset.",
+    "Raw evidence must be read from the full project before making research claims."
+  ]
+}
