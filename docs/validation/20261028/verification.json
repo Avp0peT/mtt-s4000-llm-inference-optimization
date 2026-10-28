@@ -72,5 +72,15 @@
     "exit_code": 0,
     "elapsed_seconds": 0.34,
     "log": "pilot_dryplan.log"
+  },
+  {
+    "check": "core_without_ml",
+    "command": [
+      "python",
+      "docs/validation/20261028/check_core_without_ml.py"
+    ],
+    "exit_code": 0,
+    "log": "core_without_ml.log",
+    "scope": "98 passed, 1 numerical case deselected, 3 subtests passed; ML imports deliberately rejected"
   }
 ]

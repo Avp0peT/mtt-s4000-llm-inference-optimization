@@ -5,12 +5,15 @@
 
 | 检查 | 当前实际结果 | 证据 |
 | --- | --- | --- |
-| README/CI 中的五个基础逻辑模块 | 99 passed，3 subtests passed，退出 0 | [core.log](validation/20261028/core.log) |
+| 发布前初始五模块检查（含一个 CPU 数值用例） | 99 passed，3 subtests passed，退出 0 | [core.log](validation/20261028/core.log) |
+| 修正后的 README/CI 基础范围，屏蔽 ML 运行时导入 | 98 passed，1 deselected，3 subtests passed，退出 0 | [core_without_ml.log](validation/20261028/core_without_ml.log) / [复现脚本](validation/20261028/check_core_without_ml.py) |
 | 执行形状相关 21 模块 | 376 passed，87 subtests passed，0 fail/error/skip，退出 0 | [日志](validation/20261028/execution_shape_regression.log) / [JUnit](validation/20261028/execution_shape_regression.xml) |
 | 整步标定探针 dry-plan | 退出 0；只计划，不采样 | [shape_dryplan.log](validation/20261028/shape_dryplan.log) |
 | 三项 pilot 计划及实际矩阵 dry-plan 交叉校验 | 退出 0，恰好 baseline/cost_single/cost_dual 各一次 | [pilot_dryplan.log](validation/20261028/pilot_dryplan.log) |
 
 两组测试有重叠，不能相加为独立测试总数。历史离线报告中的 375/87 保持原记录；上表是本次解释器和测试工具下的实际输出。此次没有重新执行整个历史仓库的全部测试，也没有把未执行的 MUSA 验证算作通过。
+
+公开前复核发现，最初的 CI 基础命令包含 `TestExecutionShapeRealCpu`，但 `.[dev]` 不安装其 PyTorch/Transformers 依赖。README 与 CI 现明确用 `-k "not TestExecutionShapeRealCpu"` 排除这个数值用例；它保留在测试文件和完整数值回归中。上表的 1 deselected 不计为通过。修正后在主动拒绝 torch/transformers/torch_musa 导入的本地进程中验证通过；这不是 Linux 云端 CI 结果。
 
 实际命令与退出码见 [verification.json](validation/20261028/verification.json)。其中 Python 与 JUnit 输出路径仅为可移植表达；日志来自本次真实执行。
 

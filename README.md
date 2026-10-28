@@ -27,12 +27,14 @@ python -m venv .venv
 # Linux/macOS: source .venv/bin/activate
 # Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
-python -m pytest tests/test_workload.py tests/test_metrics.py tests/test_controller_gate_mode.py tests/test_execution_shape.py tests/test_cost_execution_contract.py -q
+python -m pytest tests/test_workload.py tests/test_metrics.py tests/test_controller_gate_mode.py tests/test_execution_shape.py tests/test_cost_execution_contract.py -q -k "not TestExecutionShapeRealCpu"
 python scripts/execution_shape_probe.py --manifest results/processed/execution_shape_manifest_20261003.json --dry-plan
 python scripts/pilot_execution_plan.py
 ```
 
 上述后两条只生成计划，不连接远程服务器、不执行模型推理。基础检查不覆盖全部历史测试、CPU 模型数值验收或 MUSA。完整测试入口为 `python scripts/run_tests.py --env` 和 `python scripts/run_tests.py --group all`；CPU 数值组需相应 PyTorch/Transformers 环境，远程编排需 Paramiko。硬件软件版本须在实际 MTT 主机核验，不在本机安装 MUSA 来代替真机。
+
+基础检查明确排除需要 PyTorch/Transformers 的 `TestExecutionShapeRealCpu`，不会把未运行的数值测试计为通过。准备好 CPU 数值环境后，可单独执行 `python -m pytest tests/test_execution_shape.py::TestExecutionShapeRealCpu -q`；该用例也包含在已记录的 21 模块回归中。
 
 ## 目录
 

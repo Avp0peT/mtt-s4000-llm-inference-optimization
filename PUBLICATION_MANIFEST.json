@@ -8,8 +8,8 @@
   "history_policy": "New publication history; original research Git history stays local.",
   "identity_scope": "File-integrity manifest, not retroactive provenance for historical experiments.",
   "self_exclusion": "PUBLICATION_MANIFEST.json is excluded to avoid a recursive checksum.",
-  "file_count": 2036,
-  "total_bytes": 505756745,
+  "file_count": 2038,
+  "total_bytes": 505759265,
   "raw_file_count": 1526,
   "text_normalization": "LF per .gitattributes; original raw bytes unchanged.",
   "normalized_from_source": [
@@ -29,8 +29,8 @@
     },
     {
       "path": ".github/workflows/offline.yml",
-      "bytes": 719,
-      "sha256": "ef1837e530df8add3ebdcd2e27cc364fa9fcd2382c0340f246c0e13a1335a92c"
+      "bytes": 754,
+      "sha256": "ae038c2908bcc95a9e021c67aa4cf80cad98cdd0d1f932675802493b6ac06dc5"
     },
     {
       "path": ".gitignore",
@@ -109,8 +109,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 72863,
-      "sha256": "d5f70103274d800d5ce7061ad8e4f3ff9055563d550fa89e5f42d5b7455f97b4"
+      "bytes": 73218,
+      "sha256": "b9aece686d3236dcdca0fb56df17bb5f12c53ccf03af14e898a5b099252d5b23"
     },
     {
       "path": "RESEARCH_LOG.md",
@@ -1029,13 +1029,23 @@
     },
     {
       "path": "docs/PUBLICATION_VALIDATION.md",
-      "bytes": 2642,
-      "sha256": "dbb06fbf0a75f0d9de61d705853fe1a363be2d05bbf5eb0bbce7593814636eb5"
+      "bytes": 3374,
+      "sha256": "ad9229aa0ab94abd7ce1157681129c06c42ba3b7bf24ee820a440b0eec292504"
+    },
+    {
+      "path": "docs/validation/20261028/check_core_without_ml.py",
+      "bytes": 889,
+      "sha256": "d1693613278237934d9c89a995e17df020b53949caba83ee5778e64a0b924f40"
     },
     {
       "path": "docs/validation/20261028/core.log",
       "bytes": 196,
       "sha256": "973613a371f0639365de00c24e13cae94e97fddd3fcc81cead4fd671c71527db"
+    },
+    {
+      "path": "docs/validation/20261028/core_without_ml.log",
+      "bytes": 209,
+      "sha256": "575b19333f665defc6e9df37c2a8c25ca3dca9efdc4a6b6a6f5ee9ddfe29d1c7"
     },
     {
       "path": "docs/validation/20261028/execution_shape_regression.log",
@@ -1059,8 +1069,8 @@
     },
     {
       "path": "docs/validation/20261028/verification.json",
-      "bytes": 2091,
-      "sha256": "716f96a2a4590294f163e12403d8d94caa7348d3f24448173faf0ddda94f2dec"
+      "bytes": 2391,
+      "sha256": "c701a96d36a02c5bece8d73422cf8b23cb23d68b5fbc59f4716aee0490db5679"
     },
     {
       "path": "handoff/optimization_20260929/00_START_HERE.txt",
